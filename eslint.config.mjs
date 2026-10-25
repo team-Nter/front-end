@@ -16,27 +16,10 @@ const eslintConfig = defineConfig([
       ],
       'prefer-const': 'error',
       'no-var': 'error',
-      eqeqeq: 'error', // == 대신 ===
-      // import 순서: 내장 → 외부 패키지 → @/ 경로 → 상대경로
-      'import/order': [
-        'warn',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
-          pathGroups: [{ pattern: '@/**', group: 'internal' }],
-          'newlines-between': 'never',
-          alphabetize: { order: 'asc' },
-        },
-      ],
+      eqeqeq: 'error',
     },
   },
-  prettier, // 항상 마지막: 모양 관련 규칙은 Prettier에게 맡김
+  prettier,
   globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
 ]);
 
