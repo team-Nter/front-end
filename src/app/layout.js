@@ -1,12 +1,6 @@
-import localFont from 'next/font/local';
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '@/styles/reset.css.js';
 import '@/styles/global.css.js';
-
-const pretendard = localFont({
-  src: '../assets/fonts/PretendardVariable.woff2',
-  variable: '--font-pretendard',
-  weight: '100 900',
-});
 
 export const metadata = {
   title: 'Docthru',
@@ -15,7 +9,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="ko" className={pretendard.variable}>
+    <html lang="ko">
       <body>{children}</body>
     </html>
   );

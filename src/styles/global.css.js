@@ -29,5 +29,6 @@ globalStyle('html', {
 });
 
 globalStyle('body', {
-  fontFamily: 'var(--font-pretendard), -apple-system, system-ui, sans-serif',
+  fontFamily:
+    '"Pretendard Variable", Pretendard, -apple-system, system-ui, sans-serif',
 });
