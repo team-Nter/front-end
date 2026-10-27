@@ -1,0 +1,72 @@
+'use client';
+
+import { cloneElement, useEffect, useId, useRef, useState } from 'react';
+import clsx from 'clsx';
+import * as styles from './Popover.css.js';
+
+export default function Popover({
+  trigger,
+  children,
+  className,
+  align = 'left',
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const rootRef = useRef(null);
+  const panelId = useId();
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const triggerElement = rootRef.current?.firstElementChild;
+
+    const closeOutside = (event) => {
+      if (!rootRef.current?.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        triggerElement?.focus();
+      }
+    };
+
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('focusin', closeOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('focusin', closeOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [isOpen]);
+
+  const handleTriggerClick = (event) => {
+    trigger.props.onClick?.(event);
+    if (!event.defaultPrevented) {
+      setIsOpen((previous) => !previous);
+    }
+  };
+
+  return (
+    <div ref={rootRef} className={styles.root}>
+      {cloneElement(trigger, {
+        ...(trigger.type === 'button'
+          ? { type: trigger.props.type ?? 'button' }
+          : {}),
+        'aria-expanded': isOpen,
+        'aria-controls': isOpen ? panelId : undefined,
+        onClick: handleTriggerClick,
+      })}
+      {isOpen && (
+        <div
+          id={panelId}
+          className={clsx(styles.panel, styles.align[align], className)}
+        >
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
