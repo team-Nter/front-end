@@ -1,10 +1,14 @@
 import { useEditorState } from '@tiptap/react';
 
 export default function EditorToolbar({ editor }) {
+  // 중앙 정렬 이런 정렬
+  // 색 칠하기
   const active = useEditorState({
     editor,
     selector: ({ editor }) => ({
       bold: editor.isActive('bold'),
+      italic: editor.isActive('italic'),
+      underline: editor.isActive('underline'),
       heading: editor.isActive('heading', { level: 2 }),
       bulletList: editor.isActive('bulletList'),
       orderedList: editor.isActive('orderedList'),
@@ -19,6 +23,22 @@ export default function EditorToolbar({ editor }) {
         onClick={() => editor.chain().focus().toggleBold().run()}
       >
         <strong>굵게</strong>
+      </button>
+
+      <button
+        type="button"
+        aria-pressed={active.italic}
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+      >
+        <p>기울임</p>
+      </button>
+
+      <button
+        type="button"
+        aria-pressed={active.underline}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+      >
+        <p>밑줄</p>
       </button>
 
       <button
