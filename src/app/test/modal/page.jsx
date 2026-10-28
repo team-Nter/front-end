@@ -15,7 +15,7 @@ export default function ModalPreview() {
 
   if (!isOpen) return null;
   return (
-    <Modal>
+    <Modal role="dialog" aria-modal="true">
       <h2 style={{ fontSize: 18, lineHeight: '26px' }}>거절 사유</h2>
       <label style={{ display: 'grid', gap: 8 }}>
         내용
@@ -24,8 +24,6 @@ export default function ModalPreview() {
           placeholder="거절 사유를 입력해주세요"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
-          role="dialog"
-          aria-modal="true"
         />
       </label>
       <Button fullWidth onClick={onClick}>
