@@ -24,6 +24,8 @@ export default function ModalPreview() {
           placeholder="거절 사유를 입력해주세요"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
+          role="dialog"
+          aria-modal="true"
         />
       </label>
       <Button fullWidth onClick={onClick}>

@@ -7,8 +7,18 @@ import { Popover } from '@/components/common/Popover';
 import { Textarea } from '@/components/common/Textarea';
 import { useState } from 'react';
 
-export default function Home() {
+export default function Test() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selected, setSelected] = useState([]);
+
+  const onFilterChange = (event) => {
+    const { value, checked } = event.target;
+    setSelected((previous) =>
+      checked
+        ? [...previous.filter((item) => item !== value), value]
+        : previous.filter((item) => item !== value),
+    );
+  };
 
   const onPageChange = (page) => {
     setCurrentPage(page);
@@ -24,21 +34,33 @@ export default function Home() {
         <Popover trigger={<Button variant="secondary">필터</Button>}>
           <div style={{ display: 'grid', gap: 12 }}>
             <label>
-              <input type="checkbox" /> 공식 문서
+              <input
+                type="checkbox"
+                value="document"
+                checked={selected.includes('document')}
+                onChange={onFilterChange}
+              />{' '}
+              공식 문서
             </label>
             <label>
-              <input type="checkbox" /> 블로그
+              <input
+                type="checkbox"
+                value="blog"
+                checked={selected.includes('blog')}
+                onChange={onFilterChange}
+              />{' '}
+              블로그
             </label>
           </div>
         </Popover>
-        <Popover trigger={<button type="button">신청 기준 ▾</button>}>
+        <Popover trigger={<button type="button">신청 기준</button>}>
           <p>펼쳐질 내용을 여기에 넣으면 돼요.</p>
         </Popover>
       </main>
       <Pagination
         currentPage={currentPage}
         totalPage={10}
-        pageSize={5}
+        pageSize={7}
         onPageChange={onPageChange}
       />
     </div>

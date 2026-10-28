@@ -2,6 +2,7 @@ import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
 import '@/styles/reset.css.js';
 import '@/styles/global.css.js';
 import { Header } from '@/components/layout/Header';
+import { Container } from '@/components/layout/Container';
 
 export const metadata = {
   title: 'Docthru',
@@ -12,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
-        <Header />
-        {children}
+        <Container>
+          <Header />
+          {children}
+        </Container>
       </body>
     </html>
   );
