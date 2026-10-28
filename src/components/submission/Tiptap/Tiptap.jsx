@@ -2,6 +2,8 @@
 
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import { EditorToolbar } from '../EditorToolbar';
+import * as styles from './Tiptap.css.js';
 
 const Tiptap = () => {
   const editor = useEditor({
@@ -11,7 +13,12 @@ const Tiptap = () => {
   });
 
   if (!editor) return null;
-  return <EditorContent editor={editor} />;
+  return (
+    <div className={styles.container}>
+      <EditorContent editor={editor} />
+      <EditorToolbar editor={editor} />
+    </div>
+  );
 };
 
 export default Tiptap;
