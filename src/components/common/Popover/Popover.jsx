@@ -13,12 +13,13 @@ export default function Popover({
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef(null);
   const panelId = useId();
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    rootRef.current?.firstElementChild?.focus();
+  };
 
   useEffect(() => {
     if (!isOpen) return;
-
-    const triggerElement = rootRef.current?.firstElementChild;
 
     const closeOutside = (event) => {
       if (!rootRef.current?.contains(event.target)) {
@@ -29,7 +30,7 @@ export default function Popover({
     const closeOnEscape = (event) => {
       if (event.key === 'Escape') {
         setIsOpen(false);
-        triggerElement?.focus();
+        rootRef.current?.firstElementChild?.focus();
       }
     };
 
@@ -65,6 +66,8 @@ export default function Popover({
           id={panelId}
           className={clsx(styles.panel, styles.align[align], className)}
         >
+          {/* close는 렌더 중 호출하지 않고 패널 내부 이벤트 핸들러에서 사용합니다. */}
+          {/* eslint-disable-next-line react-hooks/refs -- Passing an event callback; refs are read only when close is invoked. */}
           {typeof children === 'function' ? children({ close }) : children}
         </div>
       )}

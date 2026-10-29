@@ -10,11 +10,16 @@ export default function Input({
   labelClassName,
   error,
   className,
+  'aria-describedby': describedBy,
+  'aria-invalid': ariaInvalid,
   ...restProps
 }) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const errorId = `${generatedId}-error`;
+  const descriptionIds =
+    [describedBy, error ? errorId : undefined].filter(Boolean).join(' ') ||
+    undefined;
 
   return (
     <div className={fieldStyles.field}>
@@ -27,12 +32,12 @@ export default function Input({
         </label>
       )}
       <input
+        {...restProps}
         id={inputId}
         type={type}
         className={clsx(styles.input, className)}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? errorId : undefined}
-        {...restProps}
+        aria-invalid={error ? true : (ariaInvalid ?? false)}
+        aria-describedby={descriptionIds}
       />
       {error && (
         <p id={errorId} className={fieldStyles.errorMessage}>
