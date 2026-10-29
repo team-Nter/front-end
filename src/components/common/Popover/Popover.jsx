@@ -13,6 +13,7 @@ export default function Popover({
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef(null);
   const panelId = useId();
+  const close = () => setIsOpen(false);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -64,7 +65,7 @@ export default function Popover({
           id={panelId}
           className={clsx(styles.panel, styles.align[align], className)}
         >
-          {children}
+          {typeof children === 'function' ? children({ close }) : children}
         </div>
       )}
     </div>

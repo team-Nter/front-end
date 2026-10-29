@@ -1,6 +1,30 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 
+export const field = style({
+  width: '100%',
+  minWidth: 0,
+});
+
+export const label = style({
+  display: 'block',
+  marginBottom: 8,
+  color: vars.color.gray[900],
+  fontSize: 14,
+  fontWeight: 500,
+  lineHeight: 'normal',
+});
+
+export const errorMessage = style({
+  margin: '8px 0',
+  paddingLeft: 8,
+  color: vars.color.error,
+  fontSize: 12,
+  fontWeight: 400,
+  lineHeight: '16px',
+  overflowWrap: 'anywhere',
+});
+
 export const textField = style({
   boxSizing: 'border-box',
   display: 'block',
@@ -28,5 +52,15 @@ export const textField = style({
     backgroundColor: vars.color.brand.light,
     color: vars.color.gray[400],
     cursor: 'not-allowed',
+  },
+
+  selectors: {
+    '&[aria-invalid="true"]': {
+      borderColor: vars.color.error,
+    },
+    '&[aria-invalid="true"]:focus-visible': {
+      outline: `2px solid ${vars.color.error}`,
+      outlineOffset: -1,
+    },
   },
 });

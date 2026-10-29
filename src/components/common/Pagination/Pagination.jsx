@@ -11,13 +11,13 @@ import * as styles from './Pagination.css.js';
 export default function Pagination({
   currentPage,
   totalPage,
-  pageSize = 5,
+  groupSize = 5,
   onPageChange,
   className,
 }) {
-  const groupSize = Number.isInteger(pageSize) && pageSize > 0 ? pageSize : 5;
-  const startPage = Math.floor((currentPage - 1) / groupSize) * groupSize + 1;
-  const endPage = Math.min(startPage + groupSize - 1, totalPage);
+  const safeGroupSize = Number.isInteger(groupSize) && groupSize > 0 ? groupSize : 5;
+  const startPage = Math.floor((currentPage - 1) / safeGroupSize) * safeGroupSize + 1;
+  const endPage = Math.min(startPage + safeGroupSize - 1, totalPage);
   const pages = Array.from(
     { length: Math.max(0, endPage - startPage + 1) },
     (_, index) => startPage + index,
@@ -34,7 +34,7 @@ export default function Pagination({
         className={styles.arrow}
         aria-label="이전 페이지 묶음"
         disabled={startPage <= 1}
-        onClick={() => onPageChange(Math.max(1, startPage - groupSize))}
+        onClick={() => onPageChange(Math.max(1, startPage - safeGroupSize))}
       >
         <Image
           src={startPage <= 1 ? leftDisabledIcon : leftIcon}

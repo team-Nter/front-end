@@ -17,7 +17,12 @@ export default function Header({
       <Container className={styles.inner}>
         <div className={styles.left}>
           <Link href="/" aria-label="독스루 홈" className={styles.logoLink}>
-            <Image src={logo} alt="Docthru" className={styles.logo} priority />
+            <Image
+              src={logo}
+              alt="Docthru"
+              className={styles.logo}
+              loading="eager"
+            />
           </Link>
           {children}
         </div>

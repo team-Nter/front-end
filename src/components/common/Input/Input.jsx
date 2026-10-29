@@ -1,12 +1,44 @@
 import clsx from 'clsx';
 import * as styles from './Input.css.js';
+import { useId } from 'react';
+import * as fieldStyles from '../TextField.css.js';
 
-export default function Input({ type = 'text', className, ...restProps }) {
+export default function Input({
+  type = 'text',
+  id,
+  label,
+  labelClassName,
+  error,
+  className,
+  ...restProps
+}) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${generatedId}-error`;
+
   return (
-    <input
-      type={type}
-      className={clsx(styles.input, className)}
-      {...restProps}
-    />
+    <div className={fieldStyles.field}>
+      {label && (
+        <label
+          htmlFor={inputId}
+          className={clsx(fieldStyles.label, labelClassName)}
+        >
+          {label}
+        </label>
+      )}
+      <input
+        id={inputId}
+        type={type}
+        className={clsx(styles.input, className)}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? errorId : undefined}
+        {...restProps}
+      />
+      {error && (
+        <p id={errorId} className={fieldStyles.errorMessage}>
+          {error}
+        </p>
+      )}
+    </div>
   );
 }
