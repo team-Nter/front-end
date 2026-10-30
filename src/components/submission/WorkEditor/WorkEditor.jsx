@@ -7,12 +7,16 @@ import { Tiptap } from '../Tiptap';
 import StarterKit from '@tiptap/starter-kit';
 import Input from '../Input/Input';
 import { useState } from 'react';
+import TextAlign from '@tiptap/extension-text-align';
 
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
 
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+    ],
     content: '',
     immediatelyRender: false,
   });

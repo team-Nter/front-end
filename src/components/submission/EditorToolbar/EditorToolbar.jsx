@@ -12,6 +12,9 @@ export default function EditorToolbar({ editor }) {
       heading: editor.isActive('heading', { level: 2 }),
       bulletList: editor.isActive('bulletList'),
       orderedList: editor.isActive('orderedList'),
+      alignLeft: editor.isActive({ textAlign: 'left' }),
+      alignCenter: editor.isActive({ textAlign: 'center' }),
+      alignRight: editor.isActive({ textAlign: 'right' }),
     }),
   });
 
@@ -65,6 +68,30 @@ export default function EditorToolbar({ editor }) {
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
       >
         번호 목록
+      </button>
+
+      <button
+        type="button"
+        aria-pressed={active.alignLeft}
+        onClick={() => editor.chain().focus().setTextAlign('left').run()}
+      >
+        왼쪽 정렬
+      </button>
+
+      <button
+        type="button"
+        aria-pressed={active.alignCenter}
+        onClick={() => editor.chain().focus().setTextAlign('center').run()}
+      >
+        중앙 정렬
+      </button>
+
+      <button
+        type="button"
+        aria-pressed={active.alignRight}
+        onClick={() => editor.chain().focus().setTextAlign('right').run()}
+      >
+        오른쪽 정렬
       </button>
     </div>
   );
