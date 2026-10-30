@@ -1,3 +1,11 @@
-export default function Page() {
-  return <h1>8 작업물 작성 (지우님)</h1>;
+import EditHeader from '@/components/submission/EditHeader/EditHeader';
+
+export default async function Page({ params }) {
+  const { id } = await params;
+
+  return (
+    <div>
+      <EditHeader challengeId={id} />
+    </div>
+  );
 }
