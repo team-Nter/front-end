@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Modal } from '@/components/common/Modal';
 
-export default function EditHeader({ challengeId }) {
+export default function EditHeader({ challengeId, handleSubmit }) {
   const router = useRouter();
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
@@ -29,7 +29,7 @@ export default function EditHeader({ challengeId }) {
       <Button onClick={() => setIsExitModalOpen(true)}>나가기</Button>
       {/* 임시저장 부분은 2차 MVP로 이후 기능 구현 */}
       <Button variant="secondary">임시저장</Button>
-      <Button>제출하기</Button>
+      <Button onClick={() => handleSubmit()}>제출하기</Button>
       {isExitModalOpen && (
         <Modal aria-labelledby="exit-modal-title">
           <h2 id="exit-modal-title">작성을 그만두시겠어요?</h2>

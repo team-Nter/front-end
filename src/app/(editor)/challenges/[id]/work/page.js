@@ -1,11 +1,7 @@
-import EditHeader from '@/components/submission/EditHeader/EditHeader';
+import WorkEditor from '@/components/submission/WorkEditor/WorkEditor';
 
 export default async function Page({ params }) {
   const { id } = await params;
 
-  return (
-    <div>
-      <EditHeader challengeId={id} />
-    </div>
-  );
+  return <WorkEditor id={id} />;
 }
