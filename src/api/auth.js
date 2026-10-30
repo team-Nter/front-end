@@ -21,10 +21,39 @@ async function authRequest({ path, method = 'POST', body, errorMessage } = {}) {
   return await res.json();
 }
 
+export async function signup(body) {
+  return authRequest({
+    path: '/auth/signup',
+    body,
+    errorMessage: '회원가입 과정에서 문제가 발생했습니다.',
+  });
+}
+// {
+//   "email": "test@example.com",
+//   "nickname": "번역하는개발자11",
+//   "password": "test1234"
+// }
+
+export async function login(body) {
+  return authRequest({
+    path: '/auth/login',
+    body,
+    errorMessage: '로그인 중 문제가 발생했습니다.',
+  });
+}
+// body: { email: example@email.com, password: test1234 }
+
 export async function me() {
   return authRequest({
     path: '/auth/me',
     method: 'GET',
     errorMessage: '사용자 정보 조회에 문제가 발생했습니다.',
+  });
+}
+
+export async function logout() {
+  return authRequest({
+    path: '/auth/logout',
+    errorMessage: '로그아웃 중 문제가 발생했습니다.',
   });
 }
