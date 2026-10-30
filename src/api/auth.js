@@ -44,11 +44,16 @@ export async function login(body) {
 // body: { email: example@email.com, password: test1234 }
 
 export async function me() {
-  return authRequest({
-    path: '/auth/me',
-    method: 'GET',
-    errorMessage: '사용자 정보 조회에 문제가 발생했습니다.',
-  });
+  try {
+    return await authRequest({
+      path: '/auth/me',
+      method: 'GET',
+      errorMessage: '사용자 정보 조회에 문제가 발생했습니다.',
+    });
+  } catch (error) {
+    if (error.status === 401) return null; // 비로그인은 에러가 아니라 정상 결과
+    throw error;
+  }
 }
 
 export async function logout() {
