@@ -6,14 +6,18 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import AuthProvider from './auth.provider';
+import { useState } from 'react';
 
 function makeQueryClient() {
   return new QueryClient({
     defaultOptions: {
-      // staleTime, gcTime 임의로 정한 값입니다. 적절한 값으로 수정해주세요.
-      staleTime: 5 * 60 * 1000, // 5분
-      gcTime: 10 * 60 * 1000, // 10분
-      refetchOnWindowFocus: false,
+      queries: {
+        // staleTime, gcTime 임의로 정한 값입니다
+        staleTime: 5 * 60 * 1000, // 5분
+        gcTime: 10 * 60 * 1000, // 10분
+        refetchOnWindowFocus: false,
+      },
     },
   });
 }
@@ -33,11 +37,11 @@ function getQueryClient() {
 }
 
 export function AppProviders({ children }) {
-  const queryClient = getQueryClient();
+  const [queryClient] = useState(() => getQueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <AuthProvider>{children}</AuthProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
