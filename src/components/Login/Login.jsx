@@ -61,7 +61,7 @@ export default function Login() {
         <Input
           type="email"
           id="email"
-          label="email"
+          label="이메일"
           error={errors.email}
           placeholder="이메일을 입력해주세요"
           value={email}
@@ -70,7 +70,7 @@ export default function Login() {
         <Input
           type="password"
           id="password"
-          label="password"
+          label="비밀번호"
           error={errors.password}
           placeholder="비밀번호을 입력해주세요"
           value={password}
