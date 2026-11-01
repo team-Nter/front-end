@@ -72,7 +72,7 @@ export default function Login() {
           id="password"
           label="password"
           error={errors.password}
-          placeholder="이메일을 입력해주세요"
+          placeholder="비밀번호을 입력해주세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
