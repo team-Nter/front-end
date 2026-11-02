@@ -43,13 +43,14 @@ export default function Login() {
 
   if (isPending || user) return null;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const nextErrors = validateLogin({ email, password });
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) return;
+    const trimmedEmail = email.trim();
+    const validationErrors = validateLogin({ email: trimmedEmail, password });
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
 
-    loginMutation.mutate({ email, password });
+    loginMutation.mutate({ email: trimmedEmail, password });
   };
 
   return (
@@ -83,7 +84,7 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type="submit" disabled={loginMutation.isPending}>
-          로그인
+          {loginMutation.isPending ? '로그인 중...' : '로그인'}
         </Button>
       </form>
     </main>
