@@ -7,7 +7,6 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AuthProvider from './auth.provider';
-import { useState } from 'react';
 
 function makeQueryClient() {
   return new QueryClient({
@@ -37,7 +36,7 @@ function getQueryClient() {
 }
 
 export function AppProviders({ children }) {
-  const [queryClient] = useState(() => getQueryClient());
+  const queryClient = getQueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
