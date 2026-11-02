@@ -58,7 +58,11 @@ export default function EditHeader({ challengeId, handleSubmit }) {
         </div>
       </header>
       {isExitModalOpen && (
-        <Modal className={styles.modal} aria-labelledby="exit-modal-title">
+        <Modal
+          className={styles.modal}
+          aria-labelledby="exit-modal-title"
+          onClose={closeExitModal}
+        >
           <h2 className={styles.modalTitle} id="exit-modal-title">
             작성을 그만두시겠어요?
           </h2>
