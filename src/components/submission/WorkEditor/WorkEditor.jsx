@@ -12,11 +12,13 @@ import { BackgroundColor, TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import CodeBlockComponent from '../CodeBlockComponent/CodeblockComponent';
 import { common, createLowlight } from 'lowlight';
+import { useRouter } from 'next/navigation';
 
 const lowlight = createLowlight(common);
 
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
+  const router = useRouter();
 
   const editor = useEditor({
     extensions: [
@@ -50,6 +52,7 @@ export default function WorkEditor({ id }) {
 
     console.log('title', title);
     console.log('content', content);
+    router.push(`/submissions/${id}`);
   };
 
   return (
