@@ -5,13 +5,17 @@ import { EditorToolbar } from '../EditorToolbar';
 import * as styles from './Tiptap.css';
 
 function EditorBody({ editor }) {
-  const isEmpty = useEditorState({
+  const { isEmpty, inCodeBlock } = useEditorState({
     editor,
-    selector: ({ editor }) => editor.isEmpty,
+    selector: ({ editor }) => ({
+      isEmpty: editor.isEmpty,
+      inCodeBlock: editor.isActive('codeBlock'),
+    }),
   });
+
   return (
     <div className={styles.body}>
-      {isEmpty && (
+      {isEmpty && !inCodeBlock && (
         <span className={styles.placeholder} aria-hidden="true">
           번역 내용을 적어주세요
         </span>
