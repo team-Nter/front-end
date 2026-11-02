@@ -9,3 +9,59 @@ export async function getSubmission(submissionId) {
 
   return response.json();
 }
+
+export async function getSubmissions(challengeId, page = 1, pageSize = 10) {
+  const response = await fetch(
+    `${API_BASE_URL}/challenges/${challengeId}/submissions?page=${page}&pageSize=${pageSize}`,
+  );
+
+  if (!response.ok) {
+    throw new Error('작업 목록을 찾을 수 없습니다');
+  }
+
+  return response.json();
+}
+
+export async function createSubmission(challengeId, data) {
+  const response = await fetch(
+    `${API_BASE_URL}/challenges/${challengeId}/submissions`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error('작업물을 생성할 수 없습니다.');
+  }
+
+  return response.json();
+}
+
+export async function updateSubmission(submissionId, data) {
+  const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`, {
+    method: 'PATCH',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error('작업물을 수정할 수 없습니다');
+  }
+
+  return response.json();
+}
+
+export async function deleteSubmission(submissionId) {
+  const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error('작업물을 삭제할 수 없습니다');
+  }
+}
