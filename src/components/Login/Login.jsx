@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { validateLogin } from '@/utils/validators/validateLogin';
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 import { useState } from 'react';
+import { Modal } from '../common/Modal';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,8 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const queryClient = useQueryClient();
 
-  const { isLoggedIn, isFetching } = useRedirectIfLoggedIn();
+  const { isLoggedIn, isPending, isFetching, isError, refetch } =
+    useRedirectIfLoggedIn();
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -35,7 +37,7 @@ export default function Login() {
     },
   });
 
-  if (isFetching || isLoggedIn) return null;
+  if (isPending || isLoggedIn) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,6 +48,18 @@ export default function Login() {
 
     loginMutation.mutate({ email: trimmedEmail, password });
   };
+
+  if (isError) {
+    return (
+      <Modal aria-labelledby="retry-title">
+        <p id="retry-title">사용자 확인이 늦어지고 있어요.</p>
+        <button type="button" onClick={() => refetch()} disabled={isFetching}>
+          {isFetching ? '확인 중...' : '다시 시도'}
+        </button>
+        <Link href="/">랜딩 페이지로 이동</Link>
+      </Modal>
+    );
+  }
 
   return (
     <main>

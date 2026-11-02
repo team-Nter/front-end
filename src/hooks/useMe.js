@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 export function useMe(options) {
   return useQuery({
     queryKey: queryKeys.users.info(),
-    queryFn: me,
+    queryFn: ({ signal }) => me({ signal }),
     retry: false,
     staleTime: Infinity,
     ...options,
