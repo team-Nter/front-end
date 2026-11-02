@@ -4,35 +4,21 @@ import { login } from '@/api/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
 import { queryKeys } from '@/constants/query-keys';
-import { useMe } from '@/hooks/useMe';
 import logo from '@/assets/images/logo.svg';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 import { validateLogin } from '@/utils/validators/validateLogin';
+import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
+import { useState } from 'react';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-
-  const router = useRouter();
   const queryClient = useQueryClient();
-  const {
-    data: user,
-    isFetching,
-    isSuccess,
-  } = useMe({ refetchOnMount: 'always' });
 
-  const isLoggedIn = isSuccess && user;
-
-  useEffect(() => {
-    if (!isFetching && isLoggedIn) {
-      router.replace('/');
-    }
-  }, [router, isFetching, isLoggedIn]);
+  const { isLoggedIn, isFetching } = useRedirectIfLoggedIn();
 
   const loginMutation = useMutation({
     mutationFn: login,
