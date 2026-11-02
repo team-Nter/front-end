@@ -66,7 +66,10 @@ export default function Login() {
           error={errors.email}
           placeholder="이메일을 입력해주세요"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrors((prev) => ({ ...prev, email: '' }));
+          }}
         />
         <Input
           type="password"
@@ -75,7 +78,10 @@ export default function Login() {
           error={errors.password}
           placeholder="비밀번호를 입력해주세요"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setErrors((prev) => ({ ...prev, password: '' }));
+          }}
         />
         <Button type="submit" disabled={loginMutation.isPending}>
           {loginMutation.isPending ? '로그인 중...' : '로그인'}
