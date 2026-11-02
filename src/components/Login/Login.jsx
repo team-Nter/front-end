@@ -26,13 +26,13 @@ export default function Login() {
     isSuccess,
   } = useMe({ refetchOnMount: 'always' });
 
-  const shouldRedirect = !isFetching && isSuccess && user;
+  const isLoggedIn = isSuccess && user;
 
   useEffect(() => {
-    if (shouldRedirect) {
+    if (!isFetching && isLoggedIn) {
       router.replace('/');
     }
-  }, [router, shouldRedirect]);
+  }, [router, isFetching, isLoggedIn]);
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -49,7 +49,7 @@ export default function Login() {
     },
   });
 
-  if (isFetching || shouldRedirect) return null;
+  if (isFetching || isLoggedIn) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
