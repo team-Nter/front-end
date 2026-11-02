@@ -42,7 +42,7 @@ export function AppProviders({ children }) {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>{children}</AuthProvider>
-      {children}
+
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );

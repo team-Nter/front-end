@@ -13,13 +13,15 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import CodeBlockComponent from '../CodeBlockComponent/CodeblockComponent';
 import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
+import { useCreateSubmission } from '@/hooks/useSubmissions';
 
 const lowlight = createLowlight(common);
 
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
   const router = useRouter();
-
+  const { mutate, isPending, isError } = useCreateSubmission(id);
+  const participationId = 221;
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
@@ -52,8 +54,28 @@ export default function WorkEditor({ id }) {
 
     console.log('title', title);
     console.log('content', content);
-    router.push(`/submissions/${id}`);
+    console.log(id);
+
+    mutate(
+      {
+        participationId,
+        title,
+        content,
+      },
+      {
+        onSuccess: (submission) => {
+          router.push(`/submissions/${submission.id}`);
+        },
+      },
+    );
   };
+
+  if (isPending) {
+    <p>로딩 중...</p>;
+  }
+  if (isError) {
+    <p>{error.message}</p>;
+  }
 
   return (
     <main className={styles.page}>

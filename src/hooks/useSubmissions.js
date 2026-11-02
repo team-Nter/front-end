@@ -1,8 +1,12 @@
 'use client';
 
-import { getSubmission, getSubmissions } from '@/api/submissions';
+import {
+  createSubmission,
+  getSubmission,
+  getSubmissions,
+} from '@/api/submissions';
 import { queryKeys } from '@/constants/query-keys';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 export function useSubmission(submissionId) {
   return useQuery({
@@ -17,5 +21,11 @@ export function useSubmissions({ challengeId, page, pageSize }) {
     queryKey: queryKeys.submissions.list(challengeId, page, pageSize),
     queryFn: () => getSubmissions(challengeId, page, pageSize),
     enabled: Boolean(challengeId),
+  });
+}
+
+export function useCreateSubmission(challengeId) {
+  return useMutation({
+    mutationFn: (data) => createSubmission(challengeId, data),
   });
 }
