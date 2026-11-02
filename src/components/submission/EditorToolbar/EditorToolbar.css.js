@@ -28,6 +28,10 @@ export const iconButton = style({
     '&[aria-expanded="true"]': { backgroundColor: vars.color.brand.gold },
   },
 });
+export const codeButton = style([
+  iconButton,
+  { width: 'auto', paddingInline: 8, fontSize: 13, fontWeight: 600 },
+]);
 export const panel = style({
   display: 'flex',
   flexDirection: 'column',

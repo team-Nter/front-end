@@ -10,6 +10,7 @@ import leftIcon from '@/assets/icons/editor-alignment-left.svg';
 import bulletIcon from '@/assets/icons/editor-bullet.svg';
 import numberingIcon from '@/assets/icons/editor-numbering.svg';
 import coloringIcon from '@/assets/icons/editor-coloring.svg';
+import codeIcon from '@/assets/icons/editor-code.svg';
 import * as styles from './EditorToolbar.css';
 
 function ToolButton({ label, icon, active, onClick }) {
@@ -42,6 +43,7 @@ export default function EditorToolbar({ editor }) {
       alignCenter: editor.isActive({ textAlign: 'center' }),
       alignRight: editor.isActive({ textAlign: 'right' }),
       color: editor.getAttributes('textStyle').backgroundColor,
+      codeBlock: editor.isActive('codeBlock'),
     }),
   });
 
@@ -100,6 +102,16 @@ export default function EditorToolbar({ editor }) {
           active={active.orderedList}
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
         />
+      </div>
+      <div className={styles.group}>
+        <ToolButton
+          label="코드 블록"
+          icon={codeIcon}
+          active={active.codeBlock}
+          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+        >
+          코드
+        </ToolButton>
       </div>
       <Popover
         align="right"

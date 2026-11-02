@@ -1,6 +1,6 @@
 'use client';
 
-import { useEditor } from '@tiptap/react';
+import { ReactNodeViewRenderer, useEditor } from '@tiptap/react';
 import EditHeader from '../EditHeader/EditHeader';
 import { Tiptap } from '../Tiptap';
 import StarterKit from '@tiptap/starter-kit';
@@ -9,16 +9,31 @@ import { useState } from 'react';
 import * as styles from './WorkEditor.css';
 import TextAlign from '@tiptap/extension-text-align';
 import { BackgroundColor, TextStyle } from '@tiptap/extension-text-style';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import CodeBlockComponent from '../CodeBlockComponent/CodeblockComponent';
+import { common, createLowlight } from 'lowlight';
+
+const lowlight = createLowlight(common);
 
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({ codeBlock: false }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
       BackgroundColor,
+      CodeBlockLowlight.extend({
+        addNodeView() {
+          return ReactNodeViewRenderer(CodeBlockComponent);
+        },
+      }).configure({
+        lowlight,
+        defaultLanguage: null,
+        enableTabIndentation: true,
+        tabSize: 2,
+      }),
     ],
     content: '',
     immediatelyRender: false,

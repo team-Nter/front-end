@@ -39,4 +39,41 @@ globalStyle(`${body} .tiptap pre`, {
   padding: 16,
   borderRadius: 8,
   overflowX: 'auto',
+  color: '#24292f',
+  fontFamily:
+    'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+  fontSize: 14,
+  lineHeight: 1.7,
+  whiteSpace: 'pre',
+  overflowWrap: 'normal',
+  tabSize: 2,
 });
+
+globalStyle(`${body} .tiptap pre code`, {
+  font: 'inherit',
+  background: 'transparent',
+  padding: 0,
+});
+
+const syntaxColors = {
+  'keyword, selector-tag, deletion': '#cf222e',
+  'string, regexp, addition': '#116329',
+  'comment, quote': '#6e7781',
+  'number, literal, built_in, type, attr, attribute': '#0550ae',
+  'title, section, selector-id, selector-class': '#8250df',
+  'name, tag': '#116329',
+  'variable, template-variable, symbol, bullet, meta': '#953800',
+};
+
+for (const [tokens, color] of Object.entries(syntaxColors)) {
+  globalStyle(
+    tokens
+      .split(', ')
+      .map((token) => `${body} .tiptap pre .hljs-${token}`)
+      .join(', '),
+    { color },
+  );
+}
+
+globalStyle(`${body} .tiptap pre .hljs-emphasis`, { fontStyle: 'italic' });
+globalStyle(`${body} .tiptap pre .hljs-strong`, { fontWeight: 700 });
