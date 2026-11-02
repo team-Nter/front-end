@@ -7,6 +7,9 @@ import logo from '@/assets/images/logo.svg';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Modal } from '@/components/common/Modal';
+import outIcon from '@/assets/icons/dereliction.svg';
+import clsx from 'clsx';
+import * as styles from './EditHeader.css';
 
 export default function EditHeader({ challengeId, handleSubmit }) {
   const router = useRouter();
@@ -22,25 +25,55 @@ export default function EditHeader({ challengeId, handleSubmit }) {
     router.push(`/challenges/${challengeId}`);
   };
   return (
-    <div>
-      <Link href="/" aria-label="독스루 홈">
-        <Image src={logo} alt="Docthru" loading="eager" />
-      </Link>
-      <Button onClick={() => setIsExitModalOpen(true)}>나가기</Button>
-      {/* 임시저장 부분은 2차 MVP로 이후 기능 구현 */}
-      <Button variant="secondary">임시저장</Button>
-      <Button onClick={() => handleSubmit()}>제출하기</Button>
-      {isExitModalOpen && (
-        <Modal aria-labelledby="exit-modal-title">
-          <h2 id="exit-modal-title">작성을 그만두시겠어요?</h2>
-          <p>저장하지 않은 내용은 사라질 수 있어요.</p>
-
-          <Button variant="secondary" onClick={closeExitModal}>
-            취소
+    <>
+      <header className={styles.header}>
+        <Link href="/" aria-label="독스루 홈">
+          <Image
+            className={styles.logo}
+            src={logo}
+            alt="Docthru"
+            loading="eager"
+          />
+        </Link>
+        <div className={styles.actions}>
+          <Button
+            className={clsx(styles.action, styles.exit)}
+            aria-label="나가기"
+            onClick={() => setIsExitModalOpen(true)}
+          >
+            <span className={styles.exitText}>나가기</span>
+            <Image className={styles.exitIcon} src={outIcon} alt="" />
           </Button>
-          <Button onClick={handleExit}>확인</Button>
+          {/* 임시저장 부분은 2차 MVP로 이후 기능 구현 */}
+          <Button
+            className={clsx(styles.action, styles.save)}
+            variant="secondary"
+            title="임시저장은 준비 중입니다"
+          >
+            임시저장
+          </Button>
+          <Button className={styles.action} onClick={handleSubmit}>
+            제출하기
+          </Button>
+        </div>
+      </header>
+      {isExitModalOpen && (
+        <Modal className={styles.modal} aria-labelledby="exit-modal-title">
+          <h2 className={styles.modalTitle} id="exit-modal-title">
+            작성을 그만두시겠어요?
+          </h2>
+          <p className={styles.modalDescription}>
+            저장하지 않은 내용은 사라질 수 있어요.
+          </p>
+
+          <div className={styles.modalActions}>
+            <Button variant="secondary" onClick={closeExitModal}>
+              취소
+            </Button>
+            <Button onClick={handleExit}>확인</Button>
+          </div>
         </Modal>
       )}
-    </div>
+    </>
   );
 }
