@@ -1,8 +1,8 @@
-import { BASE_URL } from '@/constants/api';
+import { API_BASE_URL } from '@/constants/api';
 
 async function authRequest({ path, method = 'POST', body, errorMessage } = {}) {
   const hasBody = body && Object.keys(body).length !== 0;
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${API_BASE_URL}${path}`, {
     method,
     headers: hasBody ? { 'Content-Type': 'application/json' } : undefined,
     body: hasBody ? JSON.stringify(body) : undefined,
