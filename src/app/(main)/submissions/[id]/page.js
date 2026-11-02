@@ -1,3 +1,19 @@
+'use client';
+
+import { useSubmission } from '@/hooks/useSubmissions';
+import { useParams } from 'next/navigation';
+
 export default function Page() {
-  return <h1>7 + 14 작업물 상세 (지우님)</h1>;
+  const { id } = useParams();
+
+  const { data, isPending, isError, error } = useSubmission(id);
+  if (isPending) {
+    return <p>불러오는 중...</p>;
+  }
+  if (isError) {
+    return <p>{error.message}</p>;
+  }
+
+  console.log(data);
+  return <h1>내 파트</h1>;
 }
