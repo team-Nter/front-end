@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_TEST_API_URL;
+import { BASE_URL } from '@/constants/api';
 
 async function authRequest({ path, method = 'POST', body, errorMessage } = {}) {
   const hasBody = body && Object.keys(body).length !== 0;
