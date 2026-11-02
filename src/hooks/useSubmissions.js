@@ -6,13 +6,12 @@ import {
   getSubmissions,
 } from '@/api/submissions';
 import { queryKeys } from '@/constants/query-keys';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export function useSubmission(submissionId) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: queryKeys.submissions.detail(submissionId),
     queryFn: () => getSubmission(submissionId),
-    enabled: Boolean(submissionId),
   });
 }
 

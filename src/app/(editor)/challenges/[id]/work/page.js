@@ -1,6 +1,6 @@
 'use client';
 
-import WorkEditor from '@/components/submission/WorkEditor/WorkEditor';
+import WorkEditor from '@/components/Editor/WorkEditor/WorkEditor';
 import { useParams } from 'next/navigation';
 
 export default function Page() {
