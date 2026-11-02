@@ -20,11 +20,19 @@ export default function Login() {
 
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { data: user, isPending } = useMe();
+  const {
+    data: user,
+    isFetching,
+    isSuccess,
+  } = useMe({ refetchOnMount: 'always' });
+
+  const shouldRedirect = !isFetching && isSuccess && user;
 
   useEffect(() => {
-    if (user) router.replace('/');
-  }, [user, router]);
+    if (shouldRedirect) {
+      router.replace('/');
+    }
+  }, [router, shouldRedirect]);
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -41,7 +49,7 @@ export default function Login() {
     },
   });
 
-  if (isPending || user) return null;
+  if (isFetching || shouldRedirect) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
