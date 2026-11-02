@@ -55,7 +55,13 @@ export default function Login() {
   return (
     <main>
       <Link href="/">
-        <Image src={logo} alt="" width={289} height={72} loading="eager" />
+        <Image
+          src={logo}
+          alt="독스루 로고"
+          width={289}
+          height={72}
+          loading="eager"
+        />
       </Link>
       <form onSubmit={handleSubmit} noValidate>
         <Input
@@ -72,7 +78,7 @@ export default function Login() {
           id="password"
           label="비밀번호"
           error={errors.password}
-          placeholder="비밀번호을 입력해주세요"
+          placeholder="비밀번호를 입력해주세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
