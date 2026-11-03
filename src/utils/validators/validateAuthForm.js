@@ -6,8 +6,9 @@ const NICKNAME_MAX_LENGTH = 16;
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_MAX_LENGTH = 24;
 
-const hasLetterAndDigit = (value) =>
-  HAS_LETTER.test(value) && HAS_DIGIT.test(value);
+const hasLetterAndDigit = (value) => {
+  return HAS_LETTER.test(value) && HAS_DIGIT.test(value);
+};
 
 function validateEmail(email) {
   if (!email) {
@@ -25,12 +26,11 @@ function validateSignupPassword(password) {
   if (password.trim() === '') {
     return '비밀번호를 입력해주세요.';
   } else if (
-    !password &&
-    (password.length < PASSWORD_MIN_LENGTH ||
-      password.length > PASSWORD_MAX_LENGTH)
+    password.length < PASSWORD_MIN_LENGTH ||
+    password.length > PASSWORD_MAX_LENGTH
   ) {
     return `비밀번호는 ${PASSWORD_MIN_LENGTH}자 이상 ${PASSWORD_MAX_LENGTH}자 이하로 작성해주세요.`;
-  } else if (!password && !hasLetterAndDigit(password)) {
+  } else if (!hasLetterAndDigit(password)) {
     return '비밀번호는 영문과 숫자를 모두 포함해야 합니다.';
   }
 }
@@ -44,7 +44,7 @@ function validateNickname(nickname) {
     return `닉네임은 ${NICKNAME_MIN_LENGTH}자 이상 ${NICKNAME_MAX_LENGTH}자 이하로 작성해주세요.`;
   }
 }
-function validatePasswordConfirmation(password) {
+function validatePasswordConfirmation(password, passwordConfirmation) {
   if (passwordConfirmation.trim() === '') {
     return '비밀번호 확인을 입력해주세요.';
   } else if (password !== passwordConfirmation) {
@@ -77,6 +77,9 @@ export function validateSignup({
     email: validateEmail(email),
     nickname: validateNickname(nickname),
     password: validateSignupPassword(password),
-    passwordConfirmation: validatePasswordConfirmation(passwordConfirmation),
+    passwordConfirmation: validatePasswordConfirmation(
+      password,
+      passwordConfirmation,
+    ),
   });
 }
