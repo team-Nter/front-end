@@ -11,7 +11,6 @@ export function useRedirectIfLoggedIn() {
     data: user,
     isPending,
     isFetching,
-    isSuccess,
     isError,
     refetch,
     isPaused,
@@ -21,7 +20,7 @@ export function useRedirectIfLoggedIn() {
     retry: 3,
   });
 
-  const isLoggedIn = isSuccess && !!user;
+  const isLoggedIn = !!user;
 
   useEffect(() => {
     if (!isFetching && isLoggedIn) {
