@@ -8,7 +8,7 @@ import logo from '@/assets/images/logo.svg';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { validateLogin } from '@/utils/validators/validateLogin';
+import { validateLogin } from '@/utils/validators/validateAuthForm';
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 import { useState } from 'react';
 import { Modal } from '../common/Modal';
@@ -55,7 +55,10 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedEmail = email.trim();
-    const validationErrors = validateLogin({ email: trimmedEmail, password });
+    const validationErrors = validateLogin({
+      email: trimmedEmail,
+      password,
+    });
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
 
@@ -116,6 +119,10 @@ export default function Login() {
             {loginMutation.isPending ? '로그인 중...' : '로그인'}
           </Button>
         </form>
+        <div>
+          <p>회원이 아니신가요?</p>
+          <Link href="/signup">회원가입하기</Link>
+        </div>
       </main>
     </>
   );
