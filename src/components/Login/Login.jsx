@@ -40,10 +40,7 @@ export default function Login() {
   if (isLoggedIn) return null;
   if (isPending && isPaused)
     return (
-      <div>
-        <p>오프라인 상태입니다.</p>
-        <Link href="/">홈으로 이동</Link>
-      </div>
+      <p>오프라인 상태예요. 네트워크 연결이 복구되면 다시 시도해 주세요.</p>
     );
   if (isPending) return null;
 
