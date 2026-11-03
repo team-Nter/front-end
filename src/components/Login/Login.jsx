@@ -19,8 +19,15 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const queryClient = useQueryClient();
 
-  const { isLoggedIn, isPending, isFetching, isError, refetch, isPaused } =
-    useRedirectIfLoggedIn();
+  const {
+    user,
+    isLoggedIn,
+    isPending,
+    isFetching,
+    isError,
+    refetch,
+    isPaused,
+  } = useRedirectIfLoggedIn();
 
   const loginMutation = useMutation({
     mutationFn: login,
@@ -55,7 +62,7 @@ export default function Login() {
     loginMutation.mutate({ email: trimmedEmail, password });
   };
 
-  if (isError) {
+  if (isError && user === undefined) {
     return (
       <Modal aria-labelledby="retry-title">
         <p id="retry-title">사용자 확인이 늦어지고 있어요.</p>
@@ -68,45 +75,48 @@ export default function Login() {
   }
 
   return (
-    <main>
-      <Link href="/">
-        <Image
-          src={logo}
-          alt="독스루 로고"
-          width={289}
-          height={72}
-          loading="eager"
-        />
-      </Link>
-      <form onSubmit={handleSubmit} noValidate>
-        <Input
-          type="email"
-          id="email"
-          label="이메일"
-          error={errors.email}
-          placeholder="이메일을 입력해주세요"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((prev) => ({ ...prev, email: '' }));
-          }}
-        />
-        <Input
-          type="password"
-          id="password"
-          label="비밀번호"
-          error={errors.password}
-          placeholder="비밀번호를 입력해주세요"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors((prev) => ({ ...prev, password: '' }));
-          }}
-        />
-        <Button type="submit" disabled={loginMutation.isPending}>
-          {loginMutation.isPending ? '로그인 중...' : '로그인'}
-        </Button>
-      </form>
-    </main>
+    <>
+      {isError && <p>연결이 불안정합니다. 잠시 후 다시 시도해 주세요.</p>}
+      <main>
+        <Link href="/">
+          <Image
+            src={logo}
+            alt="독스루 로고"
+            width={289}
+            height={72}
+            loading="eager"
+          />
+        </Link>
+        <form onSubmit={handleSubmit} noValidate>
+          <Input
+            type="email"
+            id="email"
+            label="이메일"
+            error={errors.email}
+            placeholder="이메일을 입력해주세요"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prev) => ({ ...prev, email: '' }));
+            }}
+          />
+          <Input
+            type="password"
+            id="password"
+            label="비밀번호"
+            error={errors.password}
+            placeholder="비밀번호를 입력해주세요"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors((prev) => ({ ...prev, password: '' }));
+            }}
+          />
+          <Button type="submit" disabled={loginMutation.isPending}>
+            {loginMutation.isPending ? '로그인 중...' : '로그인'}
+          </Button>
+        </form>
+      </main>
+    </>
   );
 }

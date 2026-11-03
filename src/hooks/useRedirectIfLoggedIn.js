@@ -29,5 +29,13 @@ export function useRedirectIfLoggedIn() {
     }
   }, [router, isFetching, isLoggedIn]);
 
-  return { isLoggedIn, isPending, isFetching, isError, refetch, isPaused };
+  return {
+    user,
+    isLoggedIn,
+    isPending,
+    isFetching,
+    isError,
+    refetch,
+    isPaused,
+  };
 }
