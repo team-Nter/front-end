@@ -24,7 +24,8 @@ export default function Login() {
 
   const loginMutation = useMutation({
     mutationFn: login,
-    onSuccess: (loginResponse) => {
+    onSuccess: async (loginResponse) => {
+      await queryClient.cancelQueries({ queryKey: queryKeys.users.info() });
       queryClient.setQueryData(queryKeys.users.info(), loginResponse);
     },
     onError: (error) => {
