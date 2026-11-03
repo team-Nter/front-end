@@ -14,6 +14,7 @@ export function useRedirectIfLoggedIn() {
     isSuccess,
     isError,
     refetch,
+    isPaused,
   } = useMe({ refetchOnMount: 'always', retry: 3 });
 
   const isLoggedIn = isSuccess && !!user;
@@ -24,5 +25,5 @@ export function useRedirectIfLoggedIn() {
     }
   }, [router, isFetching, isLoggedIn]);
 
-  return { isLoggedIn, isPending, isFetching, isError, refetch };
+  return { isLoggedIn, isPending, isFetching, isError, refetch, isPaused };
 }

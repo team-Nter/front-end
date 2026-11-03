@@ -19,7 +19,7 @@ export default function Login() {
   const [errors, setErrors] = useState({});
   const queryClient = useQueryClient();
 
-  const { isLoggedIn, isPending, isFetching, isError, refetch } =
+  const { isLoggedIn, isPending, isFetching, isError, refetch, isPaused } =
     useRedirectIfLoggedIn();
 
   const loginMutation = useMutation({
@@ -37,7 +37,15 @@ export default function Login() {
     },
   });
 
-  if (isPending || isLoggedIn) return null;
+  if (isLoggedIn) return null;
+  if (isPending && isPaused)
+    return (
+      <div>
+        <p>오프라인 상태입니다.</p>
+        <Link href="/">홈으로 이동</Link>
+      </div>
+    );
+  if (isPending) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,7 +64,7 @@ export default function Login() {
         <button type="button" onClick={() => refetch()} disabled={isFetching}>
           {isFetching ? '확인 중...' : '다시 시도'}
         </button>
-        <Link href="/">랜딩 페이지로 이동</Link>
+        <Link href="/">홈으로 이동</Link>
       </Modal>
     );
   }
