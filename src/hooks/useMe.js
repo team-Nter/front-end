@@ -10,6 +10,7 @@ export function useMe(options) {
     queryFn: ({ signal }) => me({ signal }),
     retry: false,
     staleTime: Infinity,
+    refetchOnWindowFocus: 'always',
     ...options,
   });
 }
