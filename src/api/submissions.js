@@ -4,7 +4,9 @@ export async function getSubmission(submissionId) {
   const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`);
 
   if (!response.ok) {
-    throw new Error('해당 작업물을 불러오지 못했습니다.');
+    const error = new Error('작업물을 불러오지 못했습니다.');
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();
@@ -16,7 +18,9 @@ export async function getSubmissions(challengeId, page = 1, pageSize = 10) {
   );
 
   if (!response.ok) {
-    throw new Error('작업 목록을 찾을 수 없습니다');
+    const error = new Error('작업물을 불러오지 못했습니다.');
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();
@@ -34,7 +38,9 @@ export async function createSubmission(challengeId, data) {
   );
 
   if (!response.ok) {
-    throw new Error('작업물을 생성할 수 없습니다.');
+    const error = new Error('작업물을 불러오지 못했습니다.');
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();
@@ -49,7 +55,9 @@ export async function updateSubmission(submissionId, data) {
   });
 
   if (!response.ok) {
-    throw new Error('작업물을 수정할 수 없습니다');
+    const error = new Error('작업물을 불러오지 못했습니다.');
+    error.status = response.status;
+    throw error;
   }
 
   return response.json();
@@ -62,6 +70,8 @@ export async function deleteSubmission(submissionId) {
   });
 
   if (!response.ok) {
-    throw new Error('작업물을 삭제할 수 없습니다');
+    const error = new Error('작업물을 불러오지 못했습니다.');
+    error.status = response.status;
+    throw error;
   }
 }

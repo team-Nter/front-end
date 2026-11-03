@@ -1,15 +1,19 @@
 'use client';
 
 import { SubmissionDetail } from '@/components/Submission/SubmissionDetail/SubmissionDetail.jsx';
+import { SubmissionError } from '@/components/Submission/SubmissionError';
+import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { useParams } from 'next/navigation';
-import { Suspense } from 'react';
 
 export default function Page() {
   const { id } = useParams();
-
   return (
-    <Suspense fallback={<p>작업물을 불러오는 중...</p>}>
+    <QueryBoundary
+      resetKeys={[id]}
+      loadingFallback={<p>작업물을 불러오는 중...</p>}
+      errorFallback={(props) => <SubmissionError {...props} />}
+    >
       <SubmissionDetail submissionId={id} />
-    </Suspense>
+    </QueryBoundary>
   );
 }
