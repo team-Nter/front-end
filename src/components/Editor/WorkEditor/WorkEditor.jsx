@@ -21,7 +21,7 @@ export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
   const router = useRouter();
   const { mutate, isPending, isError } = useCreateSubmission(id);
-  const participationId = 221;
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
@@ -58,7 +58,6 @@ export default function WorkEditor({ id }) {
 
     mutate(
       {
-        participationId,
         title,
         content,
       },
