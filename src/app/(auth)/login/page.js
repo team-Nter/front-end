@@ -1,3 +1,7 @@
-export default function Page() {
-  return <h1>3 로그인 (하경님)</h1>;
+'use client';
+
+import { Login } from '@/components/Login';
+
+export default function LoginPage() {
+  return <Login />;
 }
