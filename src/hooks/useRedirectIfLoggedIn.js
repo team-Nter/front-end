@@ -15,7 +15,11 @@ export function useRedirectIfLoggedIn() {
     isError,
     refetch,
     isPaused,
-  } = useMe({ refetchOnMount: 'always', retry: 3 });
+  } = useMe({
+    refetchOnWindowFocus: 'always',
+    refetchOnMount: 'always',
+    retry: 3,
+  });
 
   const isLoggedIn = isSuccess && !!user;
 
