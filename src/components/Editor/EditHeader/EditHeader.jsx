@@ -11,7 +11,11 @@ import outIcon from '@/assets/icons/dereliction.svg';
 import clsx from 'clsx';
 import * as styles from './EditHeader.css';
 
-export default function EditHeader({ challengeId, handleSubmit }) {
+export default function EditHeader({
+  challengeId,
+  handleSubmit,
+  isSubmitting,
+}) {
   const router = useRouter();
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
@@ -52,8 +56,12 @@ export default function EditHeader({ challengeId, handleSubmit }) {
           >
             임시저장
           </Button>
-          <Button className={styles.action} onClick={handleSubmit}>
-            제출하기
+          <Button
+            className={styles.action}
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? '제출 중' : '제출하기'}
           </Button>
         </div>
       </header>

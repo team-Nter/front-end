@@ -69,13 +69,13 @@ export default function WorkEditor({ id }) {
     );
   };
 
-  if (isPending) {
-    return <p>로딩 중...</p>;
-  }
-
   return (
     <main className={styles.page}>
-      <EditHeader challengeId={id} handleSubmit={handleSubmit} />
+      <EditHeader
+        challengeId={id}
+        handleSubmit={handleSubmit}
+        isSubmitting={isPending}
+      />
       <Input title={title} onChange={(event) => setTitle(event.target.value)} />
       {isError && <p role="alert">{error.message}</p>}
       <Tiptap editor={editor} />
