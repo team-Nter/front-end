@@ -12,9 +12,8 @@ export function useLogout() {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: async () => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.users.info(),
-      });
+      await queryClient.cancelQueries();
+      queryClient.clear();
 
       queryClient.setQueryData(queryKeys.users.info(), null);
 
@@ -22,6 +21,7 @@ export function useLogout() {
     },
     onError: (error) => {
       alert('로그아웃 되지 않았습니다. 다시 시도해주세요.');
+      console.error(error);
     },
   });
 

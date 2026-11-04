@@ -40,7 +40,7 @@ export default function Header({ className, loginHref = '/login', children }) {
               로그인
             </Button>
           ) : (
-            <UserMenu />
+            <UserMenu user={user} />
           )}
         </div>
       </Container>
