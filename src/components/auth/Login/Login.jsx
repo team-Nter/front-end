@@ -8,8 +8,12 @@ import Link from 'next/link';
 import { validateLogin } from '@/utils/validators/validateAuthForm';
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 import { useState } from 'react';
-import { Modal } from '../common/Modal';
 import { useLogin } from '@/hooks/useLogin';
+import {
+  AuthCheckErrorModal,
+  ConnectionWarning,
+  OfflineNotice,
+} from '@/components/auth/commonAuth/AuthCheckNotices';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -38,10 +42,7 @@ export default function Login() {
   });
 
   if (isLoggedIn) return null;
-  if (isPending && isPaused)
-    return (
-      <p>오프라인 상태예요. 네트워크 연결이 복구되면 다시 시도해 주세요.</p>
-    );
+  if (isPending && isPaused) return <OfflineNotice />;
   if (isPending) return null;
 
   const handleSubmit = (e) => {
@@ -59,19 +60,13 @@ export default function Login() {
 
   if (isError && user === undefined) {
     return (
-      <Modal aria-labelledby="retry-title">
-        <p id="retry-title">사용자 확인이 늦어지고 있어요.</p>
-        <button type="button" onClick={() => refetch()} disabled={isFetching}>
-          {isFetching ? '확인 중...' : '다시 시도'}
-        </button>
-        <Link href="/">홈으로 이동</Link>
-      </Modal>
+      <AuthCheckErrorModal isFetching={isFetching} onRetry={() => refetch()} />
     );
   }
 
   return (
     <>
-      {isError && <p>연결이 불안정합니다. 잠시 후 다시 시도해 주세요.</p>}
+      {isError && <ConnectionWarning />}
       <main>
         <Link href="/">
           <Image
