@@ -12,11 +12,15 @@ export async function getFeedbacks(submissionId, page, pageSize) {
 }
 
 export async function createFeedback(submissionId, content) {
-  const response = await fetch(`${API_BASE_URL}/submissions/${submissionId}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'applicatioin/json' },
-    body: JSON.stringify(content),
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/submission/${submissionId}/feedbacks`,
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content }),
+    },
+  );
 
   if (!response.ok) {
     throw new Error('피드백을 생성하지 못했습니다.');
@@ -29,7 +33,7 @@ export async function updateFeedback(feedbackId, content) {
   const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(content),
+    body: JSON.stringify({ content }),
   });
 
   if (!response.ok) {

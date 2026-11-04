@@ -1,8 +1,13 @@
 'use client';
 
-import { getFeedbacks } from '@/api/feedback';
+import { createFeedback, getFeedbacks } from '@/api/feedback';
 import { queryKeys } from '@/constants/query-keys';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export function useFeedbacks(submissionId, pageSize = 5) {
   // 페이지네이션용 불러오기 위해서 InfiniteQuery 사용
@@ -15,5 +20,18 @@ export function useFeedbacks(submissionId, pageSize = 5) {
       return page < totalPages ? page + 1 : undefined;
     },
     enabled: Boolean(submissionId),
+  });
+}
+
+export function useCreateFeedback(submissionId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (content) => createFeedback(submissionId, content),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['feedbacks'],
+      });
+    },
   });
 }
