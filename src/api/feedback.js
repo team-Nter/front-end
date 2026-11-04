@@ -34,6 +34,7 @@ export async function updateFeedback(feedbackId, content) {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content }),
+    credentials: 'include',
   });
 
   if (!response.ok) {
@@ -46,6 +47,7 @@ export async function updateFeedback(feedbackId, content) {
 export async function deleteFeedback(feedbackId) {
   const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
     method: 'DELETE',
+    credentials: 'include',
   });
 
   if (!response.ok) {

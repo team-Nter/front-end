@@ -1,6 +1,11 @@
 'use client';
 
-import { createFeedback, getFeedbacks } from '@/api/feedback';
+import {
+  createFeedback,
+  deleteFeedback,
+  getFeedbacks,
+  updateFeedback,
+} from '@/api/feedback';
 import { queryKeys } from '@/constants/query-keys';
 import {
   useInfiniteQuery,
@@ -28,6 +33,31 @@ export function useCreateFeedback(submissionId) {
 
   return useMutation({
     mutationFn: (content) => createFeedback(submissionId, content),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['feedbacks'],
+      });
+    },
+  });
+}
+export function useUpdateFeedback(feedbackId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (content) => updateFeedback(feedbackId, content),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: ['feedbacks'],
+      });
+    },
+  });
+}
+
+export function useDeleteFeedback(feedbackId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteFeedback(feedbackId),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: ['feedbacks'],
