@@ -1,23 +1,20 @@
 'use client';
 
-import { login } from '@/api/auth';
 import { Button } from '@/components/common/Button';
 import { Input } from '@/components/common/Input';
-import { queryKeys } from '@/constants/query-keys';
 import logo from '@/assets/images/logo.svg';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { validateLogin } from '@/utils/validators/validateAuthForm';
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 import { useState } from 'react';
 import { Modal } from '../common/Modal';
+import { useLogin } from '@/hooks/useLogin';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  const queryClient = useQueryClient();
 
   const {
     user,
@@ -29,12 +26,7 @@ export default function Login() {
     isPaused,
   } = useRedirectIfLoggedIn();
 
-  const loginMutation = useMutation({
-    mutationFn: login,
-    onSuccess: async (loginResponse) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.users.info() });
-      queryClient.setQueryData(queryKeys.users.info(), loginResponse);
-    },
+  const loginMutation = useLogin({
     onError: (error) => {
       if (error.status === 401) {
         alert('이메일 혹은 비밀번호를 확인해주십시오.');
