@@ -4,6 +4,7 @@ import { media } from '@/styles/media';
 
 export const toolbar = style({
   display: 'flex',
+  flexWrap: 'wrap',
   alignItems: 'center',
   gap: 15,
   paddingTop: 24,
