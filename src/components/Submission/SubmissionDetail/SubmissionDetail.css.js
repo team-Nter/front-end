@@ -23,6 +23,25 @@ export const title = style({
   '@media': { [media.mobile]: { fontSize: 20, marginBottom: 20 } },
 });
 
+export const empty = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 24,
+  minHeight: 320,
+  paddingBlock: 48,
+  fontSize: 14,
+  textAlign: 'center',
+  color: vars.color.gray[600],
+});
+
+export const emptyImage = style({
+  width: 240,
+  maxWidth: '100%',
+  height: 'auto',
+});
+
 export const metadata = style({
   display: 'flex',
   alignItems: 'center',

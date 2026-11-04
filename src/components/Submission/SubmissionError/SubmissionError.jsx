@@ -8,7 +8,7 @@ const ERROR_MESSAGES = {
 export default function SubmissionError({ error, retry }) {
   const status = error.status;
   const message =
-    ERROR_MESSAGES[status] ??
+    (status === 404 ? error.message : ERROR_MESSAGES[status]) ??
     (status >= 500
       ? '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.'
       : '작업물을 불러오지 못했습니다.');

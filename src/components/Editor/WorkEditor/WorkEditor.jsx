@@ -63,7 +63,9 @@ export default function WorkEditor({ id }) {
       },
       {
         onSuccess: (submission) => {
-          router.push(`/submissions/${submission.id}`);
+          router.push(
+            `/challenges/${id}/participants/${submission.author.id}/submission`,
+          );
         },
       },
     );

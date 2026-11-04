@@ -1,4 +1,12 @@
 export const queryKeys = {
+  participations: {
+    detail: (challengeId, userId) => [
+      'participations',
+      'detail',
+      challengeId,
+      userId,
+    ],
+  },
   users: {
     info: () => ['auth', 'me'],
   },
