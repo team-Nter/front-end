@@ -1,8 +1,8 @@
 import { API_BASE_URL } from '@/constants/api';
 
-async function getFeedbacks({ submissionId }) {
+export async function getFeedbacks(submissionId, page, pageSize) {
   const response = await fetch(
-    `${API_BASE_URL}/submissions/${submissionId}/feedbacks`,
+    `${API_BASE_URL}/submission/${submissionId}/feedbacks?page=${page}&pageSize=${pageSize}`,
   );
   if (!response.ok) {
     throw new Error('피드백을 불러올 수 없습니다.');
@@ -11,11 +11,11 @@ async function getFeedbacks({ submissionId }) {
   return response.json();
 }
 
-async function createFeedback({ submissionId, content }) {
+export async function createFeedback(submissionId, content) {
   const response = await fetch(`${API_BASE_URL}/submissions/${submissionId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'applicatioin/json' },
-    body: content,
+    body: JSON.stringify(content),
   });
 
   if (!response.ok) {
@@ -25,11 +25,11 @@ async function createFeedback({ submissionId, content }) {
   return response.json();
 }
 
-async function updateFeedback({ feedbackId, content }) {
+export async function updateFeedback(feedbackId, content) {
   const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body: content,
+    body: JSON.stringify(content),
   });
 
   if (!response.ok) {
@@ -39,7 +39,7 @@ async function updateFeedback({ feedbackId, content }) {
   return response.json();
 }
 
-async function deleteFeedback({ feedbackId }) {
+export async function deleteFeedback(feedbackId) {
   const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
     method: 'DELETE',
   });
