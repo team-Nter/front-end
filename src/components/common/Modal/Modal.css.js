@@ -14,11 +14,13 @@ export const overlay = style({
 
 export const modal = style({
   boxSizing: 'border-box',
-  display: 'flex',
+  position: 'fixed',
+  inset: 0,
+  margin: 'auto',
   flexDirection: 'column',
   gap: 24,
   width: 496,
-  maxWidth: '100%',
+  maxWidth: 'calc(100% - 32px)',
   maxHeight: 'calc(100dvh - 32px)',
   overflowY: 'auto',
   overscrollBehavior: 'contain',
@@ -27,4 +29,9 @@ export const modal = style({
   borderRadius: 8,
   backgroundColor: vars.color.brand.white,
   color: vars.color.brand.dark,
+  selectors: {
+    '&[open]': { display: 'flex' },
+    '&:not([open])': { display: 'none' },
+    '&::backdrop': { backgroundColor: 'transparent' },
+  },
 });
