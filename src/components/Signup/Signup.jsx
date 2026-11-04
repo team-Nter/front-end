@@ -1,8 +1,5 @@
 'use client';
 
-import { signup } from '@/api/auth';
-import { queryKeys } from '@/constants/query-keys';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import logo from '@/assets/images/logo.svg';
 import Image from 'next/image';
@@ -12,6 +9,7 @@ import { Input } from '@/components/common/Input';
 import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn';
 import { validateSignup } from '@/utils/validators/validateAuthForm';
 import { Modal } from '../common/Modal';
+import { useSignup } from '@/hooks/useSignup';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -19,7 +17,6 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [errors, setErrors] = useState({});
-  const queryClient = useQueryClient();
 
   const {
     user,
@@ -31,12 +28,7 @@ export default function Signup() {
     isPaused,
   } = useRedirectIfLoggedIn();
 
-  const signupMutation = useMutation({
-    mutationFn: signup,
-    onSuccess: async (signupResponse) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.users.info() });
-      queryClient.setQueryData(queryKeys.users.info(), signupResponse);
-    },
+  const signupMutation = useSignup({
     onError: (error) => {
       if (error.status === 409) {
         setErrors((prev) => ({
@@ -45,11 +37,13 @@ export default function Signup() {
         }));
       } else if (error.status === 400) {
         alert('양식에 맞지 않은 입력값입니다.');
+      } else if (error.name === 'TimeoutError') {
+        alert(
+          '응답이 늦어지고 있어요. 이미 가입됐을 수 있으니 로그인을 시도해 보세요.',
+        );
       } else if (error.status === undefined) {
-        // 응답 자체가 없는 네트워크 오류
         alert('네트워크 연결을 확인해주세요.');
       } else {
-        // 500번대 등 서버 쪽 문제
         alert('서버에 문제가 생겼어요. 잠시 후 다시 시도해주세요.');
       }
       console.error(error);
