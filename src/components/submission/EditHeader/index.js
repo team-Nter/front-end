@@ -1,1 +1,1 @@
-export * from './EditHeader';
+export { default as EditHeader } from './EditHeader';

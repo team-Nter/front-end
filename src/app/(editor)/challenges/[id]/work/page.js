@@ -1,4 +1,4 @@
-import WorkEditor from '@/components/submission/WorkEditor/WorkEditor';
+import { WorkEditor } from '@/components/submission/WorkEditor';
 
 export default async function Page({ params }) {
   const { id } = await params;
