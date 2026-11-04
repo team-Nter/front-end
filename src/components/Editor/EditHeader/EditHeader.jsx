@@ -17,21 +17,28 @@ export default function EditHeader({
   isSubmitting,
 }) {
   const router = useRouter();
-  const [isExitModalOpen, setIsExitModalOpen] = useState(false);
+  const [exitPath, setExitPath] = useState(null);
 
   // 모달창의 취소 버튼
-  const closeExitModal = () => setIsExitModalOpen(false);
-  // 나가기 버튼 누르면 일단 모달창이 떠야함 -> 모달창에 대한 상태값이 필요하고
-  // 모달창에서 해당 버튼을 누르면 옮겨지게 만들면 됨.
+  const closeExitModal = () => setExitPath(null);
 
   // 실질적으로 진짜 나간다 확인
   const handleExit = () => {
-    router.push(`/challenges/${challengeId}`);
+    if (exitPath) router.push(exitPath);
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    setExitPath('/');
   };
   return (
     <>
       <header className={styles.header}>
-        <Link href="/" aria-label="독스루 홈">
+        <Link
+          href="/"
+          aria-label="독스루 홈"
+          onClick={(event) => handleClick(event)}
+        >
           <Image
             className={styles.logo}
             src={logo}
@@ -43,7 +50,7 @@ export default function EditHeader({
           <Button
             className={clsx(styles.action, styles.exit)}
             aria-label="나가기"
-            onClick={() => setIsExitModalOpen(true)}
+            onClick={() => setExitPath(`/challenges/${challengeId}`)}
           >
             <span className={styles.exitText}>나가기</span>
             <Image className={styles.exitIcon} src={outIcon} alt="" />
@@ -65,7 +72,7 @@ export default function EditHeader({
           </Button>
         </div>
       </header>
-      {isExitModalOpen && (
+      {exitPath !== null && (
         <Modal
           className={styles.modal}
           aria-labelledby="exit-modal-title"
