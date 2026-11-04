@@ -1,7 +1,6 @@
 'use client';
 
 import { logout } from '@/api/auth';
-import { queryKeys } from '@/constants/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -14,8 +13,6 @@ export function useLogout() {
     onSuccess: async () => {
       await queryClient.cancelQueries();
       queryClient.clear();
-
-      queryClient.setQueryData(queryKeys.users.info(), null);
 
       router.replace('/login');
     },
