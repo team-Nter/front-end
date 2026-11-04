@@ -23,7 +23,7 @@ export function useRedirectIfLoggedIn() {
 
   useEffect(() => {
     if (!isFetching && isLoggedIn) {
-      router.replace('/'); // 차후 챌린지 목록으로 수정
+      router.replace('/challenges');
     }
   }, [router, isFetching, isLoggedIn]);
 

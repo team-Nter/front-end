@@ -14,7 +14,7 @@ export function useLogout() {
       await queryClient.cancelQueries();
       queryClient.clear();
 
-      router.replace('/login');
+      router.replace('/');
     },
     onError: (error) => {
       alert('로그아웃 되지 않았습니다. 다시 시도해주세요.');
