@@ -38,7 +38,8 @@ export async function createSubmission(challengeId, data) {
   );
 
   if (!response.ok) {
-    const error = new Error('작업물을 불러오지 못했습니다.');
+    const body = await response.json().catch(() => null);
+    const error = new Error(body?.message ?? '작업물을 제출하지 못했습니다.');
     error.status = response.status;
     throw error;
   }

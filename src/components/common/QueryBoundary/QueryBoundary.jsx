@@ -9,11 +9,13 @@ export default function QueryBoundary({
   resetKeys,
   loadingFallback = <p>불러오는 중...</p>,
   errorFallback,
+  onError,
 }) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
         <ErrorBoundary
+          onError={onError}
           onReset={reset}
           resetKeys={resetKeys}
           fallbackRender={({ error, resetErrorBoundary }) => {

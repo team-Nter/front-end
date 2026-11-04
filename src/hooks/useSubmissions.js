@@ -30,5 +30,8 @@ export function useSubmissions({ challengeId, page, pageSize }) {
 export function useCreateSubmission(challengeId) {
   return useMutation({
     mutationFn: (data) => createSubmission(challengeId, data),
+    onError: (error) => {
+      alert(error.message);
+    },
   });
 }

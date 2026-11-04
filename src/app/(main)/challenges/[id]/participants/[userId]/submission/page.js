@@ -1,7 +1,7 @@
 'use client';
 
 import { SubmissionView } from '@/components/Submission/SubmissionView';
-import { SubmissionError } from '@/components/Submission/SubmissionError';
+import { getSubmissionErrorMessage } from '@/utils/submissionError';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { useParams } from 'next/navigation';
 import { useParticipation } from '@/hooks/useParticipation';
@@ -33,7 +33,17 @@ export default function Page() {
     <QueryBoundary
       resetKeys={[challengeId, userId]}
       loadingFallback={<p>작업물을 불러오는 중...</p>}
-      errorFallback={(props) => <SubmissionError {...props} />}
+      onError={(error) => alert(getSubmissionErrorMessage(error))}
+      errorFallback={({ error, retry }) => (
+        <div role="alert">
+          <p>{getSubmissionErrorMessage(error)}</p>
+          {![400, 401, 403, 404, 409].includes(error.status) && (
+            <button type="button" onClick={retry}>
+              다시 시도
+            </button>
+          )}
+        </div>
+      )}
     >
       <ParticipantSubmission
         key={`${challengeId}:${userId}`}
