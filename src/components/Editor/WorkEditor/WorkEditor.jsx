@@ -20,7 +20,7 @@ const lowlight = createLowlight(common);
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
   const router = useRouter();
-  const { mutate, isPending, isError } = useCreateSubmission(id);
+  const { mutate, isPending, isError, error } = useCreateSubmission(id);
 
   const editor = useEditor({
     extensions: [
@@ -70,16 +70,14 @@ export default function WorkEditor({ id }) {
   };
 
   if (isPending) {
-    <p>로딩 중...</p>;
-  }
-  if (isError) {
-    <p>{error.message}</p>;
+    return <p>로딩 중...</p>;
   }
 
   return (
     <main className={styles.page}>
       <EditHeader challengeId={id} handleSubmit={handleSubmit} />
       <Input title={title} onChange={(event) => setTitle(event.target.value)} />
+      {isError && <p role="alert">{error.message}</p>}
       <Tiptap editor={editor} />
     </main>
   );
