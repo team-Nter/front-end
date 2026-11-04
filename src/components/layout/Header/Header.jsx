@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
@@ -5,13 +7,13 @@ import logo from '@/assets/images/logo.svg';
 import { Button } from '@/components/common/Button';
 import { Container } from '@/components/layout/Container';
 import * as styles from './Header.css.js';
+import { useMe } from '@/hooks/useMe.js';
+import { UserMenu } from '@/components/auth/commonAuth/UserMenu.jsx';
 
-export default function Header({
-  className,
-  actions,
-  loginHref = '/login',
-  children,
-}) {
+export default function Header({ className, loginHref = '/login', children }) {
+  const { data: user } = useMe();
+  const isLoggedIn = !!user?.id;
+
   return (
     <header className={clsx(styles.header, className)}>
       <Container className={styles.inner}>
@@ -28,7 +30,7 @@ export default function Header({
         </div>
 
         <div className={styles.actions}>
-          {actions === undefined ? (
+          {!isLoggedIn ? (
             <Button
               as={Link}
               href={loginHref}
@@ -38,7 +40,7 @@ export default function Header({
               로그인
             </Button>
           ) : (
-            actions
+            <UserMenu />
           )}
         </div>
       </Container>
