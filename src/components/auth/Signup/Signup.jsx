@@ -11,7 +11,6 @@ import { validateSignup } from '@/utils/validators/validateAuthForm';
 import { useSignup } from '@/hooks/useSignup';
 import {
   AuthCheckErrorModal,
-  ConnectionWarning,
   OfflineNotice,
 } from '@/components/auth/commonAuth/AuthCheckNotices';
 
@@ -22,15 +21,8 @@ export default function Signup() {
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [errors, setErrors] = useState({});
 
-  const {
-    user,
-    isLoggedIn,
-    isPending,
-    isFetching,
-    isError,
-    refetch,
-    isPaused,
-  } = useRedirectIfLoggedIn();
+  const { isLoggedIn, isPending, isFetching, isError, refetch, isPaused } =
+    useRedirectIfLoggedIn();
 
   const signupMutation = useSignup({
     onError: (error) => {
@@ -68,10 +60,6 @@ export default function Signup() {
     },
   });
 
-  if (isLoggedIn) return null;
-  if (isPending && isPaused) return <OfflineNotice />;
-  if (isPending) return null;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const trimmedEmail = email.trim();
@@ -92,91 +80,92 @@ export default function Signup() {
     });
   };
 
-  if (isError && user === undefined) {
+  if (isPending && isPaused) return <OfflineNotice />;
+  if (isPending) return null;
+
+  if (isError) {
     return (
       <AuthCheckErrorModal isFetching={isFetching} onRetry={() => refetch()} />
     );
   }
+  if (isLoggedIn) return null;
 
   return (
-    <>
-      {isError && <ConnectionWarning />}
-      <main>
-        <Link href="/">
-          <Image
-            src={logo}
-            alt="독스루 로고"
-            width={289}
-            height={72}
-            loading="eager"
-          />
-        </Link>
-        <form onSubmit={handleSubmit} noValidate>
-          <Input
-            type="email"
-            id="email"
-            label="이메일"
-            error={errors.email}
-            placeholder="이메일을 입력해주세요"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors((prev) => ({ ...prev, email: '' }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-          <Input
-            type="text"
-            id="nickname"
-            label="닉네임"
-            error={errors.nickname}
-            placeholder="닉네임을 입력해주세요"
-            value={nickname}
-            onChange={(e) => {
-              setNickname(e.target.value);
-              setErrors((prev) => ({ ...prev, nickname: '' }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-          <Input
-            type="password"
-            id="password"
-            label="비밀번호"
-            error={errors.password}
-            placeholder="비밀번호를 입력해주세요"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrors((prev) => ({
-                ...prev,
-                password: '',
-                passwordConfirmation: '',
-              }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-          <Input
-            type="password"
-            id="passwordConfirmation"
-            label="비밀번호 확인"
-            error={errors.passwordConfirmation}
-            placeholder="비밀번호를 한번 더 입력해주세요"
-            value={passwordConfirmation}
-            onChange={(e) => {
-              setPasswordConfirmation(e.target.value);
-              setErrors((prev) => ({ ...prev, passwordConfirmation: '' }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-          <Button type="submit" disabled={signupMutation.isPending}>
-            {signupMutation.isPending ? '가입 중...' : '회원가입'}
-          </Button>
-        </form>
-        <div>
-          <p>회원이신가요?</p>
-          <Link href="/login">로그인하기</Link>
-        </div>
-      </main>
-    </>
+    <main>
+      <Link href="/">
+        <Image
+          src={logo}
+          alt="독스루 로고"
+          width={289}
+          height={72}
+          loading="eager"
+        />
+      </Link>
+      <form onSubmit={handleSubmit} noValidate>
+        <Input
+          type="email"
+          id="email"
+          label="이메일"
+          error={errors.email}
+          placeholder="이메일을 입력해주세요"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setErrors((prev) => ({ ...prev, email: '' }));
+          }}
+          disabled={signupMutation.isPending}
+        />
+        <Input
+          type="text"
+          id="nickname"
+          label="닉네임"
+          error={errors.nickname}
+          placeholder="닉네임을 입력해주세요"
+          value={nickname}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            setErrors((prev) => ({ ...prev, nickname: '' }));
+          }}
+          disabled={signupMutation.isPending}
+        />
+        <Input
+          type="password"
+          id="password"
+          label="비밀번호"
+          error={errors.password}
+          placeholder="비밀번호를 입력해주세요"
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setErrors((prev) => ({
+              ...prev,
+              password: '',
+              passwordConfirmation: '',
+            }));
+          }}
+          disabled={signupMutation.isPending}
+        />
+        <Input
+          type="password"
+          id="passwordConfirmation"
+          label="비밀번호 확인"
+          error={errors.passwordConfirmation}
+          placeholder="비밀번호를 한번 더 입력해주세요"
+          value={passwordConfirmation}
+          onChange={(e) => {
+            setPasswordConfirmation(e.target.value);
+            setErrors((prev) => ({ ...prev, passwordConfirmation: '' }));
+          }}
+          disabled={signupMutation.isPending}
+        />
+        <Button type="submit" disabled={signupMutation.isPending}>
+          {signupMutation.isPending ? '가입 중...' : '회원가입'}
+        </Button>
+      </form>
+      <div>
+        <p>회원이신가요?</p>
+        <Link href="/login">로그인하기</Link>
+      </div>
+    </main>
   );
 }
