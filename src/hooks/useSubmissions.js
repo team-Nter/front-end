@@ -38,7 +38,10 @@ export function useCreateSubmission(challengeId) {
   return useMutation({
     mutationFn: (data) => createSubmission(challengeId, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['participations'] });
+      return queryClient.invalidateQueries({
+        queryKey: ['participations'],
+        refetchType: 'all',
+      });
     },
   });
 }
