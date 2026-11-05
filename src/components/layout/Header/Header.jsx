@@ -11,8 +11,9 @@ import { useMe } from '@/hooks/useMe.js';
 import { UserMenu } from '@/components/auth/commonAuth/UserMenu.jsx';
 
 export default function Header({ className, loginHref = '/login', children }) {
-  const { data: user, isPending } = useMe();
+  const { data: user, isPending, isError } = useMe();
   const isLoggedIn = !!user?.id;
+  const isAuthUnknown = isPending || isError;
 
   return (
     <header className={clsx(styles.header, className)}>
@@ -30,7 +31,7 @@ export default function Header({ className, loginHref = '/login', children }) {
         </div>
 
         <div className={styles.actions}>
-          {isPending ? null : isLoggedIn ? (
+          {isAuthUnknown ? null : isLoggedIn ? (
             <UserMenu user={user} />
           ) : (
             <Button
