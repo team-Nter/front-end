@@ -1,9 +1,8 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 export function useChallengeListParams() {
-  const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -37,7 +36,11 @@ export function useChallengeListParams() {
     if (!('page' in changes)) nextParams.delete('page');
 
     const query = nextParams.toString();
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
+    window.history.pushState(
+      null,
+      '',
+      query ? `${pathname}?${query}` : pathname,
+    );
   };
 
   return { params, updateParams };
