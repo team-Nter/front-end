@@ -4,6 +4,7 @@ import Image from 'next/image';
 import * as styles from './UserMenu.css.js';
 import { useLogout } from '@/hooks/useLogout.js';
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link.js';
 
 export function UserMenu({ user }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,9 +67,13 @@ export function UserMenu({ user }) {
 
           <div className={styles.divider} />
 
-          <button type="button" className={styles.menuItem}>
+          <Link
+            href="/my-challenges"
+            className={styles.menuItem}
+            onClick={() => setIsOpen(false)}
+          >
             나의 챌린지
-          </button>
+          </Link>
           <button
             type="button"
             className={styles.menuItem}
