@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useLogin } from '@/hooks/useLogin';
 import {
   AuthCheckErrorModal,
+  ConnectionWarning,
   OfflineNotice,
 } from '@/components/auth/commonAuth/AuthCheckNotices';
 
@@ -19,8 +20,17 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
-  const { isLoggedIn, isPending, isFetching, isError, refetch, isPaused } =
-    useRedirectIfLoggedIn();
+  const {
+    user,
+    isLoggedIn,
+    isPending,
+    isFetching,
+    isError,
+    refetch,
+    isPaused,
+  } = useRedirectIfLoggedIn();
+
+  const hasLoggedOutCache = user === null;
 
   const loginMutation = useLogin({
     onError: (error) => {
@@ -49,7 +59,7 @@ export default function Login() {
   if (isPending && isPaused) return <OfflineNotice />;
   if (isPending) return null;
 
-  if (isError) {
+  if (isError && !hasLoggedOutCache) {
     return (
       <AuthCheckErrorModal isFetching={isFetching} onRetry={() => refetch()} />
     );
@@ -57,51 +67,54 @@ export default function Login() {
   if (isLoggedIn) return null;
 
   return (
-    <main>
-      <Link href="/">
-        <Image
-          src={logo}
-          alt="독스루 홈"
-          width={289}
-          height={72}
-          loading="eager"
-        />
-      </Link>
-      <form onSubmit={handleSubmit} noValidate>
-        <Input
-          type="email"
-          id="email"
-          label="이메일"
-          error={errors.email}
-          placeholder="이메일을 입력해주세요"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((prev) => ({ ...prev, email: '' }));
-          }}
-          disabled={loginMutation.isPending}
-        />
-        <Input
-          type="password"
-          id="password"
-          label="비밀번호"
-          error={errors.password}
-          placeholder="비밀번호를 입력해주세요"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors((prev) => ({ ...prev, password: '' }));
-          }}
-          disabled={loginMutation.isPending}
-        />
-        <Button type="submit" disabled={loginMutation.isPending}>
-          {loginMutation.isPending ? '로그인 중...' : '로그인'}
-        </Button>
-      </form>
-      <div>
-        <p>회원이 아니신가요?</p>
-        <Link href="/signup">회원가입하기</Link>
-      </div>
-    </main>
+    <>
+      {isError && <ConnectionWarning />}
+      <main>
+        <Link href="/">
+          <Image
+            src={logo}
+            alt="독스루 홈"
+            width={289}
+            height={72}
+            loading="eager"
+          />
+        </Link>
+        <form onSubmit={handleSubmit} noValidate>
+          <Input
+            type="email"
+            id="email"
+            label="이메일"
+            error={errors.email}
+            placeholder="이메일을 입력해주세요"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prev) => ({ ...prev, email: '' }));
+            }}
+            disabled={loginMutation.isPending}
+          />
+          <Input
+            type="password"
+            id="password"
+            label="비밀번호"
+            error={errors.password}
+            placeholder="비밀번호를 입력해주세요"
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors((prev) => ({ ...prev, password: '' }));
+            }}
+            disabled={loginMutation.isPending}
+          />
+          <Button type="submit" disabled={loginMutation.isPending}>
+            {loginMutation.isPending ? '로그인 중...' : '로그인'}
+          </Button>
+        </form>
+        <div>
+          <p>회원이 아니신가요?</p>
+          <Link href="/signup">회원가입하기</Link>
+        </div>
+      </main>
+    </>
   );
 }

@@ -16,3 +16,7 @@ export function AuthCheckErrorModal({ isFetching, onRetry }) {
     </Modal>
   );
 }
+
+export function ConnectionWarning() {
+  return <p>연결이 불안정합니다. 잠시 후 다시 시도해 주세요.</p>;
+}
