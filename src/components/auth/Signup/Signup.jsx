@@ -35,10 +35,18 @@ export default function Signup() {
   const signupMutation = useSignup({
     onError: (error) => {
       if (error.status === 409) {
-        setErrors((prev) => ({
-          ...prev,
-          email: '이미 사용 중인 이메일입니다.',
-        }));
+        if (error.message.includes('닉네임')) {
+          setErrors((prev) => ({
+            ...prev,
+            nickname: '이미 사용 중인 닉네임입니다.',
+          }));
+        }
+        if (error.message.includes('이메일')) {
+          setErrors((prev) => ({
+            ...prev,
+            email: '이미 사용 중인 이메일입니다.',
+          }));
+        }
       } else if (error.status === 400) {
         alert('양식에 맞지 않은 입력값입니다.');
       } else if (error.name === 'TimeoutError') {
