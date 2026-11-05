@@ -7,9 +7,8 @@ import * as styles from './HeaderAuthAction.css';
 export function HeaderAuthAction({ loginHref }) {
   const { data: user, isPending, isError, refetch } = useMe();
   const isLoggedIn = !!user?.id;
-  const hasAuthError = isError && !user;
   if (isPending) return null;
-  if (hasAuthError) {
+  if (isError) {
     return (
       <Button variant="secondary" onClick={() => refetch()}>
         다시 시도
