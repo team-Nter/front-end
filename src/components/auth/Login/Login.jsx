@@ -89,6 +89,7 @@ export default function Login() {
               setEmail(e.target.value);
               setErrors((prev) => ({ ...prev, email: '' }));
             }}
+            disabled={loginMutation.isPending}
           />
           <Input
             type="password"
@@ -101,6 +102,7 @@ export default function Login() {
               setPassword(e.target.value);
               setErrors((prev) => ({ ...prev, password: '' }));
             }}
+            disabled={loginMutation.isPending}
           />
           <Button type="submit" disabled={loginMutation.isPending}>
             {loginMutation.isPending ? '로그인 중...' : '로그인'}

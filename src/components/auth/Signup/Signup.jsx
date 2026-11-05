@@ -123,6 +123,7 @@ export default function Signup() {
               setEmail(e.target.value);
               setErrors((prev) => ({ ...prev, email: '' }));
             }}
+            disabled={signupMutation.isPending}
           />
           <Input
             type="text"
@@ -135,6 +136,7 @@ export default function Signup() {
               setNickname(e.target.value);
               setErrors((prev) => ({ ...prev, nickname: '' }));
             }}
+            disabled={signupMutation.isPending}
           />
           <Input
             type="password"
@@ -151,6 +153,7 @@ export default function Signup() {
                 passwordConfirmation: '',
               }));
             }}
+            disabled={signupMutation.isPending}
           />
           <Input
             type="password"
@@ -163,6 +166,7 @@ export default function Signup() {
               setPasswordConfirmation(e.target.value);
               setErrors((prev) => ({ ...prev, passwordConfirmation: '' }));
             }}
+            disabled={signupMutation.isPending}
           />
           <Button type="submit" disabled={signupMutation.isPending}>
             {signupMutation.isPending ? '가입 중...' : '회원가입'}
