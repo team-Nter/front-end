@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useChallengeListParams } from '@/hooks/useChallengeListParams';
 import { useChallenges } from '@/hooks/useChallenges';
 import { Pagination } from '@/components/common/Pagination';
+import { Popover } from '@/components/common/Popover';
+import { ChallengeFilter } from '@/components/challenge/ChallengeFilter';
 
 export default function ChallengeList() {
   const { params, updateParams } = useChallengeListParams();
@@ -17,6 +19,18 @@ export default function ChallengeList() {
 
   return (
     <>
+      <Popover trigger={<button type="button">필터</button>}>
+        {({ close }) => (
+          <ChallengeFilter
+            params={params}
+            onApply={(filters) => {
+              updateParams(filters);
+              close();
+            }}
+            onClose={close}
+          />
+        )}
+      </Popover>
       <form onSubmit={handleSearch}>
         <input
           value={keyword}
