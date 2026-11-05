@@ -23,14 +23,14 @@ export function useRedirectIfLoggedIn() {
   const role = user?.role;
 
   useEffect(() => {
-    if (!isFetching && isLoggedIn) {
+    if (!isFetching && isLoggedIn && !isError) {
       if (role === 'ADMIN') {
         router.replace('/admin/challenges');
       } else {
         router.replace('/challenges');
       }
     }
-  }, [router, isFetching, isLoggedIn, role]);
+  }, [router, isFetching, isLoggedIn, role, isError]);
 
   return {
     user,
