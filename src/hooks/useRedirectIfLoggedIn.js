@@ -15,7 +15,6 @@ export function useRedirectIfLoggedIn() {
     refetch,
     isPaused,
   } = useMe({
-    refetchOnWindowFocus: 'always',
     refetchOnMount: 'always',
     retry: 3,
   });
@@ -24,7 +23,7 @@ export function useRedirectIfLoggedIn() {
 
   useEffect(() => {
     if (!isFetching && isLoggedIn) {
-      router.replace('/');
+      router.replace('/'); // 차후 챌린지 목록으로 수정
     }
   }, [router, isFetching, isLoggedIn]);
 

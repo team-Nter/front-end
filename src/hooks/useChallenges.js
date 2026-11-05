@@ -1,8 +1,13 @@
 'use client';
 
-import { getChallenges } from '@/api/challenges';
+import { createChallenge, getChallenges } from '@/api/challenges';
 import { queryKeys } from '@/constants/query-keys';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export function useChallenges(params, options) {
   return useQuery({
@@ -10,5 +15,16 @@ export function useChallenges(params, options) {
     queryFn: ({ signal }) => getChallenges(params, { signal }),
     placeholderData: keepPreviousData,
     ...options,
+  });
+}
+
+export function useCreateChallenge() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createChallenge,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.challenges.all() });
+    },
   });
 }
