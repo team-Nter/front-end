@@ -29,6 +29,23 @@ async function challengeRequest({
 
   return res.json();
 }
+
+export function getChallenges(params = {}, { signal } = {}) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(params).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return;
+
+    searchParams.set(key, Array.isArray(value) ? value.join(',') : value);
+  });
+
+  return challengeRequest({
+    path: `/challenges?${searchParams}`,
+    signal,
+    errorMessage: '챌린지 목록을 불러오지 못했습니다.',
+  });
+}
+
 export function createChallenge(body) {
   return challengeRequest({
     path: '/challenges',

@@ -5,5 +5,6 @@ export const queryKeys = {
   challenges: {
     all: () => ['challenges'],
     my: () => ['challenges', 'my'],
+    list: (params) => ['challenges', 'list', params],
   },
 };
