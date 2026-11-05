@@ -27,8 +27,8 @@ export default function Signup() {
   const signupMutation = useSignup({
     onError: (error) => {
       if (error.status === 409) {
-        const isNicknameConflict = error.message.includes('닉네임');
-        const isEmailConflict = error.message.includes('이메일');
+        const isNicknameConflict = error.message?.includes('닉네임');
+        const isEmailConflict = error.message?.includes('이메일');
 
         if (isNicknameConflict) {
           setErrors((prev) => ({
