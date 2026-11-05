@@ -35,17 +35,23 @@ export default function Signup() {
   const signupMutation = useSignup({
     onError: (error) => {
       if (error.status === 409) {
-        if (error.message.includes('닉네임')) {
+        const isNicknameConflict = error.message.includes('닉네임');
+        const isEmailConflict = error.message.includes('이메일');
+
+        if (isNicknameConflict) {
           setErrors((prev) => ({
             ...prev,
             nickname: '이미 사용 중인 닉네임입니다.',
           }));
         }
-        if (error.message.includes('이메일')) {
+        if (isEmailConflict) {
           setErrors((prev) => ({
             ...prev,
             email: '이미 사용 중인 이메일입니다.',
           }));
+        }
+        if (!isNicknameConflict && !isEmailConflict) {
+          alert('이미 가입된 정보가 있어요. 입력하신 내용을 확인해주세요.');
         }
       } else if (error.status === 400) {
         alert('양식에 맞지 않은 입력값입니다.');
