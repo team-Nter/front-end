@@ -6,6 +6,7 @@ import { useChallenges } from '@/hooks/useChallenges';
 import { Pagination } from '@/components/common/Pagination';
 import { Popover } from '@/components/common/Popover';
 import { ChallengeFilter } from '@/components/challenge/ChallengeFilter';
+import { CHALLENGE_SORT_OPTIONS } from '@/constants/challenge';
 
 export default function ChallengeList() {
   const { params, updateParams } = useChallengeListParams();
@@ -31,6 +32,7 @@ export default function ChallengeList() {
           />
         )}
       </Popover>
+
       <form onSubmit={handleSearch}>
         <input
           value={keyword}
@@ -39,6 +41,17 @@ export default function ChallengeList() {
         />
         <button type="submit">검색</button>
       </form>
+
+      <select
+        value={params.sort ?? 'createdAtDesc'}
+        onChange={(event) => updateParams({ sort: event.target.value })}
+      >
+        {CHALLENGE_SORT_OPTIONS.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
 
       {isPending && <p>불러오는 중...</p>}
       {isError && <p>에러: {error.message}</p>}

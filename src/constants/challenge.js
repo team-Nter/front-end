@@ -15,3 +15,8 @@ export const PROGRESS_OPTIONS = [
   { value: 'open', label: '진행중' },
   { value: 'closed', label: '마감' },
 ];
+
+export const CHALLENGE_SORT_OPTIONS = [
+  { value: 'createdAtDesc', label: '최신순' },
+  { value: 'createdAtAsc', label: '오래된순' },
+];
