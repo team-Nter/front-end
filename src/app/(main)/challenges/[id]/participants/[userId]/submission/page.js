@@ -1,11 +1,11 @@
 'use client';
 
-import { SubmissionView } from '@/components/Submission/SubmissionView';
 import { getSubmissionErrorMessage } from '@/utils/SubmissionError/submissionJoinError';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { useParams } from 'next/navigation';
 import { useParticipation } from '@/hooks/useParticipation';
 import { useSubmission } from '@/hooks/useSubmissions';
+import { SubmissionView } from '@/components/submission/SubmissionView/SubmissionView';
 
 function SubmittedWork({ participation }) {
   const { id } = participation.submission;

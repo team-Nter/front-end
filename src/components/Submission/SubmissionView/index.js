@@ -1,1 +1,1 @@
-export { SubmissionView } from './SubmissionView';
+export { default as SubmissionView } from './SubmissionView';
