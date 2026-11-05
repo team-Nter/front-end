@@ -37,13 +37,13 @@ export function useCreateSubmission(challengeId) {
 
   return useMutation({
     mutationFn: (data) => createSubmission(challengeId, data),
-    onSuccess: () => {
+    onSuccess: (submission) => {
       return queryClient.invalidateQueries({
         queryKey: queryKeys.participations.detail(
-+          challengeId,
-+          submission.author.id,
-+        ),
-+        exact: true,
+          challengeId,
+          submission.author.id,
+        ),
+        exact: true,
         refetchType: 'all',
       });
     },
