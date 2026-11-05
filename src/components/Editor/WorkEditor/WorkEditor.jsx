@@ -53,10 +53,6 @@ export default function WorkEditor({ id }) {
     }
     const content = editor.getHTML();
 
-    console.log('title', title);
-    console.log('content', content);
-    console.log(id);
-
     mutate(
       {
         title,
