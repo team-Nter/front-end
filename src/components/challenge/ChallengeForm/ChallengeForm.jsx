@@ -34,7 +34,7 @@ export default function ChallengeForm() {
   const { mutate, isPending, error, reset } = useCreateChallenge();
 
   const today = new Date().toLocaleDateString('sv-SE', {
-    timeZone: 'Aisa/Seoul',
+    timeZone: 'Asia/Seoul',
   });
 
   const handleChange = (event) => {
