@@ -6,7 +6,7 @@ const ERROR_MESSAGES = {
   409: '이미 존재하는 작업물입니다.',
 };
 
-export function postSubmissonErrorMessage(error) {
+export function postSubmissionErrorMessage(error) {
   return (
     ERROR_MESSAGES[error?.status] ??
     (error?.status >= 500
