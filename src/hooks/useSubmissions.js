@@ -6,7 +6,12 @@ import {
   getSubmissions,
 } from '@/api/submissions';
 import { queryKeys } from '@/constants/query-keys';
-import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 
 const NON_RETRYABLE_STATUS = [400, 401, 403, 404];
 
@@ -28,7 +33,12 @@ export function useSubmissions({ challengeId, page, pageSize }) {
 }
 
 export function useCreateSubmission(challengeId) {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (data) => createSubmission(challengeId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['participations'] });
+    },
   });
 }

@@ -33,7 +33,6 @@ export default function Page() {
     <QueryBoundary
       resetKeys={[challengeId, userId]}
       loadingFallback={<p>작업물을 불러오는 중...</p>}
-      onError={(error) => alert(getSubmissionErrorMessage(error))}
       errorFallback={({ error, retry }) => (
         <div role="alert">
           <p>{getSubmissionErrorMessage(error)}</p>
