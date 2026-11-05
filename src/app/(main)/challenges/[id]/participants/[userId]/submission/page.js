@@ -1,7 +1,7 @@
 'use client';
 
 import { SubmissionView } from '@/components/Submission/SubmissionView';
-import { getSubmissionErrorMessage } from '@/utils/submissionError';
+import { getSubmissionErrorMessage } from '@/utils/SubmissionError/submissionJoinError';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { useParams } from 'next/navigation';
 import { useParticipation } from '@/hooks/useParticipation';

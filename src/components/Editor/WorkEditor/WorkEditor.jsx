@@ -14,7 +14,7 @@ import { CodeBlock } from '../CodeBlockComponent';
 import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
-import { getSubmissionErrorMessage } from '@/utils/submissionError';
+import { postSubmissonErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 
 const lowlight = createLowlight(common);
 
@@ -60,7 +60,7 @@ export default function WorkEditor({ id }) {
       },
       {
         onError: (error) => {
-          alert(getSubmissionErrorMessage(error));
+          alert(postSubmissonErrorMessage(error));
         },
         onSuccess: (submission) => {
           router.push(
