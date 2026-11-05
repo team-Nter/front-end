@@ -39,7 +39,11 @@ export function useCreateSubmission(challengeId) {
     mutationFn: (data) => createSubmission(challengeId, data),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ['participations'],
+        queryKey: queryKeys.participations.detail(
++          challengeId,
++          submission.author.id,
++        ),
++        exact: true,
         refetchType: 'all',
       });
     },
