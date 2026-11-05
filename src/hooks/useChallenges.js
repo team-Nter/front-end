@@ -1,6 +1,6 @@
 'use client';
 
-import { createChallenge } from '@/api/challenge';
+import { createChallenge } from '@/api/challenges';
 import { queryKeys } from '@/constants/query-keys';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

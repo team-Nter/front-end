@@ -1,8 +1,8 @@
 export const CHALLENGE_CATEGORY_OPTIONS = [
   { value: 'NEXTJS', label: 'Next.js' },
   { value: 'MODERN_JS', label: 'Modern JS' },
-  { value: 'API', label: 'api' },
-  { value: 'WEB', label: 'web' },
+  { value: 'API', label: 'API' },
+  { value: 'WEB', label: 'Web' },
   { value: 'CAREER', label: 'Career' },
 ];
 

@@ -1,4 +1,4 @@
-import { ChallengeForm } from '@/components/Challenge/ChallengeForm';
+import { ChallengeForm } from '@/components/challenge/ChallengeForm';
 
 export default function Page() {
   return <ChallengeForm />;

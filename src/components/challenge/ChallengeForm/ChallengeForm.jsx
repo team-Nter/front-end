@@ -31,11 +31,15 @@ export default function ChallengeForm() {
   const router = useRouter();
   const [values, setValues] = useState(INITIAL_VALUES);
   const [errors, setErrors] = useState({});
-  const { mutate, isPending, error } = useCreateChallenge();
+  const { mutate, isPending, error, reset } = useCreateChallenge();
+
+  const today = new Date().toLocaleDateString('sv-SE');
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setValues((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev));
+    if (error) reset();
   };
 
   const handleSubmit = (event) => {
@@ -100,7 +104,7 @@ export default function ChallengeForm() {
           aria-describedby={errors.category ? 'category-error' : undefined}
         >
           <option value="" disabled hidden>
-            카테고리
+            분야를 선택해주세요
           </option>
           {CHALLENGE_CATEGORY_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -132,7 +136,7 @@ export default function ChallengeForm() {
           }
         >
           <option value="" disabled hidden>
-            카테고리
+            문서 타입을 선택해주세요
           </option>
           {DOCUMENT_TYPE_OPTIONS.map((option) => (
             <option key={option.value} value={option.value}>
@@ -154,6 +158,7 @@ export default function ChallengeForm() {
         value={values.deadline}
         onChange={handleChange}
         error={errors.deadline}
+        min={today}
       />
 
       <Input
