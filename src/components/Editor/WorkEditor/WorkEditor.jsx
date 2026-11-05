@@ -1,16 +1,16 @@
 'use client';
 
 import { ReactNodeViewRenderer, useEditor } from '@tiptap/react';
-import EditHeader from '../EditHeader/EditHeader';
+import { EditHeader } from '../EditHeader';
 import { Tiptap } from '../Tiptap';
 import StarterKit from '@tiptap/starter-kit';
-import Input from '../Input/Input';
+import { Input } from '../Input';
 import { useState } from 'react';
 import * as styles from './WorkEditor.css';
 import TextAlign from '@tiptap/extension-text-align';
 import { BackgroundColor, TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
-import CodeBlockComponent from '../CodeBlockComponent/CodeblockComponent';
+import { CodeBlock } from '../CodeBlockComponent';
 import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
@@ -31,7 +31,7 @@ export default function WorkEditor({ id }) {
       BackgroundColor,
       CodeBlockLowlight.extend({
         addNodeView() {
-          return ReactNodeViewRenderer(CodeBlockComponent);
+          return ReactNodeViewRenderer(CodeBlock);
         },
       }).configure({
         lowlight,

@@ -1,1 +1,1 @@
-export * from './WorkEditor';
+export { default as WorkEditor } from './WorkEditor';
