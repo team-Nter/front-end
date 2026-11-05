@@ -30,7 +30,7 @@ async function challengeRequest({
   return res.json();
 }
 
-export async function getChallenges(params = {}, { signal } = {}) {
+export function getChallenges(params = {}, { signal } = {}) {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
@@ -39,21 +39,11 @@ export async function getChallenges(params = {}, { signal } = {}) {
     searchParams.set(key, Array.isArray(value) ? value.join(',') : value);
   });
 
-  const res = await fetch(`${API_BASE_URL}/challenges?${searchParams}`, {
+  return challengeRequest({
+    path: `/challenges?${searchParams}`,
     signal,
+    errorMessage: '챌린지 목록을 불러오지 못했습니다.',
   });
-
-  if (!res.ok) {
-    const resError = await res.json().catch(() => null);
-    const error = new Error(
-      resError?.message ?? '챌린지 목록을 불러오지 못했습니다.',
-    );
-    error.status = res.status;
-
-    throw error;
-  }
-
-  return res.json();
 }
 
 export function createChallenge(body) {
