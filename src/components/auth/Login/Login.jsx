@@ -61,7 +61,7 @@ export default function Login() {
       <Link href="/">
         <Image
           src={logo}
-          alt="독스루 로고"
+          alt="독스루 홈"
           width={289}
           height={72}
           loading="eager"
