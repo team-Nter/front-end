@@ -16,7 +16,7 @@ export function HeaderAuthAction({ loginHref }) {
         <Button
           variant="secondary"
           onClick={() => refetch()}
-          aria-label="로그인 상태 다시 확인"
+          aria-label="로그인 상태 다시 시도"
         >
           다시 시도
         </Button>
