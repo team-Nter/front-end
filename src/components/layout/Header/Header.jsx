@@ -4,17 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 import logo from '@/assets/images/logo.svg';
-import { Button } from '@/components/common/Button';
 import { Container } from '@/components/layout/Container';
 import * as styles from './Header.css.js';
-import { useMe } from '@/hooks/useMe.js';
-import { UserMenu } from '@/components/auth/commonAuth/UserMenu.jsx';
+import { HeaderAuthAction } from '@/components/auth/commonAuth/HeaderAuthAction.jsx';
 
 export default function Header({ className, loginHref = '/login', children }) {
-  const { data: user, isPending, isError } = useMe();
-  const isLoggedIn = !!user?.id;
-  const isAuthUnknown = isPending || isError;
-
   return (
     <header className={clsx(styles.header, className)}>
       <Container className={styles.inner}>
@@ -31,18 +25,7 @@ export default function Header({ className, loginHref = '/login', children }) {
         </div>
 
         <div className={styles.actions}>
-          {isAuthUnknown ? null : isLoggedIn ? (
-            <UserMenu user={user} />
-          ) : (
-            <Button
-              as={Link}
-              href={loginHref}
-              variant="secondary"
-              className={styles.login}
-            >
-              로그인
-            </Button>
-          )}
+          <HeaderAuthAction loginHref={loginHref} />
         </div>
       </Container>
     </header>
