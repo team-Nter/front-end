@@ -6,8 +6,10 @@ export function useChallengeListParams() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const pageParam = Number(searchParams.get('page'));
+
   const params = {
-    page: Number(searchParams.get('page')) || 1,
+    page: Number.isInteger(pageParam) && pageParam > 0 ? pageParam : 1,
     category: searchParams.get('category') ?? undefined,
     documentType: searchParams.get('documentType') ?? undefined,
     progress: searchParams.get('progress') ?? undefined,
