@@ -4,13 +4,13 @@ import Image from 'next/image';
 import * as styles from './UserMenu.css.js';
 import { useLogout } from '@/hooks/useLogout.js';
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link.js';
+import Link from 'next/link';
 
 export function UserMenu({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const { mutate: handleLogout, isPending } = useLogout();
+  const { mutate: handleLogout, isPending, isPaused } = useLogout();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -37,6 +37,12 @@ export function UserMenu({ user }) {
       : user.grade === 'EXPERT'
         ? '전문가'
         : '일반';
+
+  const getLogoutLabel = () => {
+    if (isPending && isPaused) return '연결 대기 중...';
+    if (isPending) return '로그아웃 중...';
+    return '로그아웃';
+  };
 
   return (
     <div className={styles.userMenu} ref={menuRef}>
@@ -80,7 +86,7 @@ export function UserMenu({ user }) {
             onClick={() => handleLogout()}
             disabled={isPending}
           >
-            {isPending ? '로그아웃 중...' : '로그아웃'}
+            {getLogoutLabel()}
           </button>
         </div>
       )}
