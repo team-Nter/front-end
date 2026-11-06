@@ -10,7 +10,17 @@ export function UserMenu({ user }) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
-  const { mutate: handleLogout, isPending, isPaused } = useLogout();
+  const {
+    mutate: handleLogout,
+    isPending,
+    isPaused,
+    isError,
+    reset,
+  } = useLogout();
+
+  useEffect(() => {
+    if (!isOpen && isError) reset();
+  }, [isOpen, isError, reset]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -90,6 +100,10 @@ export function UserMenu({ user }) {
           >
             {getLogoutLabel()}
           </button>
+
+          {isError && (
+            <p role="alert">로그아웃에 실패했어요. 다시 시도해 주세요.</p>
+          )}
         </div>
       )}
     </div>
