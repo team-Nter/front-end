@@ -41,7 +41,7 @@ export function useCreateSubmission(challengeId) {
       return queryClient.invalidateQueries({
         queryKey: queryKeys.participations.detail(
           challengeId,
-          submission.author.id,
+          String(submission.author.id),
         ),
         exact: true,
         refetchType: 'all',

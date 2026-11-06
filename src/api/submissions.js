@@ -4,7 +4,10 @@ export async function getSubmission(submissionId) {
   const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`);
 
   if (!response.ok) {
-    const error = new Error('작업물을 불러오지 못했습니다.');
+    const body = await response.json().catch(() => null);
+    const message =
+      typeof body?.message === 'string' ? body.message.trim() : '';
+    const error = new Error(message);
     error.status = response.status;
     throw error;
   }
@@ -18,7 +21,10 @@ export async function getSubmissions(challengeId, page = 1, pageSize = 10) {
   );
 
   if (!response.ok) {
-    const error = new Error('작업물을 불러오지 못했습니다.');
+    const body = await response.json().catch(() => null);
+    const message =
+      typeof body?.message === 'string' ? body.message.trim() : '';
+    const error = new Error(message || '작업물 목록을 불러오지 못했습니다.');
     error.status = response.status;
     throw error;
   }
@@ -39,7 +45,9 @@ export async function createSubmission(challengeId, data) {
 
   if (!response.ok) {
     const body = await response.json().catch(() => null);
-    const error = new Error(body?.message ?? '작업물을 제출하지 못했습니다.');
+    const message =
+      typeof body?.message === 'string' ? body.message.trim() : '';
+    const error = new Error(message);
     error.status = response.status;
     throw error;
   }
@@ -56,7 +64,10 @@ export async function updateSubmission(submissionId, data) {
   });
 
   if (!response.ok) {
-    const error = new Error('작업물을 불러오지 못했습니다.');
+    const body = await response.json().catch(() => null);
+    const message =
+      typeof body?.message === 'string' ? body.message.trim() : '';
+    const error = new Error(message || '작업물을 수정하지 못했습니다.');
     error.status = response.status;
     throw error;
   }
@@ -71,7 +82,10 @@ export async function deleteSubmission(submissionId) {
   });
 
   if (!response.ok) {
-    const error = new Error('작업물을 불러오지 못했습니다.');
+    const body = await response.json().catch(() => null);
+    const message =
+      typeof body?.message === 'string' ? body.message.trim() : '';
+    const error = new Error(message || '작업물을 삭제하지 못했습니다.');
     error.status = response.status;
     throw error;
   }
