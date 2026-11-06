@@ -43,6 +43,7 @@ export function getMyChallenges({
   page = 1,
   pageSize = 10,
   keyword,
+  status,
 } = {}) {
   const params = new URLSearchParams({
     type,
@@ -50,6 +51,7 @@ export function getMyChallenges({
     pageSize: String(pageSize),
   });
   if (keyword) params.set('keyword', keyword);
+  if (status) params.set('status', status);
 
   return challengeRequest({
     path: `/users/me/challenges?${params}`,
