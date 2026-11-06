@@ -3,10 +3,7 @@
 import Image from 'next/image';
 import { Button } from '@/components/common/Button';
 import Link from 'next/link';
-import pendingChip from '@/assets/icons/chip-status-pending.svg';
-import approvedChip from '@/assets/icons/chip-status-fulfilled.svg';
-import rejectedChip from '@/assets/icons/chip-status-rejected.svg';
-import canceledChip from '@/assets/icons/chip-status-delete.svg';
+import { ChallengeChip } from '../ChallengeChip';
 import searchIcon from '@/assets/icons/search.svg';
 import plusIcon from '@/assets/icons/plus.svg';
 import * as styles from './MyChallengeTable.css';
@@ -21,13 +18,6 @@ import ChallengeTab from '../ChallengeTab/ChallengeTab';
 import { Pagination } from '@/components/common/Pagination';
 import { useState } from 'react';
 import { useMyChallenges } from '@/hooks/useChallenges';
-
-const STATUS_CHIPS = {
-  PENDING: pendingChip,
-  APPROVED: approvedChip,
-  REJECTED: rejectedChip,
-  CANCELED: canceledChip,
-};
 
 function formatShortDate(value) {
   return new Date(value)
@@ -57,7 +47,8 @@ export default function MyChallengeTable() {
       <div className={styles.titleRow}>
         <h1 className={styles.title}>나의 챌린지</h1>
         <Button as={Link} href="/challenges/new" className={styles.newButton}>
-          신규 챌린지 신청<Image src={plusIcon} alt="" />
+          신규 챌린지 신청
+          <Image src={plusIcon} alt="" />
         </Button>
       </div>
 
@@ -145,13 +136,7 @@ export default function MyChallengeTable() {
                 <div>{formatShortDate(challenge.createdAt)}</div>
                 <div>{formatShortDate(challenge.deadlineAt)}</div>
                 <div>
-                  <Image
-                    src={STATUS_CHIPS[challenge.status]}
-                    alt={getOptionLabel(
-                      CHALLENGE_STATUS_OPTIONS,
-                      challenge.status,
-                    )}
-                  />
+                  <ChallengeChip kind="status" value={challenge.status} />
                 </div>
               </ChallengeRow>
             ))}
