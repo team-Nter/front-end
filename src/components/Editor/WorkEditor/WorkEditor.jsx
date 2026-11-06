@@ -16,19 +16,20 @@ import { useRouter } from 'next/navigation';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
 import { postSubmissionErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 import { useSubmissionDraft } from '@/hooks/useSubmissionDraft';
+import DraftConfirmModal from '../DraftPopUp/DraftConfirmModal';
+import { DraftPopUp } from '../DraftPopUp';
 
 const lowlight = createLowlight(common);
 
 export default function WorkEditor({ id, userId }) {
-  const [title, setTitle] = useState('');
   const router = useRouter();
   const { mutate, isPending } = useCreateSubmission(id);
-  const { saveDraft } = useSubmissionDraft(id, userId);
-  // 불러오기 하려면 일단 임시저장 버튼 떠야하고, 근데 처음부터 일단 여기 왔을 때 임시저장항목있는지 알려야 하니까
-  // 여기서 불러오기 해야함. -> 그래서 이제 그 버튼 누르면 불러오기 값들 보여지면서 하면 될 거 같고
-  // 임시저장 버튼 누르면 임시저장 써지면 되고,
-  // 저기 불러오기 뜬 곳에서 불러오기 x 버튼있는 곳에 저거 deleteQuery 주면 됫듯
-  // 그럼 여기서 작업해야할 거는 임시저장 버튼 누를 때 써지는 거.
+  const { draftQuery, saveDraft, deleteDraft } = useSubmissionDraft(id, userId);
+  const draft = draftQuery.data.submissionDraft;
+  const [title, setTitle] = useState('');
+  const [draftPromptDismissed, setDraftPromptDismissed] = useState(false);
+
+  const [showSaveConfirm, setShowSaveConfirm] = useState(false);
 
   const editor = useEditor({
     extensions: [
@@ -79,20 +80,43 @@ export default function WorkEditor({ id, userId }) {
   };
 
   const handleSaveDraft = () => {
-    if (!editor || saveDraft.isPending) return;
+    if (!editor || saveDraft.isPending || deleteDraft.isPending) return;
 
     if (!title.trim() && !editor.getText().trim()) {
       alert('제목이나 내용을 입력해주세요.');
       return;
     }
 
+    saveDraft.reset();
+    setShowSaveConfirm(true);
+  };
+
+  const confirmSaveDraft = () => {
+    if (!editor || saveDraft.isPending || deleteDraft.isPending) return;
     saveDraft.mutate(
       { title, content: editor.getHTML() },
       {
-        onSuccess: () => alert('임시저장했어요.'),
-        onError: (error) => alert(error.message),
+        onSuccess: () => {
+          setShowSaveConfirm(false);
+          setDraftPromptDismissed(true);
+          alert('임시저장했어요.');
+        },
       },
     );
+  };
+
+  const handleLoadDraft = () => {
+    if (!editor || !draft || deleteDraft.isPending || saveDraft.isPending)
+      return;
+    setTitle(draft.title ?? '');
+    editor.commands.setContent(draft.content);
+    setDraftPromptDismissed(true);
+  };
+
+  const handleDeleteDraft = () => {
+    if (!draft || deleteDraft.isPending || saveDraft.isPending) return;
+
+    deleteDraft.mutate();
   };
 
   return (
@@ -101,11 +125,42 @@ export default function WorkEditor({ id, userId }) {
         challengeId={id}
         handleSubmit={handleSubmit}
         handleSaveDraft={handleSaveDraft}
+        isDeletingDraft={deleteDraft.isPending}
         isSubmitting={isPending}
         isSaving={saveDraft.isPending}
       />
       <Input title={title} onChange={(event) => setTitle(event.target.value)} />
       <Tiptap editor={editor} />
+      {showSaveConfirm && (
+        <DraftConfirmModal
+          question={
+            <>
+              현재까지 작업한 내용을
+              <br />
+              저장하시겠습니까?
+            </>
+          }
+          cancelLabel="아니오"
+          confirmLabel={saveDraft.isPending ? '저장 중…' : '네'}
+          busy={saveDraft.isPending}
+          error={saveDraft.error}
+          onCancel={() => setShowSaveConfirm(false)}
+          onConfirm={confirmSaveDraft}
+        />
+      )}
+      {draft && !draftPromptDismissed && (
+        <DraftPopUp
+          disabled={deleteDraft.isPending || saveDraft.isPending}
+          hasEditorInput={() =>
+            Boolean(title.length || (editor && !editor.isEmpty))
+          }
+          onDismiss={() => setDraftPromptDismissed(true)}
+          deleting={deleteDraft.isPending}
+          deleteError={deleteDraft.error}
+          handleLoadDraft={handleLoadDraft}
+          handleDeleteDraft={handleDeleteDraft}
+        />
+      )}
     </main>
   );
 }

@@ -17,6 +17,7 @@ export default function EditHeader({
   handleSaveDraft,
   isSubmitting,
   isSaving,
+  isDeletingDraft,
 }) {
   const router = useRouter();
   const [exitPath, setExitPath] = useState(null);
@@ -63,7 +64,7 @@ export default function EditHeader({
             variant="secondary"
             aria-label="임시저장"
             onClick={handleSaveDraft}
-            disabled={isSaving}
+            disabled={isSaving || isDeletingDraft}
           >
             {isSaving ? '저장 중' : '임시저장'}
           </Button>
