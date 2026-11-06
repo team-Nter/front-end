@@ -8,8 +8,13 @@ export default function CodeBlockComponent({
   updateAttributes,
   extension,
 }) {
+  // 무슨 언어 썼는지 기록하기
   const languages = extension.options.lowlight.listLanguages();
-
+  const currentLanguage = node.attrs.language;
+  const options =
+    currentLanguage && !languages.includes(currentLanguage)
+      ? [...languages, currentLanguage]
+      : languages;
   return (
     <NodeViewWrapper className={styles.container}>
       <div className={styles.header} contentEditable={false}>
@@ -24,7 +29,7 @@ export default function CodeBlockComponent({
           }
         >
           <option value="">자동 감지</option>
-          {languages.map((language) => (
+          {options.map((language) => (
             <option key={language} value={language}>
               {language}
             </option>
