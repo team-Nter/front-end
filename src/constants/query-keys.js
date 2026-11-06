@@ -25,4 +25,12 @@ export const queryKeys = {
     ],
     detail: (submissionId) => ['submissions', 'detail', submissionId],
   },
+  submissionDraft: {
+    detail: (challengeId, userId) => [
+      'submissionDraft',
+      'detail',
+      challengeId,
+      userId,
+    ],
+  },
 };

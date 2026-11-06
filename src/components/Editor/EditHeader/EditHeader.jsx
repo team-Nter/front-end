@@ -14,7 +14,9 @@ import * as styles from './EditHeader.css';
 export default function EditHeader({
   challengeId,
   handleSubmit,
+  handleSaveDraft,
   isSubmitting,
+  isSaving,
 }) {
   const router = useRouter();
   const [exitPath, setExitPath] = useState(null);
@@ -59,9 +61,11 @@ export default function EditHeader({
           <Button
             className={clsx(styles.action, styles.save)}
             variant="secondary"
-            title="임시저장은 준비 중입니다"
+            aria-label="임시저장"
+            onClick={handleSaveDraft}
+            disabled={isSaving}
           >
-            임시저장
+            {isSaving ? '저장 중' : '임시저장'}
           </Button>
           <Button
             className={styles.action}
