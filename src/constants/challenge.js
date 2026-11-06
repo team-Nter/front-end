@@ -26,3 +26,13 @@ export const MY_CHALLENGE_TABS = [
 
 export const getOptionLabel = (options, value) =>
   options.find((option) => option.value === value)?.label ?? value;
+
+export const PROGRESS_OPTIONS = [
+  { value: 'open', label: '진행중' },
+  { value: 'closed', label: '마감' },
+];
+
+export const CHALLENGE_SORT_OPTIONS = [
+  { value: 'createdAtDesc', label: '최신순' },
+  { value: 'createdAtAsc', label: '오래된순' },
+];

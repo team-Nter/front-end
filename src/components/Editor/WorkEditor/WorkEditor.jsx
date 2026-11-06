@@ -13,12 +13,15 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { CodeBlock } from '../CodeBlockComponent';
 import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
+import { useCreateSubmission } from '@/hooks/useSubmissions';
+import { postSubmissionErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 
 const lowlight = createLowlight(common);
 
 export default function WorkEditor({ id }) {
   const [title, setTitle] = useState('');
   const router = useRouter();
+  const { mutate, isPending } = useCreateSubmission(id);
 
   const editor = useEditor({
     extensions: [
@@ -42,7 +45,7 @@ export default function WorkEditor({ id }) {
   });
 
   const handleSubmit = () => {
-    if (!editor) return;
+    if (!editor || isPending) return;
 
     if (!title.trim() || !editor.getText().trim()) {
       alert('제목과 내용을 모두 입력해주세요');
@@ -50,14 +53,31 @@ export default function WorkEditor({ id }) {
     }
     const content = editor.getHTML();
 
-    console.log('title', title);
-    console.log('content', content);
-    router.push(`/submissions/${id}`);
+    mutate(
+      {
+        title,
+        content,
+      },
+      {
+        onError: (error) => {
+          alert(postSubmissionErrorMessage(error));
+        },
+        onSuccess: (submission) => {
+          router.push(
+            `/challenges/${id}/participants/${submission.author.id}/submission`,
+          );
+        },
+      },
+    );
   };
 
   return (
     <main className={styles.page}>
-      <EditHeader challengeId={id} handleSubmit={handleSubmit} />
+      <EditHeader
+        challengeId={id}
+        handleSubmit={handleSubmit}
+        isSubmitting={isPending}
+      />
       <Input title={title} onChange={(event) => setTitle(event.target.value)} />
       <Tiptap editor={editor} />
     </main>

@@ -18,6 +18,15 @@ const NON_RETRYABLE_STATUS = [400, 401, 403, 404];
 const retry = (failureCount, error) =>
   !NON_RETRYABLE_STATUS.includes(error?.status) && failureCount < 3;
 
+export function useChallenges(params, options) {
+  return useQuery({
+    queryKey: queryKeys.challenges.list(params),
+    queryFn: ({ signal }) => getChallenges(params, { signal }),
+    placeholderData: keepPreviousData,
+    ...options,
+  });
+}
+
 export function useCreateChallenge() {
   const queryClient = useQueryClient();
 
