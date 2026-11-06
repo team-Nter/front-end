@@ -54,3 +54,39 @@ export function createChallenge(body) {
     errorMessage: '챌린지 신청 중 문제가 발생했습니다.',
   });
 }
+
+export function getMyChallenges({
+  type,
+  page = 1,
+  pageSize = 10,
+  keyword,
+  status,
+} = {}) {
+  const params = new URLSearchParams({
+    type,
+    page: String(page),
+    pageSize: String(pageSize),
+  });
+  if (keyword) params.set('keyword', keyword);
+  if (status) params.set('status', status);
+
+  return challengeRequest({
+    path: `/users/me/challenges?${params}`,
+    errorMessage: '나의 챌린지를 불러오지 못했습니다.',
+  });
+}
+
+export function getMyChallengeDetail(challengeId) {
+  return challengeRequest({
+    path: `/users/me/challenges/${challengeId}`,
+    errorMessage: '챌린지 정보를 불러오지 못했습니다.',
+  });
+}
+
+export function cancelMyChallenge(challengeId) {
+  return challengeRequest({
+    path: `/challenges/${challengeId}`,
+    method: 'DELETE',
+    errorMessage: '챌린지 신청을 취소하지 못했습니다.',
+  });
+}
