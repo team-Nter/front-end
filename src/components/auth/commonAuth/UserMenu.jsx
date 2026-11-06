@@ -73,13 +73,15 @@ export function UserMenu({ user }) {
 
           <div className={styles.divider} />
 
-          <Link
-            href="/my-challenges"
-            className={styles.menuItem}
-            onClick={() => setIsOpen(false)}
-          >
-            나의 챌린지
-          </Link>
+          {user.role === 'ADMIN' ? null : (
+            <Link
+              href="/my-challenges"
+              className={styles.menuItem}
+              onClick={() => setIsOpen(false)}
+            >
+              나의 챌린지
+            </Link>
+          )}
           <button
             type="button"
             className={styles.menuItem}
