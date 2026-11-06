@@ -30,6 +30,8 @@ export default function Login() {
     isPaused,
   } = useRedirectIfLoggedIn();
 
+  const hasLoggedOutCache = user === null;
+
   const loginMutation = useLogin({
     onError: (error) => {
       if (error.status === 401) {
@@ -40,10 +42,6 @@ export default function Login() {
       console.error(error);
     },
   });
-
-  if (isLoggedIn) return null;
-  if (isPending && isPaused) return <OfflineNotice />;
-  if (isPending) return null;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,11 +56,15 @@ export default function Login() {
     loginMutation.mutate({ email: trimmedEmail, password });
   };
 
-  if (isError && user === undefined) {
+  if (isPending && isPaused) return <OfflineNotice />;
+  if (isPending) return null;
+
+  if (isError && !hasLoggedOutCache) {
     return (
       <AuthCheckErrorModal isFetching={isFetching} onRetry={() => refetch()} />
     );
   }
+  if (isLoggedIn) return null;
 
   return (
     <>
@@ -71,7 +73,7 @@ export default function Login() {
         <Link href="/">
           <Image
             src={logo}
-            alt="독스루 로고"
+            alt="독스루 홈"
             width={289}
             height={72}
             loading="eager"

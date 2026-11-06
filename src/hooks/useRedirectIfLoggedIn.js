@@ -20,12 +20,17 @@ export function useRedirectIfLoggedIn() {
   });
 
   const isLoggedIn = !!user;
+  const role = user?.role;
 
   useEffect(() => {
-    if (!isFetching && isLoggedIn) {
-      router.replace('/'); // 차후 챌린지 목록으로 수정
+    if (!isFetching && isLoggedIn && !isError) {
+      if (role === 'ADMIN') {
+        router.replace('/admin/challenges');
+      } else {
+        router.replace('/challenges');
+      }
     }
-  }, [router, isFetching, isLoggedIn]);
+  }, [router, isFetching, isLoggedIn, role, isError]);
 
   return {
     user,

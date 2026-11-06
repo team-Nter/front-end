@@ -12,16 +12,14 @@ export function useLogout() {
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: async () => {
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.users.info(),
-      });
-
+      await queryClient.cancelQueries();
       queryClient.setQueryData(queryKeys.users.info(), null);
 
-      router.replace('/login');
+      router.replace('/');
     },
     onError: (error) => {
       alert('로그아웃 되지 않았습니다. 다시 시도해주세요.');
+      console.error(error);
     },
   });
 
