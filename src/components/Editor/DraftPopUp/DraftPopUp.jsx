@@ -12,6 +12,7 @@ export default function DraftPopUp({
   onDismiss,
   disabled,
   deleting,
+  loading,
   deleteError,
 }) {
   const [confirmation, setConfirmation] = useState(null);
@@ -23,7 +24,7 @@ export default function DraftPopUp({
   };
 
   const cancel = () => {
-    if (!deleting) setConfirmation(null);
+    if (!deleting && !loading) setConfirmation(null);
   };
 
   return (
@@ -35,6 +36,7 @@ export default function DraftPopUp({
             className={styles.close}
             aria-label="임시저장 안내 닫기"
             onClick={onDismiss}
+            disabled={loading}
           >
             <Image src={closeIcon} alt="" width={24} height={24} />
           </button>
@@ -55,7 +57,7 @@ export default function DraftPopUp({
             disabled={disabled}
             onClick={requestLoad}
           >
-            불러오기
+            {loading ? '불러오는 중…' : '불러오기'}
           </Button>
         </div>
       </aside>
@@ -67,9 +69,15 @@ export default function DraftPopUp({
               : '작성 중인 내용을 임시저장한 글로 바꿀까요?'
           }
           confirmLabel={
-            isDelete ? (deleting ? '삭제 중…' : '삭제하기') : '불러오기'
+            isDelete
+              ? deleting
+                ? '삭제 중…'
+                : '삭제하기'
+              : loading
+                ? '불러오는 중…'
+                : '불러오기'
           }
-          busy={deleting}
+          busy={deleting || loading}
           disabled={disabled}
           error={isDelete ? deleteError : null}
           onCancel={cancel}

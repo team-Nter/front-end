@@ -12,29 +12,40 @@ import {
 
 export function useSubmissionDraft(challengeId, userId) {
   const queryClient = useQueryClient();
+  const queryKey = queryKeys.submissionDraft.detail(challengeId, userId);
+  const cancelDraftQuery = () =>
+    queryClient.cancelQueries({ queryKey, exact: true });
 
   const draftQuery = useSuspenseQuery({
-    queryKey: queryKeys.submissionDraft.detail(challengeId, userId),
+    queryKey,
     queryFn: () => getSubmissionDraft(challengeId),
+    networkMode: 'always',
+    retry: false,
   });
 
   const saveDraft = useMutation({
+    networkMode: 'always',
+    onMutate: cancelDraftQuery,
     mutationFn: ({ title, content }) =>
       createSubmissionDraft(challengeId, { title, content }),
-    onSuccess: (result) =>
-      queryClient.setQueryData(
-        queryKeys.submissionDraft.detail(challengeId, userId),
-        result,
-      ),
+    onSuccess: async (result) => {
+      // 저장 중 새로 시작한 백그라운드 조회도 취소한다.
+      await cancelDraftQuery();
+      queryClient.setQueryData(queryKey, result);
+    },
   });
 
   const deleteDraft = useMutation({
-    mutationFn: () => deleteSubmissionDraft(challengeId, userId),
-    onSuccess: () =>
-      queryClient.setQueryData(
-        queryKeys.submissionDraft.detail(challengeId, userId),
-        { challengeId, submissionDraft: null },
-      ),
+    networkMode: 'always',
+    onMutate: cancelDraftQuery,
+    mutationFn: () => deleteSubmissionDraft(challengeId),
+    onSuccess: async () => {
+      await cancelDraftQuery();
+      queryClient.setQueryData(queryKey, {
+        challengeId,
+        submissionDraft: null,
+      });
+    },
   });
 
   return { draftQuery, saveDraft, deleteDraft };
