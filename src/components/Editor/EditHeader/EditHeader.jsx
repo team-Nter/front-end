@@ -14,7 +14,11 @@ import * as styles from './EditHeader.css';
 export default function EditHeader({
   challengeId,
   handleSubmit,
+  handleSaveDraft,
   isSubmitting,
+  isSaving,
+  isDeletingDraft,
+  isLoadingDraft,
 }) {
   const router = useRouter();
   const [exitPath, setExitPath] = useState(null);
@@ -59,14 +63,15 @@ export default function EditHeader({
           <Button
             className={clsx(styles.action, styles.save)}
             variant="secondary"
-            title="임시저장은 준비 중입니다"
+            onClick={handleSaveDraft}
+            disabled={isSaving || isDeletingDraft || isLoadingDraft}
           >
-            임시저장
+            {isSaving ? '저장 중' : '임시저장'}
           </Button>
           <Button
             className={styles.action}
             onClick={handleSubmit}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isLoadingDraft}
           >
             {isSubmitting ? '제출 중' : '제출하기'}
           </Button>
