@@ -4,11 +4,7 @@ import {
   getSubmissionDraft,
 } from '@/api/submission-draft';
 import { queryKeys } from '@/constants/query-keys';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export function useSubmissionDraft(challengeId, userId) {
   const queryClient = useQueryClient();
@@ -16,7 +12,7 @@ export function useSubmissionDraft(challengeId, userId) {
   const cancelDraftQuery = () =>
     queryClient.cancelQueries({ queryKey, exact: true });
 
-  const draftQuery = useSuspenseQuery({
+  const draftQuery = useQuery({
     queryKey,
     queryFn: () => getSubmissionDraft(challengeId),
     networkMode: 'always',

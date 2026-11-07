@@ -25,7 +25,7 @@ export default function WorkEditor({ id, userId }) {
   const router = useRouter();
   const { mutate, isPending } = useCreateSubmission(id);
   const { draftQuery, saveDraft, deleteDraft } = useSubmissionDraft(id, userId);
-  const draft = draftQuery.data.submissionDraft;
+  const draft = draftQuery.data?.submissionDraft;
   const [title, setTitle] = useState('');
   const [draftPromptDismissed, setDraftPromptDismissed] = useState(false);
 
@@ -131,7 +131,7 @@ export default function WorkEditor({ id, userId }) {
         return;
       }
 
-      const latestDraft = result.data.submissionDraft;
+      const latestDraft = result.data?.submissionDraft;
       if (!latestDraft) {
         alert('불러올 임시저장 글이 없어요.');
         return;
@@ -164,6 +164,25 @@ export default function WorkEditor({ id, userId }) {
         isSaving={saveDraft.isPending}
         isLoadingDraft={isLoadingDraft}
       />
+      {draftQuery.isPending && (
+        <p role="status">임시저장한 글을 확인하는 중이에요.</p>
+      )}
+      {draftQuery.isError && (
+        <div role="alert">
+          <p>임시저장한 글을 조회하지 못했어요.</p>
+          <button
+            type="button"
+            disabled={
+              draftQuery.isFetching ||
+              saveDraft.isPending ||
+              deleteDraft.isPending
+            }
+            onClick={() => draftQuery.refetch()}
+          >
+            {draftQuery.isFetching ? '다시 확인하는 중…' : '다시 시도'}
+          </button>
+        </div>
+      )}
       <div inert={isLoadingDraft} aria-busy={isLoadingDraft}>
         <Input
           title={title}
