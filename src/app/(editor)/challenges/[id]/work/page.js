@@ -17,7 +17,7 @@ export default function Page() {
   return (
     <QueryBoundary
       resetKeys={[id, user.id]}
-      loadingFallback={<p>사용자 정보를 불러오는 중이에요.</p>}
+      loadingFallback={<p>임시저장한 글을 확인하는 중이에요.</p>}
       errorFallback={({ retry }) => (
         <div role="alert">
           <p>임시저장한 글을 조회하지 못했어요.</p>
@@ -27,7 +27,7 @@ export default function Page() {
         </div>
       )}
     >
-      <WorkEditor key={`${id}:${user.id}`} id={id} userId={userId} />
+      <WorkEditor key={`${id}:${user.id}`} id={id} userId={user.id} />
     </QueryBoundary>
   );
 }
