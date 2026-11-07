@@ -83,7 +83,7 @@ export default function WorkEditor({ id, userId }) {
 
   const handleSaveDraft = () => {
     if (loadingDraftRef.current) return;
-    if (!editor || saveDraft.isPending || deleteDraft.isPending || isSubmitting)
+    if (!editor || saveDraft.isPending || deleteDraft.isPending || isPending)
       return;
 
     if (!title.trim() && !editor.getText().trim()) {
