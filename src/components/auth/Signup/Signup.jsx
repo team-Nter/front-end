@@ -32,11 +32,13 @@ export default function Signup() {
     isPaused,
   } = useRedirectIfLoggedIn();
 
+  const hasLoggedOutCache = user === null;
+
   const signupMutation = useSignup({
     onError: (error) => {
       if (error.status === 409) {
-        const isNicknameConflict = error.message.includes('닉네임');
-        const isEmailConflict = error.message.includes('이메일');
+        const isNicknameConflict = error.message?.includes('닉네임');
+        const isEmailConflict = error.message?.includes('이메일');
 
         if (isNicknameConflict) {
           setErrors((prev) => ({
@@ -68,10 +70,6 @@ export default function Signup() {
     },
   });
 
-  if (isLoggedIn) return null;
-  if (isPending && isPaused) return <OfflineNotice />;
-  if (isPending) return null;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const trimmedEmail = email.trim();
@@ -92,11 +90,15 @@ export default function Signup() {
     });
   };
 
-  if (isError && user === undefined) {
+  if (isPending && isPaused) return <OfflineNotice />;
+  if (isPending) return null;
+
+  if (isError && !hasLoggedOutCache) {
     return (
       <AuthCheckErrorModal isFetching={isFetching} onRetry={() => refetch()} />
     );
   }
+  if (isLoggedIn) return null;
 
   return (
     <>
@@ -105,7 +107,7 @@ export default function Signup() {
         <Link href="/">
           <Image
             src={logo}
-            alt="독스루 로고"
+            alt="독스루 홈"
             width={289}
             height={72}
             loading="eager"
