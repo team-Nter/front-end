@@ -83,7 +83,8 @@ export default function WorkEditor({ id, userId }) {
 
   const handleSaveDraft = () => {
     if (loadingDraftRef.current) return;
-    if (!editor || saveDraft.isPending || deleteDraft.isPending) return;
+    if (!editor || saveDraft.isPending || deleteDraft.isPending || isSubmitting)
+      return;
 
     if (!title.trim() && !editor.getText().trim()) {
       alert('제목이나 내용을 입력해주세요.');
