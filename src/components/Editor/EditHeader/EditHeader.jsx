@@ -63,7 +63,6 @@ export default function EditHeader({
           <Button
             className={clsx(styles.action, styles.save)}
             variant="secondary"
-            aria-label="임시저장"
             onClick={handleSaveDraft}
             disabled={isSaving || isDeletingDraft || isLoadingDraft}
           >
