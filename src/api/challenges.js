@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '@/constants/api';
 
-async function challengeRequest({
+export async function challengeRequest({
   path,
   method = 'GET',
   body,
@@ -43,6 +43,14 @@ export function getChallenges(params = {}, { signal } = {}) {
     path: `/challenges?${searchParams}`,
     signal,
     errorMessage: '챌린지 목록을 불러오지 못했습니다.',
+  });
+}
+
+export function getChallengeDetail(challengeId, { signal } = {}) {
+  return challengeRequest({
+    path: `/challenges/${challengeId}`,
+    signal,
+    errorMessage: '챌린지 정보를 불러오지 못했습니다.',
   });
 }
 
