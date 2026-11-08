@@ -14,6 +14,14 @@ export const queryKeys = {
     all: () => ['challenges'],
     my: () => ['challenges', 'my'],
     list: (params) => ['challenges', 'list', params],
+    detail: (challengeId) => ['challenges', 'detail', String(challengeId)],
+    participants: (challengeId, params) => [
+      'challenges',
+      'detail',
+      String(challengeId),
+      'participants',
+      params,
+    ],
   },
   submissions: {
     list: (challengeId, page, pageSize) => [
