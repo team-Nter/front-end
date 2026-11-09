@@ -7,6 +7,9 @@ import {
   getChallenges,
   getMyChallengeDetail,
   getMyChallenges,
+  getAdminChallenges,
+  getAdminChallengeDetail,
+  moderateChallenge,
 } from '@/api/challenges';
 import { queryKeys } from '@/constants/query-keys';
 import {
@@ -81,5 +84,48 @@ export function useCancelMyChallenge() {
         queryKey: queryKeys.challenges.myLists(),
       });
     },
+  });
+}
+
+export function useAdminChallenges({ status, sort, page, pageSize, keyword }) {
+  const { data: me } = useMe();
+  const params = { status, sort, page, pageSize, keyword };
+
+  return useQuery({
+    queryKey: queryKeys.challenges.adminList(me?.id, params),
+    queryFn: ({ signal }) => getAdminChallenges(params, { signal }),
+    enabled: me?.role === 'ADMIN',
+    placeholderData: (previousData, previousQuery) => {
+      const prevUserId = previousQuery?.queryKey[3];
+      return prevUserId === me?.id ? previousData : undefined;
+    },
+    retry,
+  });
+}
+
+export function useAdminChallengeDetail(
+  challengeId,
+  { status, sort, keyword },
+) {
+  const { data: me } = useMe();
+  const params = { status, sort, keyword };
+
+  return useQuery({
+    queryKey: queryKeys.challenges.adminDetail(me?.id, challengeId, params),
+    queryFn: () => getAdminChallengeDetail(challengeId, params),
+    enabled: me?.role === 'ADMIN' && Boolean(challengeId),
+    retry,
+  });
+}
+
+export function useModerateChallenge() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: moderateChallenge,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.challenges.all(),
+      }),
   });
 }
