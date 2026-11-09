@@ -6,10 +6,12 @@ import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
 import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
+import { Like } from '@/components/like';
 
 export function SubmissionView({ participation, submission = null }) {
   const author = submission?.author ?? participation.user;
   const likeCount = submission?.likeCount ?? 0;
+  const isLiked = submission?.isLiked ?? false;
   const updatedAt = submission?.updatedAt;
   const date = formatDate(updatedAt, '/');
 
@@ -23,12 +25,13 @@ export function SubmissionView({ participation, submission = null }) {
             {author?.nickname ?? '알 수 없는 사용자'}
           </span>
         </div>
-        <span className={styles.likes} aria-label={`좋아요 ${likeCount}개`}>
-          <span className={styles.heart} aria-hidden="true">
-            ♡
-          </span>
-          {likeCount.toLocaleString('ko-KR')}
-        </span>
+        {submission && (
+          <Like
+            submissionId={submission.id}
+            likeCount={likeCount}
+            isLiked={isLiked}
+          />
+        )}
         {date && (
           <time className={styles.date} dateTime={updatedAt}>
             {date}
