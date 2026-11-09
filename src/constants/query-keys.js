@@ -23,6 +23,23 @@ export const queryKeys = {
       String(challengeId),
     ],
     list: (params) => ['challenges', 'list', params],
+    admin: () => ['challenges', 'admin'],
+    adminLists: () => ['challenges', 'admin', 'list'],
+    adminList: (userId, params) => [
+      'challenges',
+      'admin',
+      'list',
+      userId,
+      params,
+    ],
+    adminDetail: (userId, challengeId, params) => [
+      'challenges',
+      'admin',
+      'detail',
+      userId,
+      String(challengeId),
+      params,
+    ],
   },
   submissions: {
     list: (challengeId, page, pageSize) => [

@@ -36,3 +36,12 @@ export const CHALLENGE_SORT_OPTIONS = [
   { value: 'createdAtDesc', label: '최신순' },
   { value: 'createdAtAsc', label: '오래된순' },
 ];
+
+export const ADMIN_SORT_OPTIONS = [
+  { value: 'createdAtAsc', label: '신청 시간 빠른순' },
+  { value: 'createdAtDesc', label: '신청 시간 느린순' },
+  { value: 'deadlineAsc', label: '마감 기한 빠른순' },
+  { value: 'deadlineDesc', label: '마감 기한 느린순' },
+];
+
+export const ADMIN_DEFAULT_SORT = 'createdAtAsc';
