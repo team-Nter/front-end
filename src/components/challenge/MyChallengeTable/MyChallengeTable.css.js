@@ -2,7 +2,7 @@ import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 import { media } from '@/styles/media';
 
-// 화면 전체 (피그마: 위 여백 24, 아래 여백 넉넉히)
+// 화면 전체
 export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
@@ -18,7 +18,7 @@ export const titleRow = style({
   marginBottom: 8,
 });
 
-// "나의 챌린지" (피그마: 20px SemiBold #262626)
+// "나의 챌린지"
 export const title = style({
   margin: 0,
   fontSize: 20,
@@ -26,7 +26,7 @@ export const title = style({
   color: vars.color.gray[800],
 });
 
-// "신규 챌린지 신청 +" (피그마: 높이 40, 둥근 알약 모양, 검정 배경, 16px 흰 글자)
+// "신규 챌린지 신청
 export const newButton = style({
   height: 40,
   padding: '0 13px 0 16px',
@@ -44,7 +44,7 @@ export const newButton = style({
   },
 });
 
-// 검색창 + 상태 드롭다운 줄 (피그마: 둘 사이 12, 아래 표까지 24)
+// 검색창 + 상태 드롭다운 줄
 export const toolbar = style({
   display: 'flex',
   gap: 12,
@@ -58,7 +58,7 @@ export const search = style({
   minWidth: 0,
 });
 
-// 돋보기 아이콘 (피그마: 왼쪽 8, 위 8, 24x24)
+// 돋보기 아이콘
 export const searchIcon = style({
   position: 'absolute',
   top: 8,
@@ -66,7 +66,7 @@ export const searchIcon = style({
   pointerEvents: 'none',
 });
 
-// 검색 input (피그마: 높이 40, 모서리 20, 테두리 #E5E5E5, 16px)
+// 검색 input
 export const searchInput = style({
   boxSizing: 'border-box',
   width: '100%',
@@ -87,7 +87,7 @@ export const searchInput = style({
   },
 });
 
-// 상태 드롭다운 (피그마: 너비 140, 높이 40, 모서리 32, 테두리 #D4D4D4)
+// 상태 드롭다운
 export const statusSelect = style({
   boxSizing: 'border-box',
   width: 140,
@@ -121,7 +121,7 @@ export const tableScroll = style({
   overflowX: 'auto',
 });
 
-// 검은 머리글 줄 (피그마: 높이 36, 배경 #262626, 모서리 8, 13px Medium 흰색)
+// 검은 머리글 줄
 export const header = style({
   minWidth: 720,
   height: 36,
@@ -141,7 +141,7 @@ export const list = style({
   listStyle: 'none',
 });
 
-// 데이터 한 줄 (피그마: 높이 48, 흰 배경, 아래 테두리 #D4D4D4, 13px 회색)
+// 데이터 한 줄
 export const item = style({
   height: 48,
   backgroundColor: vars.color.brand.white,
@@ -159,7 +159,7 @@ export const titleLink = style({
   },
 });
 
-// 페이지네이션 (피그마: 표 끝에서 40 아래, 가운데)
+// 페이지네이션
 export const pagination = style({
   marginTop: 40,
 });
@@ -170,6 +170,41 @@ export const message = style({
   textAlign: 'center',
   fontSize: 16,
   color: vars.color.gray[500],
+});
+
+// "도전 계속하기
+export const continueButton = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  height: 33,
+  padding: '0 8px 0 16px',
+  border: `1px solid ${vars.color.gray[800]}`,
+  borderRadius: 999,
+  backgroundColor: vars.color.brand.white,
+  color: vars.color.gray[800],
+  fontSize: 14,
+  fontWeight: 700,
+  textDecoration: 'none',
+  whiteSpace: 'nowrap',
+});
+
+// "내 작업물 보기 📄" (도전 계속하기와 같은 모양, 테두리 없이 연회색 바탕)
+export const mySubmissionButton = style([
+  continueButton,
+  {
+    border: 'none',
+    backgroundColor: vars.color.gray[50],
+  },
+]);
+
+export const cardList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 24,
+  margin: 0,
+  padding: 0,
+  listStyle: 'none',
 });
 
 // 칸 안 글자가 넘치면 … 으로 자르기 (긴 제목 대비)
