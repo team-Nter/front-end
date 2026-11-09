@@ -2,11 +2,14 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/common/Button';
 import { deleteSubmissionDraftError } from '@/utils/SubmissionDraftError/deleteSubmissionDraftError';
+import { getSubmissionDraftError } from '@/utils/SubmissionDraftError/getSubmissionDraftError';
 import DraftConfirmModal from './DraftConfirmModal';
 import closeIcon from '@/assets/icons/draft-close.svg';
 import * as styles from './DraftPopUp.css';
 
 export default function DraftPopUp({
+  challengeId,
+  loadError,
   handleLoadDraft,
   handleDeleteDraft,
   hasEditorInput,
@@ -83,7 +86,14 @@ export default function DraftPopUp({
           errorMessage={
             isDelete && deleteError
               ? deleteSubmissionDraftError(deleteError)
-              : null
+              : !isDelete && loadError?.status === 404
+                ? getSubmissionDraftError(loadError)
+                : null
+          }
+          recoveryHref={
+            (isDelete ? deleteError : loadError)?.status === 404
+              ? `/challenges/${challengeId}`
+              : undefined
           }
           onCancel={cancel}
           onConfirm={isDelete ? handleDeleteDraft : handleLoadDraft}

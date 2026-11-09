@@ -13,6 +13,7 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { CodeBlock } from '../CodeBlockComponent';
 import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
 import { postSubmissionErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 import { useSubmissionDraft } from '@/hooks/useSubmissionDraft';
@@ -34,6 +35,8 @@ export default function WorkEditor({ id, userId }) {
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [isLoadingDraft, setIsLoadingDraft] = useState(false);
   const loadingDraftRef = useRef(false);
+  const isBusy =
+    isPending || saveDraft.isPending || deleteDraft.isPending || isLoadingDraft;
 
   const editor = useEditor({
     extensions: [
@@ -57,7 +60,7 @@ export default function WorkEditor({ id, userId }) {
   });
 
   const handleSubmit = () => {
-    if (!editor || isPending || loadingDraftRef.current) return;
+    if (!editor || isBusy || loadingDraftRef.current) return;
 
     if (!title.trim() || !editor.getText().trim()) {
       alert('제목과 내용을 모두 입력해주세요');
@@ -84,9 +87,7 @@ export default function WorkEditor({ id, userId }) {
   };
 
   const handleSaveDraft = () => {
-    if (loadingDraftRef.current) return;
-    if (!editor || saveDraft.isPending || deleteDraft.isPending || isPending)
-      return;
+    if (!editor || isBusy || loadingDraftRef.current) return;
 
     if (!title.trim() && !editor.getText().trim()) {
       alert('제목이나 내용을 입력해주세요.');
@@ -98,8 +99,7 @@ export default function WorkEditor({ id, userId }) {
   };
 
   const confirmSaveDraft = () => {
-    if (loadingDraftRef.current) return;
-    if (!editor || saveDraft.isPending || deleteDraft.isPending) return;
+    if (!editor || isBusy || loadingDraftRef.current) return;
     saveDraft.mutate(
       { title, content: editor.getHTML() },
       {
@@ -113,14 +113,7 @@ export default function WorkEditor({ id, userId }) {
   };
 
   const handleLoadDraft = async () => {
-    if (
-      !editor ||
-      loadingDraftRef.current ||
-      isPending ||
-      deleteDraft.isPending ||
-      saveDraft.isPending
-    )
-      return;
+    if (!editor || isBusy || loadingDraftRef.current) return;
 
     loadingDraftRef.current = true;
     setIsLoadingDraft(true);
@@ -151,8 +144,7 @@ export default function WorkEditor({ id, userId }) {
   };
 
   const handleDeleteDraft = () => {
-    if (loadingDraftRef.current) return;
-    if (!draft || deleteDraft.isPending || saveDraft.isPending) return;
+    if (!draft || isBusy || loadingDraftRef.current) return;
 
     deleteDraft.mutate();
   };
@@ -163,10 +155,9 @@ export default function WorkEditor({ id, userId }) {
         challengeId={id}
         handleSubmit={handleSubmit}
         handleSaveDraft={handleSaveDraft}
-        isDeletingDraft={deleteDraft.isPending}
+        isBusy={isBusy}
         isSubmitting={isPending}
         isSaving={saveDraft.isPending}
-        isLoadingDraft={isLoadingDraft}
       />
       {draftQuery.isPending && (
         <p role="status">임시저장한 글을 확인하는 중이에요.</p>
@@ -174,17 +165,22 @@ export default function WorkEditor({ id, userId }) {
       {draftQuery.isError && (
         <div role="alert">
           <p>{getSubmissionDraftError(draftQuery.error)}</p>
-          <button
-            type="button"
-            disabled={
-              draftQuery.isFetching ||
-              saveDraft.isPending ||
-              deleteDraft.isPending
-            }
-            onClick={() => draftQuery.refetch()}
-          >
-            {draftQuery.isFetching ? '다시 확인하는 중…' : '다시 시도'}
-          </button>
+          {draftQuery.error?.status === 404 ? (
+            <Link
+              href={`/challenges/${id}`}
+              style={{ textDecoration: 'underline' }}
+            >
+              챌린지로 돌아가기
+            </Link>
+          ) : (
+            <button
+              type="button"
+              disabled={draftQuery.isFetching || isBusy}
+              onClick={() => draftQuery.refetch()}
+            >
+              {draftQuery.isFetching ? '다시 확인하는 중…' : '다시 시도'}
+            </button>
+          )}
         </div>
       )}
       <div inert={isLoadingDraft} aria-busy={isLoadingDraft}>
@@ -211,8 +207,12 @@ export default function WorkEditor({ id, userId }) {
           cancelLabel="아니오"
           confirmLabel={saveDraft.isPending ? '저장 중…' : '네'}
           busy={saveDraft.isPending}
+          disabled={isBusy}
           errorMessage={
             saveDraft.error ? saveSubmissionDraftError(saveDraft.error) : null
+          }
+          recoveryHref={
+            saveDraft.error?.status === 404 ? `/challenges/${id}` : undefined
           }
           onCancel={() => setShowSaveConfirm(false)}
           onConfirm={confirmSaveDraft}
@@ -220,12 +220,9 @@ export default function WorkEditor({ id, userId }) {
       )}
       {draft && !draftPromptDismissed && (
         <DraftPopUp
-          disabled={
-            deleteDraft.isPending ||
-            saveDraft.isPending ||
-            isPending ||
-            isLoadingDraft
-          }
+          challengeId={id}
+          loadError={draftQuery.error}
+          disabled={isBusy}
           loading={isLoadingDraft}
           hasEditorInput={() =>
             Boolean(title.length || (editor && !editor.isEmpty))

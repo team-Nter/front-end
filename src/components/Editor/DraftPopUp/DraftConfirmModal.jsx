@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
 import confirmIcon from '@/assets/icons/draft-confirm.svg';
@@ -11,6 +12,7 @@ export default function DraftConfirmModal({
   busy,
   disabled = busy,
   errorMessage,
+  recoveryHref,
   onCancel,
   onConfirm,
 }) {
@@ -34,13 +36,19 @@ export default function DraftConfirmModal({
         >
           {cancelLabel}
         </Button>
-        <Button
-          className={styles.choice}
-          disabled={disabled}
-          onClick={onConfirm}
-        >
-          {confirmLabel}
-        </Button>
+        {recoveryHref ? (
+          <Link href={recoveryHref} style={{ textDecoration: 'underline' }}>
+            챌린지로 돌아가기
+          </Link>
+        ) : (
+          <Button
+            className={styles.choice}
+            disabled={disabled}
+            onClick={onConfirm}
+          >
+            {confirmLabel}
+          </Button>
+        )}
       </div>
     </Modal>
   );

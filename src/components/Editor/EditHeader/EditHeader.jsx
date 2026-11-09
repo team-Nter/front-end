@@ -17,8 +17,7 @@ export default function EditHeader({
   handleSaveDraft,
   isSubmitting,
   isSaving,
-  isDeletingDraft,
-  isLoadingDraft,
+  isBusy,
 }) {
   const router = useRouter();
   const [exitPath, setExitPath] = useState(null);
@@ -64,14 +63,14 @@ export default function EditHeader({
             className={clsx(styles.action, styles.save)}
             variant="secondary"
             onClick={handleSaveDraft}
-            disabled={isSaving || isDeletingDraft || isLoadingDraft}
+            disabled={isBusy}
           >
             {isSaving ? '저장 중' : '임시저장'}
           </Button>
           <Button
             className={styles.action}
             onClick={handleSubmit}
-            disabled={isSubmitting || isLoadingDraft}
+            disabled={isBusy}
           >
             {isSubmitting ? '제출 중' : '제출하기'}
           </Button>
