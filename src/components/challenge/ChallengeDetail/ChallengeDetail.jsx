@@ -7,6 +7,7 @@ import { useMe } from '@/hooks/useMe';
 import { useJoinChallenge } from '@/hooks/useParticipation';
 import { getChallengeAction } from '@/utils';
 import { ChallengeParticipants } from '@/components/challenge/ChallengeParticipants';
+import { BestSubmissions } from '@/components/challenge/BestSubmissions';
 
 const ID_PATTERN = /^[1-9]\d*$/;
 const NOT_FOUND_STATUS = [400, 404];
@@ -110,6 +111,7 @@ function ChallengeDetailContent({ challengeId }) {
       </p>
 
       <ChallengeAction challenge={challenge} />
+      <BestSubmissions submissions={challenge.bestSubmissions} />
       <ChallengeParticipants key={challenge.id} challengeId={challenge.id} />
     </section>
   );
