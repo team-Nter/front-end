@@ -25,4 +25,7 @@ export const queryKeys = {
     ],
     detail: (submissionId) => ['submissions', 'detail', submissionId],
   },
+  submissionLike: {
+    detail: (submissionId) => ['submissionLike', 'detail', submissionId],
+  },
 };

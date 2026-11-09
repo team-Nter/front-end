@@ -17,6 +17,8 @@ export async function putSubmissionLike(submissionId) {
     error.status = response.status;
     throw error;
   }
+
+  return response.json();
 }
 
 export async function deleteSubmissionLike(submissionId) {
@@ -36,4 +38,6 @@ export async function deleteSubmissionLike(submissionId) {
     error.status = response.status;
     throw error;
   }
+
+  return response.json();
 }
