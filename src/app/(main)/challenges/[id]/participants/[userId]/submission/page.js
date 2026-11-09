@@ -3,6 +3,7 @@
 import { getSubmissionErrorMessage } from '@/utils/SubmissionError/submissionJoinError';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { useParticipation } from '@/hooks/useParticipation';
 import { useSubmission } from '@/hooks/useSubmissions';
 import { SubmissionView } from '@/components/submission/SubmissionView/SubmissionView';
@@ -36,6 +37,14 @@ export default function Page() {
       errorFallback={({ error, retry }) => (
         <div role="alert">
           <p>{getSubmissionErrorMessage(error)}</p>
+          {error?.status === 404 && (
+            <Link
+              href={`/challenges/${challengeId}`}
+              style={{ textDecoration: 'underline' }}
+            >
+              챌린지로 돌아가기
+            </Link>
+          )}
           {![400, 401, 403, 404, 409].includes(error.status) && (
             <button type="button" onClick={retry}>
               다시 시도
