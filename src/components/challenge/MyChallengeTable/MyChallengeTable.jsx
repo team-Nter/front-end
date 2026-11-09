@@ -51,16 +51,13 @@ export default function MyChallengeTable() {
   const [searchInput, setSearchInput] = useState('');
   const [keyword, setKeyword] = useState('');
   const [status, setStatus] = useState('');
+  const [prevType, setPrevType] = useState(type);
 
   const isRequested = type === 'requested';
-  const { data: me } = useMe();
+  const { data: me, isPending: isMePending } = useMe();
 
   const handleTabChange = (nextType) => {
     router.replace(`${pathname}?type=${nextType}`, { scroll: false });
-    setPage(1);
-    setSearchInput('');
-    setKeyword('');
-    setStatus('');
   };
 
   const handleSearch = (event) => {
@@ -68,6 +65,14 @@ export default function MyChallengeTable() {
     setKeyword(searchInput.trim());
     setPage(1);
   };
+
+  if (prevType !== type) {
+    setPrevType(type);
+    setPage(1);
+    setSearchInput('');
+    setKeyword('');
+    setStatus('');
+  }
 
   const { data, isPending, isError, error } = useMyChallenges({
     type,
@@ -149,7 +154,13 @@ export default function MyChallengeTable() {
         )}
       </div>
 
-      {isPending ? (
+      {isMePending ? (
+        <p className={styles.message}>불러오는 중...</p>
+      ) : !me ? (
+        <p className={styles.message}>
+          로그인이 필요해요. <Link href="/login">로그인하기</Link>
+        </p>
+      ) : isPending ? (
         <p className={styles.message}>불러오는 중...</p>
       ) : isError ? (
         <p role="alert" className={styles.message}>
