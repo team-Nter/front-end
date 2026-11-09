@@ -7,7 +7,11 @@ export function useAuthMutation(mutationFn, { onError } = {}) {
   return useMutation({
     mutationFn: mutationFn,
     onSuccess: async (user) => {
-      await queryClient.cancelQueries({ queryKey: queryKeys.users.info() });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: queryKeys.users.info() }),
+        queryClient.cancelQueries({ queryKey: ['submissions', 'detail'] }),
+      ]);
+      queryClient.removeQueries({ queryKey: ['submissions', 'detail'] });
       queryClient.setQueryData(queryKeys.users.info(), user);
     },
     onError,

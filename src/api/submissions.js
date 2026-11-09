@@ -20,6 +20,9 @@ export async function getSubmission(submissionId) {
 export async function getSubmissions(challengeId, page = 1, pageSize = 10) {
   const response = await fetch(
     `${API_BASE_URL}/challenges/${challengeId}/submissions?page=${page}&pageSize=${pageSize}`,
+    {
+      credentials: 'include',
+    },
   );
 
   if (!response.ok) {

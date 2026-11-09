@@ -11,6 +11,9 @@ export function useSubmissionLike(submissionId) {
   const cancelDetailQuery = () =>
     queryClient.cancelQueries({ queryKey, exact: true });
 
+  const invalidateDetailQuery = () =>
+    queryClient.invalidateQueries({ queryKey, exact: true });
+
   const updateLike = (result, isLiked) => {
     const challengeId = queryClient.getQueryData(queryKey)?.challengeId;
 
@@ -36,12 +39,14 @@ export function useSubmissionLike(submissionId) {
     mutationFn: () => putSubmissionLike(submissionId),
     onMutate: cancelDetailQuery,
     onSuccess: (result) => updateLike(result, true),
+    onError: invalidateDetailQuery,
   });
 
   const deleteLikes = useMutation({
     mutationFn: () => deleteSubmissionLike(submissionId),
     onMutate: cancelDetailQuery,
     onSuccess: (result) => updateLike(result, false),
+    onError: invalidateDetailQuery,
   });
 
   return { putLikes, deleteLikes };
