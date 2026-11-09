@@ -88,3 +88,46 @@ export function cancelMyChallenge(challengeId) {
     errorMessage: '챌린지 신청을 취소하지 못했습니다.',
   });
 }
+
+export function getAdminChallenges(
+  { status = [], sort, page = 1, pageSize = 10, keyword } = {},
+  { signal } = {},
+) {
+  const params = new URLSearchParams({
+    page: String(page),
+    pageSize: String(pageSize),
+  });
+  if (status.length) params.set('status', status.join(','));
+  if (sort) params.set('sort', sort);
+  if (keyword) params.set('keyword', keyword);
+
+  return challengeRequest({
+    path: `/challenges/admin?${params}`,
+    signal,
+    errorMessage: '신청 목록을 불러오지 못했습니다.',
+  });
+}
+
+export function getAdminChallengeDetail(
+  challengeId,
+  { status = [], sort, keyword } = {},
+) {
+  const params = new URLSearchParams();
+  if (status.length) params.set('status', status.join(','));
+  if (sort) params.set('sort', sort);
+  if (keyword) params.set('keyword', keyword);
+
+  return challengeRequest({
+    path: `/challenges/admin/${challengeId}?${params}`,
+    errorMessage: '신청 정보를 불러오지 못했습니다.',
+  });
+}
+
+export function moderateChallenge({ challengeId, action, reason }) {
+  return challengeRequest({
+    path: `/challenges/${challengeId}/moderation-logs`,
+    method: 'POST',
+    body: { action, reason },
+    errorMessage: '처리 중 문제가 발생했습니다.',
+  });
+}
