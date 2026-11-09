@@ -16,6 +16,8 @@ import { useRouter } from 'next/navigation';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
 import { postSubmissionErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 import { useSubmissionDraft } from '@/hooks/useSubmissionDraft';
+import { getSubmissionDraftError } from '@/utils/SubmissionDraftError/getSubmissionDraftError';
+import { saveSubmissionDraftError } from '@/utils/SubmissionDraftError/saveSubmissionDraftError';
 import DraftConfirmModal from '../DraftPopUp/DraftConfirmModal';
 import { DraftPopUp } from '../DraftPopUp';
 
@@ -127,7 +129,7 @@ export default function WorkEditor({ id, userId }) {
       if (editor.isDestroyed) return;
 
       if (result.isError) {
-        alert('임시저장한 글을 불러오지 못했어요. 다시 시도해주세요.');
+        alert(getSubmissionDraftError(result.error));
         return;
       }
 
@@ -140,6 +142,8 @@ export default function WorkEditor({ id, userId }) {
       setTitle(latestDraft.title ?? '');
       editor.commands.setContent(latestDraft.content);
       setDraftPromptDismissed(true);
+    } catch (error) {
+      alert(getSubmissionDraftError(error));
     } finally {
       loadingDraftRef.current = false;
       setIsLoadingDraft(false);
@@ -169,7 +173,7 @@ export default function WorkEditor({ id, userId }) {
       )}
       {draftQuery.isError && (
         <div role="alert">
-          <p>임시저장한 글을 조회하지 못했어요.</p>
+          <p>{getSubmissionDraftError(draftQuery.error)}</p>
           <button
             type="button"
             disabled={
@@ -194,15 +198,22 @@ export default function WorkEditor({ id, userId }) {
         <DraftConfirmModal
           question={
             <>
-              현재까지 작업한 내용을
-              <br />
-              저장하시겠습니까?
+              <p>
+                현재까지 작업한 내용을
+                <br />
+                저장하시겠습니까?
+              </p>
+              <p className={styles.draftSaveDescription}>
+                기존 임시저장한 글이 지금 내용으로 바뀌게 됩니다.
+              </p>
             </>
           }
           cancelLabel="아니오"
           confirmLabel={saveDraft.isPending ? '저장 중…' : '네'}
           busy={saveDraft.isPending}
-          error={saveDraft.error}
+          errorMessage={
+            saveDraft.error ? saveSubmissionDraftError(saveDraft.error) : null
+          }
           onCancel={() => setShowSaveConfirm(false)}
           onConfirm={confirmSaveDraft}
         />

@@ -10,7 +10,7 @@ export default function DraftConfirmModal({
   confirmLabel,
   busy,
   disabled = busy,
-  error,
+  errorMessage,
   onCancel,
   onConfirm,
 }) {
@@ -24,7 +24,7 @@ export default function DraftConfirmModal({
       <h2 id="draft-question" className={styles.question}>
         {question}
       </h2>
-      {error && <p role="alert">{error.message}</p>}
+      {errorMessage && <p role="alert">{errorMessage}</p>}
       <div className={styles.actions}>
         <Button
           variant="secondary"

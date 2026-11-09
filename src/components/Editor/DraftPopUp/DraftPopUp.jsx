@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/common/Button';
+import { deleteSubmissionDraftError } from '@/utils/SubmissionDraftError/deleteSubmissionDraftError';
 import DraftConfirmModal from './DraftConfirmModal';
 import closeIcon from '@/assets/icons/draft-close.svg';
 import * as styles from './DraftPopUp.css';
@@ -79,7 +80,11 @@ export default function DraftPopUp({
           }
           busy={deleting || loading}
           disabled={disabled}
-          error={isDelete ? deleteError : null}
+          errorMessage={
+            isDelete && deleteError
+              ? deleteSubmissionDraftError(deleteError)
+              : null
+          }
           onCancel={cancel}
           onConfirm={isDelete ? handleDeleteDraft : handleLoadDraft}
         />
