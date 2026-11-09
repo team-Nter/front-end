@@ -1,5 +1,6 @@
 'use client';
 
+import { useMe } from '@/hooks/useMe';
 import {
   createChallenge,
   cancelMyChallenge,
@@ -40,33 +41,41 @@ export function useCreateChallenge() {
 }
 
 export function useMyChallenges({ type, page, pageSize, keyword, status }) {
+  const { data: me } = useMe();
   const params = { type, page, pageSize, keyword, status };
 
   return useQuery({
-    queryKey: queryKeys.challenges.myList(params),
+    queryKey: queryKeys.challenges.myList(me?.id, params),
     queryFn: ({ signal }) => getMyChallenges(params, { signal }),
-    placeholderData: keepPreviousData,
+    enabled: Boolean(me),
+    placeholderData: (previousData, previousQuery) => {
+      const [, , , prevUserId, prevParams] = previousQuery?.queryKey ?? [];
+      const isSameView = prevUserId === me?.id && prevParams?.type === type;
+      return isSameView ? previousData : undefined;
+    },
     retry,
   });
 }
 
 export function useMyChallengeDetail(challengeId) {
+  const { data: me } = useMe();
   return useQuery({
-    queryKey: queryKeys.challenges.myDetail(challengeId),
+    queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
     queryFn: () => getMyChallengeDetail(challengeId),
-    enabled: Boolean(challengeId),
+    enabled: Boolean(me?.id && challengeId),
     retry,
   });
 }
 
 export function useCancelMyChallenge() {
   const queryClient = useQueryClient();
+  const { data: me } = useMe();
 
   return useMutation({
     mutationFn: cancelMyChallenge,
     onSuccess: (_data, challengeId) => {
       queryClient.removeQueries({
-        queryKey: queryKeys.challenges.myDetail(challengeId),
+        queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
       });
       return queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.myLists(),
