@@ -7,7 +7,7 @@ import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
 import { Popover } from '@/components/common/Popover';
 import { Textarea } from '@/components/common/Textarea';
-import { useModerateChallenge } from '@/hooks/useModerateChallenge';
+import { useModerateChallenge } from '@/hooks/useChallenges';
 import menuIcon from '@/assets/icons/menu.svg';
 
 const REASON_MAX_LENGTH = 255;
@@ -19,9 +19,10 @@ export default function ChallengeAdminMenu({ challengeId }) {
   const {
     mutate: moderate,
     isPending,
+    isSuccess,
     error,
     reset,
-  } = useModerateChallenge(challengeId);
+  } = useModerateChallenge();
 
   const openModal = (closeMenu) => {
     closeMenu();
@@ -39,7 +40,7 @@ export default function ChallengeAdminMenu({ challengeId }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     moderate(
-      { action: 'CANCEL', reason: reason.trim() },
+      { challengeId, action: 'CANCEL', reason: reason.trim() },
       { onSuccess: () => router.replace('/challenges') },
     );
   };
@@ -81,8 +82,11 @@ export default function ChallengeAdminMenu({ challengeId }) {
             >
               취소
             </Button>
-            <Button type="submit" disabled={!reason.trim() || isPending}>
-              {isPending ? '삭제 중...' : '전송'}
+            <Button
+              type="submit"
+              disabled={!reason.trim() || isPending || isSuccess}
+            >
+              {isPending || isSuccess ? '삭제 중...' : '전송'}
             </Button>
           </form>
         </Modal>
