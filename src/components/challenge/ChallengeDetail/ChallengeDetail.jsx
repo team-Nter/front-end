@@ -1,8 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useChallengeDetail } from '@/hooks/useChallengeDetail';
+import { useMe } from '@/hooks/useMe';
+import { useJoinChallenge } from '@/hooks/useParticipation';
+import { getChallengeAction } from '@/utils';
 
 const ID_PATTERN = /^[1-9]\d*$/;
 const NOT_FOUND_STATUS = [400, 404];
@@ -12,6 +15,58 @@ function NotFound() {
     <div>
       <p>챌린지를 찾을 수 없어요.</p>
       <Link href="/challenges">챌린지 목록으로</Link>
+    </div>
+  );
+}
+
+function ChallengeAction({ challenge }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { data: me } = useMe();
+  const {
+    mutate: join,
+    isPending: isJoining,
+    error: joinError,
+  } = useJoinChallenge(challenge.id);
+
+  const action = getChallengeAction(challenge, me);
+  const workHref = `/challenges/${challenge.id}/work`;
+
+  const handleJoin = () => {
+    join(undefined, { onSuccess: () => router.push(workHref) });
+  };
+
+  return (
+    <div>
+      <a href={challenge.sourceUrl} target="_blank" rel="noopener noreferrer">
+        원문 보기
+      </a>
+
+      {action === 'viewSubmission' && (
+        <Link
+          href={`/challenges/${challenge.id}/participants/${me.id}/submission`}
+        >
+          내 작업물 보기
+        </Link>
+      )}
+      {action === 'continue' && <Link href={workHref}>도전 계속하기</Link>}
+      {(action === 'closed' || action === 'full') && (
+        <button type="button" disabled>
+          작업 도전하기
+        </button>
+      )}
+      {action === 'login' && (
+        <Link href={`/login?redirect=${encodeURIComponent(pathname)}`}>
+          작업 도전하기
+        </Link>
+      )}
+      {action === 'join' && (
+        <button type="button" onClick={handleJoin} disabled={isJoining}>
+          {isJoining ? '참여중...' : '작업 도전하기'}
+        </button>
+      )}
+
+      {joinError && <p role="alert">{joinError.message}</p>}
     </div>
   );
 }
@@ -52,15 +107,8 @@ function ChallengeDetailContent({ challengeId }) {
       <p>
         인원: {challenge.participations}/{challenge.maxParticipants}
       </p>
-      <a href={challenge.sourceUrl} target="_blank" rel="noopener noreferrer">
-        원문 보기
-      </a>
 
-      {/* 확인용: 버튼 상태 작업(커밋 4) 때 지울 예정 */}
-      <p>
-        myParticipation: {JSON.stringify(challenge.myParticipation)} /
-        mySubmissionId: {String(challenge.mySubmissionId)}
-      </p>
+      <ChallengeAction challenge={challenge} />
     </section>
   );
 }
