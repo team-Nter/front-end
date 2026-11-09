@@ -55,13 +55,10 @@ export function createChallenge(body) {
   });
 }
 
-export function getMyChallenges({
-  type,
-  page = 1,
-  pageSize = 10,
-  keyword,
-  status,
-} = {}) {
+export function getMyChallenges(
+  { type, page = 1, pageSize = 10, keyword, status } = {},
+  { signal } = {},
+) {
   const params = new URLSearchParams({
     type,
     page: String(page),
@@ -72,6 +69,7 @@ export function getMyChallenges({
 
   return challengeRequest({
     path: `/users/me/challenges?${params}`,
+    signal,
     errorMessage: '나의 챌린지를 불러오지 못했습니다.',
   });
 }
