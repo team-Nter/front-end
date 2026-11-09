@@ -3,7 +3,7 @@ import { ChallengeTable } from '@/components/challenge/MyChallengeTable';
 
 export default function Page() {
   return (
-    <Suspense>
+    <Suspense fallback={<p role="status">불러오는 중...</p>}>
       <ChallengeTable />
     </Suspense>
   );
