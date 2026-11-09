@@ -13,10 +13,12 @@ import {
   DOCUMENT_TYPE_OPTIONS,
   CHALLENGE_CATEGORY_OPTIONS,
   CHALLENGE_STATUS_OPTIONS,
+  MY_CHALLENGE_TABS,
 } from '@/constants/challenge';
 import { ChallengeTab } from '../ChallengeTab';
 import { Pagination } from '@/components/common/Pagination';
 import { useState } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useMyChallenges } from '@/hooks/useChallenges';
 import { ChallengeCard } from '@/components/challenge/ChallengeCard';
 import { useMe } from '@/hooks/useMe';
@@ -37,7 +39,14 @@ const EMPTY_MESSAGES = {
 };
 
 export default function MyChallengeTable() {
-  const [type, setType] = useState('participating');
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const typeParam = searchParams.get('type');
+  const type = MY_CHALLENGE_TABS.some((tab) => tab.value === typeParam)
+    ? typeParam
+    : 'participating';
   const [page, setPage] = useState(1);
   const [searchInput, setSearchInput] = useState('');
   const [keyword, setKeyword] = useState('');
@@ -47,7 +56,7 @@ export default function MyChallengeTable() {
   const { data: me } = useMe();
 
   const handleTabChange = (nextType) => {
-    setType(nextType);
+    router.replace(`${pathname}?type=${nextType}`, { scroll: false });
     setPage(1);
     setSearchInput('');
     setKeyword('');
@@ -69,7 +78,7 @@ export default function MyChallengeTable() {
   });
 
   const items = data?.items ?? [];
-  const totalPages = data?.pagination.totalPages ?? 0;
+  const totalPages = data?.pagination?.totalPages ?? 0;
 
   const renderAction = (challenge) => {
     if (type === 'participating') {

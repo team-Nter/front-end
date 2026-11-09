@@ -45,10 +45,14 @@ export function useMyChallenges({ type, page, pageSize, keyword, status }) {
   const params = { type, page, pageSize, keyword, status };
 
   return useQuery({
-    queryKey: queryKeys.challenges.myList(params),
+    queryKey: queryKeys.challenges.myList(me?.id, params),
     queryFn: ({ signal }) => getMyChallenges(params, { signal }),
     enabled: Boolean(me),
-    placeholderData: keepPreviousData,
+    placeholderData: (previousData, previousQuery) => {
+      const [, , , prevUserId, prevParams] = previousQuery?.queryKey ?? [];
+      const isSameView = prevUserId === me?.id && prevParams?.type === type;
+      return isSameView ? previousData : undefined;
+    },
     retry,
   });
 }
@@ -56,9 +60,9 @@ export function useMyChallenges({ type, page, pageSize, keyword, status }) {
 export function useMyChallengeDetail(challengeId) {
   const { data: me } = useMe();
   return useQuery({
-    queryKey: queryKeys.challenges.myDetail(challengeId),
+    queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
     queryFn: () => getMyChallengeDetail(challengeId),
-    enabled: Boolean(me && challengeId),
+    enabled: Boolean(me?.id && challengeId),
     retry,
   });
 }
