@@ -8,6 +8,7 @@ import { useJoinChallenge } from '@/hooks/useParticipation';
 import { getChallengeAction } from '@/utils';
 import { ChallengeParticipants } from '@/components/challenge/ChallengeParticipants';
 import { BestSubmissions } from '@/components/challenge/BestSubmissions';
+import { ChallengeAdminMenu } from '@/components/challenge/ChallengeAdminMenu';
 
 const ID_PATTERN = /^[1-9]\d*$/;
 const NOT_FOUND_STATUS = [400, 404];
@@ -81,6 +82,7 @@ function ChallengeDetailContent({ challengeId }) {
     error,
     refetch,
   } = useChallengeDetail(challengeId);
+  const { data: me } = useMe();
 
   if (isPending) return <p>불러오는 중...</p>;
 
@@ -100,6 +102,9 @@ function ChallengeDetailContent({ challengeId }) {
   return (
     <section>
       <h1>{challenge.title}</h1>
+      {me?.role === 'ADMIN' && (
+        <ChallengeAdminMenu challengeId={challenge.id} />
+      )}
       <p>
         [{challenge.category} / {challenge.documentType}]
       </p>
