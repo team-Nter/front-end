@@ -1,0 +1,106 @@
+import { style } from '@vanilla-extract/css';
+import { vars } from '@/styles/global.css.js';
+import { media } from '@/styles/media';
+
+// 카드 (피그마: 흰 바탕, 테두리 2px #262626, 모서리 12, 안쪽 여백 24)
+export const card = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 16,
+  padding: 24,
+  border: `2px solid ${vars.color.gray[800]}`,
+  borderRadius: 12,
+  backgroundColor: vars.color.brand.white,
+
+  '@media': {
+    [media.mobile]: {
+      padding: 16,
+      gap: 12,
+    },
+  },
+});
+
+// 위쪽 상태 칩 (피그마: 회색 알약, 13px Medium)
+export const badge = style({
+  alignSelf: 'flex-start',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 4,
+  margin: 0,
+  padding: '8px 12px',
+  borderRadius: 24,
+  backgroundColor: vars.color.gray[200],
+  color: vars.color.gray[800],
+  fontSize: 13,
+  fontWeight: 500,
+});
+
+// 마감 칩은 검정 바탕 + 흰 글자
+export const badgeClosed = style({
+  backgroundColor: vars.color.gray[800],
+  color: vars.color.brand.white,
+});
+
+// 제목 (피그마: 22px SemiBold #404040)
+export const title = style({
+  margin: 0,
+  fontSize: 22,
+  fontWeight: 600,
+  color: vars.color.gray[700],
+  wordBreak: 'break-word',
+
+  '@media': {
+    [media.mobile]: {
+      fontSize: 18,
+    },
+  },
+});
+
+export const titleLink = style({
+  color: 'inherit',
+  textDecoration: 'none',
+  ':hover': {
+    textDecoration: 'underline',
+  },
+});
+
+// 분야 칩 + 문서 타입 칩 (피그마: 사이 8)
+export const chips = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  gap: 8,
+});
+
+// 아래 줄: 위에 회색 구분선, 왼쪽 정보 / 오른쪽 버튼
+export const footer = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
+  gap: 12,
+  paddingTop: 16,
+  borderTop: `1px solid ${vars.color.gray[200]}`,
+});
+
+// 마감일, 참여 인원 (피그마: 사이 12, 13px #525252)
+export const meta = style({
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'center',
+  gap: 12,
+  fontSize: 13,
+  color: vars.color.gray[600],
+});
+
+// 아이콘 + 글자 한 묶음 (피그마: 사이 4)
+export const metaItem = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 4,
+  whiteSpace: 'nowrap',
+});
+
+export const action = style({
+  flexShrink: 0,
+  marginLeft: 'auto',
+});
