@@ -1,7 +1,9 @@
 import { API_BASE_URL } from '@/constants';
 
 export async function getSubmission(submissionId) {
-  const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`);
+  const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`, {
+    credentials: 'include',
+  });
 
   if (!response.ok) {
     const body = await response.json().catch(() => null);
