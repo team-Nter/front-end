@@ -39,6 +39,7 @@ const EMPTY_MESSAGES = {
 export default function MyChallengeTable() {
   const [type, setType] = useState('participating');
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState('');
   const [keyword, setKeyword] = useState('');
   const [status, setStatus] = useState('');
 
@@ -48,15 +49,22 @@ export default function MyChallengeTable() {
   const handleTabChange = (nextType) => {
     setType(nextType);
     setPage(1);
+    setSearchInput('');
     setKeyword('');
     setStatus('');
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    setKeyword(searchInput.trim());
+    setPage(1);
   };
 
   const { data, isPending, isError, error } = useMyChallenges({
     type,
     page,
     pageSize: 10,
-    keyword: keyword.trim() || undefined,
+    keyword: keyword || undefined,
     status: isRequested ? status || undefined : undefined,
   });
 
@@ -101,20 +109,17 @@ export default function MyChallengeTable() {
       <ChallengeTab type={type} onChange={handleTabChange} />
 
       <div className={styles.toolbar}>
-        <label className={styles.search}>
+        <form className={styles.search} onSubmit={handleSearch} role="search">
           <Image src={searchIcon} alt="" className={styles.searchIcon} />
           <input
             type="search"
             className={styles.searchInput}
             placeholder="챌린지 이름을 검색해보세요."
             aria-label="챌린지 이름을 검색"
-            value={keyword}
-            onChange={(e) => {
-              setKeyword(e.target.value);
-              setPage(1);
-            }}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
-        </label>
+        </form>
         {isRequested && (
           <select
             className={styles.statusSelect}
