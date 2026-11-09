@@ -3,6 +3,7 @@
 import {
   createChallenge,
   cancelMyChallenge,
+  getChallenges,
   getMyChallengeDetail,
   getMyChallenges,
 } from '@/api/challenges';
@@ -43,7 +44,7 @@ export function useMyChallenges({ type, page, pageSize, keyword, status }) {
 
   return useQuery({
     queryKey: queryKeys.challenges.myList(params),
-    queryFn: () => getMyChallenges(params),
+    queryFn: ({ signal }) => getMyChallenges(params, { signal }),
     placeholderData: keepPreviousData,
     retry,
   });
