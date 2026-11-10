@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
@@ -9,12 +8,12 @@ import { Popover } from '@/components/common/Popover';
 import { Textarea } from '@/components/common/Textarea';
 import { useModerateChallenge } from '@/hooks/useChallenges';
 import menuIcon from '@/assets/icons/menu.svg';
+import closeIcon from '@/assets/icons/out.svg';
 import * as styles from './ChallengeAdminMenu.css.js';
 
 const REASON_MAX_LENGTH = 255;
 
-export default function ChallengeAdminMenu({ challengeId }) {
-  const router = useRouter();
+export default function ChallengeAdminMenu({ challengeId, onDeleted }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reason, setReason] = useState('');
   const {
@@ -42,7 +41,7 @@ export default function ChallengeAdminMenu({ challengeId }) {
     event.preventDefault();
     moderate(
       { challengeId, action: 'CANCEL', reason: reason.trim() },
-      { onSuccess: () => router.replace('/challenges') },
+      { onSuccess: onDeleted },
     );
   };
 
@@ -74,11 +73,26 @@ export default function ChallengeAdminMenu({ challengeId }) {
 
       {isModalOpen && (
         <Modal aria-labelledby="delete-reason-title" onClose={closeModal}>
-          <form onSubmit={handleSubmit}>
-            <h2 id="delete-reason-title">삭제 사유</h2>
+          <div className={styles.modalHeader}>
+            <h2 id="delete-reason-title" className={styles.modalTitle}>
+              삭제 사유
+            </h2>
+            <button
+              type="button"
+              className={styles.closeButton}
+              aria-label="닫기"
+              onClick={closeModal}
+              disabled={isPending}
+            >
+              <Image src={closeIcon} alt="" width={24} height={24} />
+            </button>
+          </div>
+
+          <form className={styles.form} onSubmit={handleSubmit}>
             <Textarea
               label="내용"
               rows={7}
+              labelClassName={styles.reasonLabel}
               placeholder="삭제 사유를 입력해주세요"
               maxLength={REASON_MAX_LENGTH}
               value={reason}
@@ -86,14 +100,9 @@ export default function ChallengeAdminMenu({ challengeId }) {
               error={error?.message}
             />
             <Button
-              variant="secondary"
-              onClick={closeModal}
-              disabled={isPending}
-            >
-              취소
-            </Button>
-            <Button
               type="submit"
+              size="lg"
+              fullWidth
               disabled={!reason.trim() || isPending || isSuccess}
             >
               {isPending || isSuccess ? '삭제 중...' : '전송'}

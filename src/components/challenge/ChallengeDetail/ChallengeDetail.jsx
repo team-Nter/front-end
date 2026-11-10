@@ -130,6 +130,7 @@ function ChallengeAction({ challenge }) {
 }
 
 function ChallengeDetailContent({ challengeId }) {
+  const router = useRouter();
   const {
     data: challenge,
     isPending,
@@ -165,7 +166,10 @@ function ChallengeDetailContent({ challengeId }) {
               challenge={challenge}
               titleAction={
                 me?.role === 'ADMIN' && (
-                  <ChallengeAdminMenu challengeId={challenge.id} />
+                  <ChallengeAdminMenu
+                    challengeId={challenge.id}
+                    onDeleted={() => router.replace('/challenges')}
+                  />
                 )
               }
             />

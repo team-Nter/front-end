@@ -47,3 +47,41 @@ export const item = style({
     outlineOffset: -2,
   },
 });
+
+// 삭제 사유 모달 (시안: 제목 18px Bold + X, 덩어리 사이 24)
+export const modalHeader = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+});
+
+export const modalTitle = style({
+  margin: 0,
+  fontSize: 18,
+  fontWeight: 700,
+  color: vars.color.gray[800],
+});
+
+export const closeButton = style({
+  display: 'flex',
+  borderRadius: 4,
+  ':focus-visible': {
+    outline: `2px solid ${vars.color.gray[800]}`,
+    outlineOffset: 2,
+  },
+  ':disabled': {
+    cursor: 'not-allowed',
+  },
+});
+
+export const form = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 24,
+});
+
+// "내용" 라벨: placeholder(16px)와 같은 크기, textarea와 간격 12
+export const reasonLabel = style({
+  marginBottom: 12,
+  fontSize: 16,
+});
