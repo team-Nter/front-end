@@ -1,17 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import clsx from 'clsx';
 import logo from '@/assets/images/logo.svg';
-import { Button } from '@/components/common/Button';
 import { Container } from '@/components/layout/Container';
 import * as styles from './Header.css.js';
+import { HeaderAuthAction } from '@/components/auth/commonAuth/HeaderAuthAction.jsx';
 
-export default function Header({
-  className,
-  actions,
-  loginHref = '/login',
-  children,
-}) {
+export default function Header({ className, loginHref = '/login', children }) {
   return (
     <header className={clsx(styles.header, className)}>
       <Container className={styles.inner}>
@@ -28,18 +25,7 @@ export default function Header({
         </div>
 
         <div className={styles.actions}>
-          {actions === undefined ? (
-            <Button
-              as={Link}
-              href={loginHref}
-              variant="secondary"
-              className={styles.login}
-            >
-              로그인
-            </Button>
-          ) : (
-            actions
-          )}
+          <HeaderAuthAction loginHref={loginHref} />
         </div>
       </Container>
     </header>

@@ -1,9 +1,17 @@
-import { WorkEditor } from '@/components/submission/WorkEditor';
+'use client';
 
-export default async function Page({ params }) {
-  const { id } = await params;
+import WorkEditor from '@/components/Editor/WorkEditor/WorkEditor';
+import { useMe } from '@/hooks/useMe';
+import { useParams } from 'next/navigation';
 
-  // id 불러오는 서버 부분과 WorkEditor의 클라이언트 부분의 분리르 위해 해당 방식으로 작성
+export default function Page() {
+  const { id } = useParams();
+  const { data: user, isPending, isError } = useMe();
 
-  return <WorkEditor id={id} />;
+  if (isPending) return <p>사용자 정보를 불러오는 중이에요.</p>;
+  if (isError && !user)
+    return <p role="alert">사용자 정보를 불러오지 못했어요.</p>;
+  if (!user) return <p>로그인이 필요해요.</p>;
+
+  return <WorkEditor key={`${id}:${user.id}`} id={id} userId={user.id} />;
 }

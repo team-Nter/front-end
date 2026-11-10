@@ -1,3 +1,10 @@
+import { Suspense } from 'react';
+import { ChallengeTable } from '@/components/challenge/MyChallengeTable';
+
 export default function Page() {
-  return <h1>9 나의 챌린지 (재영님)</h1>;
+  return (
+    <Suspense fallback={<p role="status">불러오는 중...</p>}>
+      <ChallengeTable />
+    </Suspense>
+  );
 }
