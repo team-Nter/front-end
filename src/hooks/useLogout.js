@@ -13,8 +13,14 @@ export function useLogout() {
     mutationFn: logout,
     onSuccess: async () => {
       await queryClient.cancelQueries();
-      queryClient.removeQueries();
       queryClient.setQueryData(queryKeys.users.info(), null);
+      const userInfoKey = queryKeys.users.info();
+
+      // 유저 쿼리만 빼놓고 캐시 초기화
+      queryClient.removeQueries({
+        predicate: (query) =>
+          JSON.stringify(query.queryKey) !== JSON.stringify(userInfoKey),
+      });
 
       router.replace('/');
     },
