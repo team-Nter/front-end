@@ -60,7 +60,4 @@ export const queryKeys = {
       userId,
     ],
   },
-  submissionLike: {
-    detail: (submissionId) => ['submissionLike', 'detail', submissionId],
-  },
 };
