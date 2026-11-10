@@ -4,6 +4,7 @@ import { useId } from 'react';
 import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
 import * as styles from './SubmissionDeleteModal.css';
+import { submissionDeleteError } from '@/utils/SubmissionError/submissionDeleteError';
 
 export function SubmissionDeleteModal({
   isPending,
@@ -30,7 +31,7 @@ export function SubmissionDeleteModal({
       </p>
       {error && (
         <p role="alert" className={styles.error}>
-          {error.message || '작업물을 삭제하지 못했습니다.'}
+          {submissionDeleteError(error)}
         </p>
       )}
       <div className={styles.actions}>

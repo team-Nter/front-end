@@ -11,9 +11,7 @@ import { SubmissionView } from '@/components/submission/SubmissionView/Submissio
 function SubmittedWork({ participation }) {
   const { id } = participation.submission;
 
-  const { data: submission, isPending } = useSubmission(id);
-
-  if (isPending) return <p>작업물을 불러오는 중...</p>;
+  const { data: submission } = useSubmission(id);
 
   return (
     <SubmissionView participation={participation} submission={submission} />

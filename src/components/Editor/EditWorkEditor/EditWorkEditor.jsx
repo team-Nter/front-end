@@ -11,6 +11,7 @@ import {
   WorkEditorDraftStatus,
   WorkEditorDraftDialogs,
 } from '../WorkEditorDraft/WorkEditorDraft';
+import { submissionEditError } from '@/utils/SubmissionError/submissionEditError';
 
 export default function EditWorkEditor({ submission, userId }) {
   const { title, setTitle, editor } = useWorkEditor({
@@ -47,7 +48,7 @@ export default function EditWorkEditor({ submission, userId }) {
       },
       {
         onError: (error) => {
-          alert(error.message || '작업물을 수정하지 못했습니다.');
+          alert(submissionEditError(error));
         },
         onSuccess: () => {
           router.push(
