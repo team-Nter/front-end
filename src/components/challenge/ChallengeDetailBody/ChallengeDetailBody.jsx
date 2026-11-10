@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ChallengeChip } from '../ChallengeChip';
+import { ChallengeSummary } from '../ChallengeSummary';
 import deadlineIcon from '@/assets/icons/deadline-black.svg';
 import personIcon from '@/assets/icons/person-gold.svg';
 import linkIcon from '@/assets/icons/arrow-up-right.svg';
@@ -15,30 +15,12 @@ function formatDeadline(value) {
 }
 
 export default function ChallengeDetailBody({ challenge, actions }) {
-  const {
-    title,
-    category,
-    documentType,
-    description,
-    deadlineAt,
-    maxParticipants,
-    sourceUrl,
-  } = challenge;
+  const { deadlineAt, maxParticipants, sourceUrl } = challenge;
 
   return (
     <article className={styles.body}>
       <section className={styles.info}>
-        <h1 className={styles.title}>{title}</h1>
-
-        <div className={styles.chipRow}>
-          <div className={styles.chips}>
-            <ChallengeChip kind="category" value={category} />
-            <ChallengeChip kind="documentType" value={documentType} />
-          </div>
-          {actions && <div className={styles.actions}>{actions}</div>}
-        </div>
-
-        <p className={styles.description}>{description}</p>
+        <ChallengeSummary challenge={challenge} actions={actions} />
 
         <dl className={styles.meta}>
           <div className={styles.metaItem}>
