@@ -151,7 +151,7 @@ export const side = style({
   flexShrink: 0,
   width: 184,
   '@media': {
-    [media.mobile]: { width: 'auto', gap: 12 },
+    [media.tablet]: { width: 140 },
   },
 });
 
