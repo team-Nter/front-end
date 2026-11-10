@@ -9,6 +9,7 @@ import {
   getMyChallenges,
   getAdminChallenges,
   getAdminChallengeDetail,
+  updateMyChallenge,
   moderateChallenge,
 } from '@/api/challenges';
 import { queryKeys } from '@/constants/query-keys';
@@ -67,6 +68,25 @@ export function useMyChallengeDetail(challengeId) {
     queryFn: () => getMyChallengeDetail(challengeId),
     enabled: Boolean(me?.id && challengeId),
     retry,
+  });
+}
+
+export function useUpdateMyChallenge(challengeId) {
+  const queryClient = useQueryClient();
+  const { data: me } = useMe();
+
+  return useMutation({
+    mutationFn: (body) => updateMyChallenge(challengeId, body),
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
+          refetchType: 'all',
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.challenges.all(),
+        }),
+      ]),
   });
 }
 
