@@ -11,15 +11,22 @@ import { Popover } from '@/components/common/Popover';
 import { Button } from '@/components/common/Button';
 import { ChallengeFilter } from '@/components/challenge/ChallengeFilter';
 import { ChallengeSort } from '@/components/challenge/ChallengeSort';
+import { ChallengeCard } from '@/components/challenge/ChallengeCard';
 import plusIcon from '@/assets/icons/plus.svg';
 import searchIcon from '@/assets/icons/search.svg';
 import filterActiveIcon from '@/assets/icons/filter-active.svg';
 import filterInactiveIcon from '@/assets/icons/filter-inactive.svg';
 import * as styles from './ChallengeList.css';
 
+// 한 페이지에 보여줄 카드 수 (모든 화면 5개)
+const PAGE_SIZE = 5;
+
 export default function ChallengeList() {
   const { params, updateParams } = useChallengeListParams();
-  const { data, isPending, isError, error } = useChallenges(params);
+  const { data, isPending, isError, error } = useChallenges({
+    ...params,
+    pageSize: PAGE_SIZE,
+  });
   const [keyword, setKeyword] = useState(params.keyword ?? '');
 
   const handleSearch = (event) => {
@@ -91,22 +98,33 @@ export default function ChallengeList() {
         />
       </div>
 
-      {isPending && <p>불러오는 중...</p>}
-      {isError && <p>에러: {error.message}</p>}
-      {data && data.items.length === 0 && <p>아직 챌린지가 없어요.</p>}
+      {isPending && <p className={styles.message}>불러오는 중...</p>}
+
+      {isError && (
+        <p role="alert" className={styles.message}>
+          {error.message}
+        </p>
+      )}
+
+      {data && data.items.length === 0 && (
+        <p className={styles.message}>
+          아직 챌린지가 없어요,
+          <br />
+          지금 바로 챌린지를 신청해보세요!
+        </p>
+      )}
 
       {data && data.items.length > 0 && (
         <>
-          <ul>
+          <ul className={styles.cardList}>
             {data.items.map((challenge) => (
               <li key={challenge.id}>
-                [{challenge.category}/{challenge.documentType}]{' '}
-                {challenge.title} - {challenge.participations}/
-                {challenge.maxParticipants}명
+                <ChallengeCard challenge={challenge} />
               </li>
             ))}
           </ul>
           <Pagination
+            className={styles.pagination}
             currentPage={params.page}
             totalPage={data.pagination.totalPages}
             onPageChange={(page) => updateParams({ page })}

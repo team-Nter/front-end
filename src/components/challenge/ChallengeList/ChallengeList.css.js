@@ -137,3 +137,42 @@ export const searchInput = style({
     },
   },
 });
+
+// 카드 세로 목록 (카드 사이 24)
+export const cardList = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 24,
+
+  '@media': {
+    [media.mobile]: {
+      gap: 16,
+    },
+  },
+});
+
+// 페이지네이션 위 여백
+export const pagination = style({
+  marginTop: 40,
+
+  '@media': {
+    [media.mobile]: {
+      marginTop: 24,
+    },
+  },
+});
+
+// 불러오는 중, 에러, 빈 목록 안내 문구
+export const message = style({
+  padding: '80px 0',
+  textAlign: 'center',
+  fontSize: 16,
+  color: vars.color.gray[500],
+
+  '@media': {
+    [media.mobile]: {
+      padding: '56px 0',
+      fontSize: 14,
+    },
+  },
+});
