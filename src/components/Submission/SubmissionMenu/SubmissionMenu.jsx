@@ -6,7 +6,7 @@ import menuIcon from '@/assets/icons/menu.svg';
 import { Popover } from '@/components/common/Popover';
 import * as styles from './SubmissionMenu.css';
 
-export function SubmissionMenu({ submissionId }) {
+export function SubmissionMenu({ submissionId, onDelete, isDeleting }) {
   return (
     <Popover
       align="right"
@@ -30,13 +30,17 @@ export function SubmissionMenu({ submissionId }) {
           >
             수정하기
           </Link>
+
           <button
             type="button"
             className={styles.deleteItem}
-            disabled
-            title="삭제 기능은 준비 중이에요"
+            onClick={() => {
+              close();
+              onDelete();
+            }}
+            disabled={isDeleting}
           >
-            삭제하기
+            {isDeleting ? '삭제 중...' : '삭제하기'}
           </button>
         </>
       )}

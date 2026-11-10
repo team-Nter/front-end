@@ -2,6 +2,7 @@
 
 import {
   createSubmission,
+  deleteSubmission,
   getSubmission,
   getSubmissions,
   updateSubmission,
@@ -64,5 +65,35 @@ export function useUpdateSubmission(submissionId, challengeId) {
           queryKey: queryKeys.challenges.detail(challengeId),
         }),
       ]),
+  });
+}
+
+export function useDeleteSubmission(submissionId, challengeId, userId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteSubmission(submissionId),
+    onSuccess: () => {
+      queryClient.removeQueries({
+        queryKey: queryKeys.submissions.detail(submissionId),
+        exact: true,
+      });
+
+      return Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.submissions.lists(challengeId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.challenges.detail(challengeId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.participations.detail(
+            String(challengeId),
+            String(userId),
+          ),
+          exact: true,
+        }),
+      ]);
+    },
   });
 }

@@ -9,8 +9,14 @@ import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 import { useMe } from '@/hooks/useMe';
 import { SubmissionMenu } from '../SubmissionMenu/SubmissionMenu';
+import { useDeleteSubmission } from '@/hooks/useSubmissions';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { SubmissionDeleteModal } from '../SubmissionDeleteModal/SubmissionDeleteModal';
 
 export function SubmissionView({ participation, submission = null }) {
+  const router = useRouter();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
   const isAuthor = Boolean(me?.id && author?.id === me.id);
@@ -18,13 +24,44 @@ export function SubmissionView({ participation, submission = null }) {
   const isLiked = submission?.isLiked ?? false;
   const updatedAt = submission?.updatedAt;
   const date = formatDate(updatedAt, '/');
+  const { mutate, isPending, error, reset } = useDeleteSubmission(
+    submission?.id,
+    submission?.challengeId,
+    author?.id,
+  );
+  const openDeleteModal = () => {
+    if (!submission || !isAuthor || isPending) return;
+    reset();
+    setIsDeleteModalOpen(true);
+  };
+  const closeDeleteModal = () => {
+    if (isPending) return;
+    setIsDeleteModalOpen(false);
+    reset();
+  };
+  const handleDelete = () => {
+    if (!submission || !isAuthor || isPending) return;
+
+    mutate(undefined, {
+      onSuccess: () => {
+        setIsDeleteModalOpen(false);
+        router.replace(`/challenges/${submission.challengeId}`);
+      },
+    });
+  };
 
   return (
     <article className={styles.article}>
       {submission && (
         <div className={styles.heading}>
           <h1 className={styles.title}>{submission.title}</h1>
-          {isAuthor && <SubmissionMenu submissionId={submission.id} />}
+          {isAuthor && (
+            <SubmissionMenu
+              submissionId={submission.id}
+              onDelete={openDeleteModal}
+              isDeleting={isPending}
+            />
+          )}
         </div>
       )}
       <div className={styles.metadata}>
@@ -60,6 +97,14 @@ export function SubmissionView({ participation, submission = null }) {
         </div>
       ) : (
         <SubmissionDetail key={submission.id} content={submission.content} />
+      )}
+      {isDeleteModalOpen && (
+        <SubmissionDeleteModal
+          isPending={isPending}
+          error={error}
+          onCancel={closeDeleteModal}
+          onConfirm={handleDelete}
+        />
       )}
     </article>
   );
