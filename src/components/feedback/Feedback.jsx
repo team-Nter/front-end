@@ -155,7 +155,10 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
           className={styles.composerInput}
           rows={3}
           value={content}
-          onChange={(event) => setContent(event.target.value)}
+          onChange={(event) => {
+            resetUpdate();
+            setContent(event.target.value);
+          }}
           disabled={isUpdating}
           maxLength={4000}
           aria-label="피드백 수정"
