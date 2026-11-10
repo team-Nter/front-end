@@ -14,7 +14,7 @@ function formatDeadline(value) {
   });
 }
 
-export default function ChallengeDetailBody({ challenge }) {
+export default function ChallengeDetailBody({ challenge, actions }) {
   const {
     title,
     category,
@@ -30,9 +30,12 @@ export default function ChallengeDetailBody({ challenge }) {
       <section className={styles.info}>
         <h1 className={styles.title}>{title}</h1>
 
-        <div className={styles.chips}>
-          <ChallengeChip kind="category" value={category} />
-          <ChallengeChip kind="documentType" value={documentType} />
+        <div className={styles.chipRow}>
+          <div className={styles.chips}>
+            <ChallengeChip kind="category" value={category} />
+            <ChallengeChip kind="documentType" value={documentType} />
+          </div>
+          {actions && <div className={styles.actions}>{actions}</div>}
         </div>
 
         <p className={styles.description}>{description}</p>

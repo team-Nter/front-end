@@ -1,13 +1,34 @@
 import * as styles from './ChallengeModerationNotice.css';
 
 const NOTICES = {
-  REJECTED: {
-    message: '신청이 거절된 챌린지입니다.',
-    reasonTitle: '신청 거절 사유',
+  admin: {
+    REJECTED: {
+      message: '신청이 거절된 챌린지입니다.',
+      reasonTitle: '신청 거절 사유',
+      tone: 'rejected',
+    },
+    CANCELED: {
+      message: '삭제된 챌린지입니다.',
+      reasonTitle: '삭제 사유',
+      tone: 'canceled',
+    },
   },
-  CANCELED: {
-    message: '삭제된 챌린지입니다.',
-    reasonTitle: '삭제 사유',
+  requester: {
+    PENDING: {
+      message: '승인 대기 중입니다.',
+      tone: 'pending',
+    },
+    REJECTED: {
+      message: '신청이 거절되었습니다.',
+      reasonTitle: '신청 거절 사유',
+      author: '독스루 운영진',
+      tone: 'rejected',
+    },
+    CANCELED: {
+      message: '삭제된 챌린지입니다.',
+      reasonTitle: '삭제 사유',
+      tone: 'canceled',
+    },
   },
 };
 
@@ -18,23 +39,37 @@ function formatDateTime(value) {
     .replaceAll('-', '/');
 }
 
-export default function ChallengeModerationNotice({ status, moderation }) {
-  const notice = NOTICES[status];
+export default function ChallengeModerationNotice({
+  status,
+  moderation,
+  audience = 'admin',
+}) {
+  const notice = NOTICES[audience]?.[status];
   if (!notice) return null;
 
   return (
     <section className={styles.notice}>
-      <p role="status" className={styles.banner}>
+      <p role="status" className={styles.banner[notice.tone]}>
         {notice.message}
       </p>
 
-      {moderation && (
+      {notice.reasonTitle && moderation && (
         <div className={styles.reasonBox}>
           <h2 className={styles.reasonTitle}>{notice.reasonTitle}</h2>
           <p className={styles.reason}>{moderation.reason}</p>
-          <time dateTime={moderation.createdAt} className={styles.date}>
-            {formatDateTime(moderation.createdAt)}
-          </time>
+          <p className={styles.reasonMeta}>
+            {notice.author && (
+              <>
+                <span>{notice.author}</span>
+                <span className={styles.divider} aria-hidden="true">
+                  |
+                </span>
+              </>
+            )}
+            <time dateTime={moderation.createdAt}>
+              {formatDateTime(moderation.createdAt)}
+            </time>
+          </p>
         </div>
       )}
     </section>
