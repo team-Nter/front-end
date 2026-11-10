@@ -80,23 +80,25 @@ function BestSubmissionCard({ submission }) {
         <SubmissionDetail content={content} />
       </div>
 
-      {isLong && (
-        <button
-          type="button"
-          className={styles.toggle}
-          aria-expanded={isExpanded}
-          aria-controls={contentId}
-          onClick={() => setIsExpanded((prev) => !prev)}
-        >
-          {isExpanded ? '접기' : '더보기'}
-          <Image
-            src={isExpanded ? arrowUpIcon : arrowDownIcon}
-            alt=""
-            width={24}
-            height={24}
-          />
-        </button>
-      )}
+      <div className={styles.footer}>
+        {isLong && (
+          <button
+            type="button"
+            className={styles.toggle}
+            aria-expanded={isExpanded}
+            aria-controls={contentId}
+            onClick={() => setIsExpanded((prev) => !prev)}
+          >
+            {isExpanded ? '접기' : '더보기'}
+            <Image
+              src={isExpanded ? arrowUpIcon : arrowDownIcon}
+              alt=""
+              width={24}
+              height={24}
+            />
+          </button>
+        )}
+      </div>
     </article>
   );
 }
@@ -106,6 +108,15 @@ export default function BestSubmissions({ submissions }) {
   const isCarousel = submissions.length > 1;
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(isCarousel);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // 카드 한 칸 = 카드 폭 + 간격 (간격은 화면마다 달라서 CSS에서 읽어옴)
+  const getStep = (list) => {
+    const card = list.firstElementChild;
+    if (!card) return 0;
+    const gap = parseFloat(getComputedStyle(list).columnGap) || 0;
+    return card.offsetWidth + gap;
+  };
 
   // 스크롤 위치로 ← → 버튼을 보일지 결정
   const updateArrows = () => {
@@ -114,21 +125,22 @@ export default function BestSubmissions({ submissions }) {
 
     setCanPrev(list.scrollLeft > 1);
     setCanNext(list.scrollLeft + list.clientWidth < list.scrollWidth - 1);
+
+    const step = getStep(list);
+    if (step) setActiveIndex(Math.round(list.scrollLeft / step));
   };
 
-  // 카드 한 칸(카드 폭 + 간격)만큼 이동
+  // 카드 한 칸만큼 이동
   const scrollByCard = (direction) => {
     const list = listRef.current;
-    const card = list?.firstElementChild;
-    if (!card) return;
+    if (!list) return;
 
-    const gap = parseFloat(getComputedStyle(list).columnGap) || 0;
     const reduceMotion = window.matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches;
 
     list.scrollBy({
-      left: direction * (card.offsetWidth + gap),
+      left: direction * getStep(list),
       behavior: reduceMotion ? 'auto' : 'smooth',
     });
   };
@@ -138,14 +150,23 @@ export default function BestSubmissions({ submissions }) {
   return (
     <section aria-label="최다 추천 번역" className={styles.carousel}>
       <ul ref={listRef} className={styles.list} onScroll={updateArrows}>
-        {submissions.map((submission) => (
-          <li
-            key={submission.id}
-            className={clsx(styles.item, isCarousel && styles.itemPeek)}
-          >
-            <BestSubmissionCard submission={submission} />
-          </li>
-        ))}
+        {submissions.map((submission, index) => {
+          const isInactive = isCarousel && index !== activeIndex;
+
+          return (
+            <li
+              key={submission.id}
+              className={clsx(
+                styles.item,
+                isCarousel && styles.itemPeek,
+                isInactive && styles.itemInactive,
+              )}
+              inert={isInactive}
+            >
+              <BestSubmissionCard submission={submission} />
+            </li>
+          );
+        })}
       </ul>
 
       {isCarousel && canPrev && (

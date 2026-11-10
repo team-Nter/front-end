@@ -117,17 +117,25 @@ export const date = style({
 // 본문: 접힌 상태에서만 높이 제한
 export const content = style({
   overflow: 'hidden',
+  minHeight: COLLAPSED_HEIGHT, // 짧은 글도 접힌 높이만큼 자리 차지
 });
 
 export const collapsed = style({
   maxHeight: COLLAPSED_HEIGHT,
 });
 
+// 더보기 줄 자리: 버튼이 없어도 같은 높이를 차지
+export const footer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  minHeight: 32,
+});
+
 export const toggle = style({
   display: 'flex',
   alignItems: 'center',
   gap: 4,
-  margin: '8px auto 0',
+  margin: '8px 0 0', // 'auto' 가운데 정렬은 footer가 맡아요
   fontSize: 16,
   fontWeight: 500,
   color: vars.color.gray[800],
@@ -148,6 +156,15 @@ export const item = style({
   flex: '0 0 100%',
   minWidth: 0,
   scrollSnapAlign: 'start',
+  transition: 'opacity 200ms ease',
+  '@media': {
+    '(prefers-reduced-motion: reduce)': { transition: 'none' },
+  },
+});
+
+// 지금 보고 있지 않은 카드 (시안: 투명도 20%)
+export const itemInactive = style({
+  opacity: 0.2,
 });
 
 // 여러 개일 때: 다음 카드가 살짝 보이도록 폭을 줄임
@@ -161,7 +178,8 @@ export const itemPeek = style({
 
 export const arrow = style({
   position: 'absolute',
-  top: '50%',
+  // top: '50%',
+  top: 170,
   zIndex: 1,
   display: 'flex',
   width: 40,
