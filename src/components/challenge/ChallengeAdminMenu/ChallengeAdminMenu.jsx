@@ -9,6 +9,7 @@ import { Popover } from '@/components/common/Popover';
 import { Textarea } from '@/components/common/Textarea';
 import { useModerateChallenge } from '@/hooks/useChallenges';
 import menuIcon from '@/assets/icons/menu.svg';
+import * as styles from './ChallengeAdminMenu.css.js';
 
 const REASON_MAX_LENGTH = 255;
 
@@ -49,14 +50,23 @@ export default function ChallengeAdminMenu({ challengeId }) {
     <>
       <Popover
         align="right"
+        className={styles.panel}
         trigger={
-          <button type="button" aria-label="챌린지 관리 메뉴">
-            <Image src={menuIcon} alt="" />
+          <button
+            type="button"
+            className={styles.trigger}
+            aria-label="챌린지 관리 메뉴"
+          >
+            <Image src={menuIcon} alt="" width={24} height={24} />
           </button>
         }
       >
         {({ close }) => (
-          <button type="button" onClick={() => openModal(close)}>
+          <button
+            type="button"
+            className={styles.item}
+            onClick={() => openModal(close)}
+          >
             삭제하기
           </button>
         )}
