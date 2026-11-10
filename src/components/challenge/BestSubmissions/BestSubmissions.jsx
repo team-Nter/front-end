@@ -10,6 +10,7 @@ import profileIcon from '@/assets/icons/profile-user.svg';
 import heartIcon from '@/assets/icons/heart-white.svg';
 import arrowDownIcon from '@/assets/icons/circle-arrow-down.svg';
 import arrowUpIcon from '@/assets/icons/circle-arrow-up.svg';
+import arrowRightIcon from '@/assets/icons/circle-arrow-right-filled.svg';
 import * as styles from './BestSubmissions.css';
 
 const GRADE_LABEL = { EXPERT: '전문가', NORMAL: '일반' };
@@ -101,17 +102,72 @@ function BestSubmissionCard({ submission }) {
 }
 
 export default function BestSubmissions({ submissions }) {
+  const listRef = useRef(null);
+  const isCarousel = submissions.length > 1;
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(isCarousel);
+
+  // 스크롤 위치로 ← → 버튼을 보일지 결정
+  const updateArrows = () => {
+    const list = listRef.current;
+    if (!list) return;
+
+    setCanPrev(list.scrollLeft > 1);
+    setCanNext(list.scrollLeft + list.clientWidth < list.scrollWidth - 1);
+  };
+
+  // 카드 한 칸(카드 폭 + 간격)만큼 이동
+  const scrollByCard = (direction) => {
+    const list = listRef.current;
+    const card = list?.firstElementChild;
+    if (!card) return;
+
+    const gap = parseFloat(getComputedStyle(list).columnGap) || 0;
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+
+    list.scrollBy({
+      left: direction * (card.offsetWidth + gap),
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    });
+  };
+
   if (submissions.length === 0) return null;
 
   return (
-    <section aria-label="최다 추천 번역">
-      <ul className={styles.list}>
+    <section aria-label="최다 추천 번역" className={styles.carousel}>
+      <ul ref={listRef} className={styles.list} onScroll={updateArrows}>
         {submissions.map((submission) => (
-          <li key={submission.id}>
+          <li
+            key={submission.id}
+            className={clsx(styles.item, isCarousel && styles.itemPeek)}
+          >
             <BestSubmissionCard submission={submission} />
           </li>
         ))}
       </ul>
+
+      {isCarousel && canPrev && (
+        <button
+          type="button"
+          className={clsx(styles.arrow, styles.arrowPrev)}
+          aria-label="이전 최다 추천 번역"
+          onClick={() => scrollByCard(-1)}
+        >
+          <Image src={arrowRightIcon} alt="" className={styles.arrowIcon} />
+        </button>
+      )}
+      {isCarousel && canNext && (
+        <button
+          type="button"
+          className={clsx(styles.arrow, styles.arrowNext)}
+          aria-label="다음 최다 추천 번역"
+          onClick={() => scrollByCard(1)}
+        >
+          <Image src={arrowRightIcon} alt="" className={styles.arrowIcon} />
+        </button>
+      )}
     </section>
   );
 }
