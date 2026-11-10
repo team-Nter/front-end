@@ -9,47 +9,77 @@ import { Textarea } from '@/components/common/Textarea';
 import * as styles from './Feedback.css';
 import { useDeleteFeedback, useUpdateFeedback } from '@/hooks/useFeedback';
 import FeedbackActions from './FeedbackActions';
+import { useMe } from '@/hooks/useMe';
+import { getFeedbackErrorMessage } from '@/utils/feedbackError';
+import ConfirmModal from '@/components/Editor/DraftPopUp/DraftConfirmModal';
 
-export default function Feedback({ feedback }) {
-  const [isEditing, setIsEditing] = useState(false);
+export default function Feedback({ feedback, submissionId, canWrite }) {
+  const { data: user, isSuccess } = useMe();
+
+  // 수정 / 삭제 관련 작성자 혹은 운영자만 가능하게
+  const canManage =
+    canWrite &&
+    isSuccess &&
+    Boolean(user?.id) &&
+    (user.role === 'ADMIN' || user.id === feedback.author.id);
+  const [editingUserId, setEditingUserId] = useState(null);
+  const isEditing = canManage && editingUserId === user.id;
+  const [deletingUserId, setDeletingUserId] = useState(null);
+  const isDeleteConfirmOpen = canManage && deletingUserId === user.id;
   const [content, setContent] = useState(feedback.content);
   const {
     mutate: updateFeedback,
     isPending: isUpdating,
     isError: isUpdateError,
+    error: updateError,
     reset: resetUpdate,
-  } = useUpdateFeedback(feedback.id);
+  } = useUpdateFeedback(feedback.id, submissionId);
 
   const {
     mutate: deleteFeedback,
     isPending: isDeleting,
     isError: isDeleteError,
-  } = useDeleteFeedback(feedback.id);
+    error: deleteError,
+    reset: resetDelete,
+  } = useDeleteFeedback(feedback.id, submissionId);
 
   function handleSubmit(event) {
     event.preventDefault();
     const trimmed = content.trim();
-    if (!trimmed || isUpdating || isDeleting) return;
+    if (!canManage || !trimmed || isUpdating || isDeleting) return;
 
-    updateFeedback(trimmed, { onSuccess: () => setIsEditing(false) });
+    updateFeedback(trimmed, { onSuccess: () => setEditingUserId(null) });
   }
 
   function handleCancel() {
     setContent(feedback.content); // 취소하면 원래 내용으로
-    setIsEditing(false);
+    setEditingUserId(null);
   }
 
   function handleEdit() {
+    if (!canManage) return;
     setContent(feedback.content);
     resetUpdate();
-    setIsEditing(true);
+    setEditingUserId(user.id);
   }
 
   function handleDelete() {
-    if (isUpdating || isDeleting) return;
-    if (!window.confirm('피드백을 삭제할까요?')) return;
+    if (!canManage || isUpdating || isDeleting) return;
+    resetDelete();
+    setDeletingUserId(user.id);
+  }
 
-    deleteFeedback();
+  function handleConfirmDelete() {
+    if (!isDeleteConfirmOpen || isUpdating || isDeleting) return;
+    deleteFeedback(undefined, {
+      onSuccess: () => setDeletingUserId(null),
+    });
+  }
+
+  function handleCancelDelete() {
+    if (isDeleting) return;
+    setDeletingUserId(null);
+    resetDelete();
   }
 
   const createdAt = new Date(feedback.createdAt);
@@ -112,13 +142,13 @@ export default function Feedback({ feedback }) {
               {isUpdating ? '저장 중...' : '수정 완료'}
             </Button>
           </div>
-        ) : (
+        ) : canManage ? (
           <FeedbackActions
             onEdit={handleEdit}
             onDelete={handleDelete}
             disabled={isUpdating || isDeleting}
           />
-        )}
+        ) : null}
       </div>
       {isEditing ? (
         <Textarea
@@ -137,7 +167,7 @@ export default function Feedback({ feedback }) {
       )}
       {isEditing && isUpdateError && (
         <p className={styles.error} role="alert">
-          수정에 실패했어요.
+          {getFeedbackErrorMessage(updateError, '수정')}
         </p>
       )}
       {isDeleting && (
@@ -145,10 +175,24 @@ export default function Feedback({ feedback }) {
           삭제 중...
         </p>
       )}
-      {isDeleteError && (
+      {isDeleteError && !isDeleteConfirmOpen && (
         <p className={styles.error} role="alert">
-          삭제에 실패했어요.
+          {getFeedbackErrorMessage(deleteError, '삭제')}
         </p>
+      )}
+      {isDeleteConfirmOpen && (
+        <ConfirmModal
+          question="피드백을 삭제할까요?"
+          confirmLabel={isDeleting ? '삭제 중…' : '삭제하기'}
+          busy={isDeleting}
+          errorMessage={
+            isDeleteError
+              ? getFeedbackErrorMessage(deleteError, '삭제')
+              : undefined
+          }
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
       )}
     </Container>
   );

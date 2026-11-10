@@ -6,14 +6,26 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useParticipation } from '@/hooks/useParticipation';
 import { useSubmission } from '@/hooks/useSubmissions';
+import { useChallengeStatus } from '@/hooks/useChallenges';
 import { SubmissionView } from '@/components/submission/SubmissionView/SubmissionView';
 
-function SubmittedWork({ participation }) {
+function SubmittedWork({ participation, challengeId }) {
   const { id } = participation.submission;
 
+  const {
+    data: challengeStatus,
+    isPending,
+    error,
+  } = useChallengeStatus(challengeId);
   const { data: submission } = useSubmission(id);
+  if (error) throw error;
+  if (isPending) return <p>챌린지 정보를 불러오는 중...</p>;
   return (
-    <SubmissionView participation={participation} submission={submission} />
+    <SubmissionView
+      participation={participation}
+      submission={submission}
+      challengeStatus={challengeStatus}
+    />
   );
 }
 
@@ -25,7 +37,9 @@ function ParticipantSubmission({ challengeId, userId }) {
   }
 
   //작업물 있음
-  return <SubmittedWork participation={participation} />;
+  return (
+    <SubmittedWork participation={participation} challengeId={challengeId} />
+  );
 }
 
 export default function Page() {

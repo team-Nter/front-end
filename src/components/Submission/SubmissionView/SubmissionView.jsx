@@ -1,13 +1,18 @@
 'use client';
 
 import Image from 'next/image';
+import FeedbackSection from '@/components/feedback/FeedbackSection';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
 import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 
-export function SubmissionView({ participation, submission = null }) {
+export function SubmissionView({
+  participation,
+  submission = null,
+  challengeStatus,
+}) {
   const author = submission?.author ?? participation.user;
   const likeCount = submission?.likeCount ?? 0;
   const updatedAt = submission?.updatedAt;
@@ -46,7 +51,18 @@ export function SubmissionView({ participation, submission = null }) {
           <p>아직 작성하지 않았어요.</p>
         </div>
       ) : (
-        <SubmissionDetail key={submission.id} content={submission.content} />
+        <SubmissionDetail
+          key={`submission:${submission.id}`}
+          content={submission.content}
+        />
+      )}
+      {submission && <hr className={styles.feedbackDivider} />}
+      {submission && (
+        <FeedbackSection
+          key={`feedbacks:${submission.id}`}
+          submissionId={submission.id}
+          challengeStatus={challengeStatus}
+        />
       )}
     </article>
   );

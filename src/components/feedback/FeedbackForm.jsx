@@ -12,7 +12,7 @@ export default function FeedbackForm({
   onContentChange,
   onSubmit,
   isPending,
-  isError,
+  errorMessage,
 }) {
   const disabled = isPending || !content.trim();
 
@@ -50,9 +50,9 @@ export default function FeedbackForm({
           등록 중...
         </p>
       )}
-      {isError && (
+      {errorMessage && (
         <p className={styles.error} role="alert">
-          피드백 등록에 실패했어요.
+          {errorMessage}
         </p>
       )}
     </form>

@@ -10,11 +10,10 @@ import { queryKeys } from '@/constants/query-keys';
 import {
   useInfiniteQuery,
   useMutation,
-  useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
 
-export function useFeedbacks(submissionId, pageSize = 5) {
+export function useFeedbacks(submissionId, pageSize = 3) {
   // 페이지네이션용 불러오기 위해서 InfiniteQuery 사용
   return useInfiniteQuery({
     queryKey: queryKeys.feedbacks.list(submissionId, pageSize),
@@ -35,32 +34,32 @@ export function useCreateFeedback(submissionId) {
     mutationFn: (content) => createFeedback(submissionId, content),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ['feedbacks'],
+        queryKey: queryKeys.feedbacks.lists(submissionId),
       });
     },
   });
 }
-export function useUpdateFeedback(feedbackId) {
+export function useUpdateFeedback(feedbackId, submissionId) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (content) => updateFeedback(feedbackId, content),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ['feedbacks'],
+        queryKey: queryKeys.feedbacks.lists(submissionId),
       });
     },
   });
 }
 
-export function useDeleteFeedback(feedbackId) {
+export function useDeleteFeedback(feedbackId, submissionId) {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: () => deleteFeedback(feedbackId),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: ['feedbacks'],
+        queryKey: queryKeys.feedbacks.lists(submissionId),
       });
     },
   });

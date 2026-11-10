@@ -5,6 +5,7 @@ import {
   createChallenge,
   cancelMyChallenge,
   getChallenges,
+  getChallengeDetail,
   getMyChallengeDetail,
   getMyChallenges,
   getAdminChallenges,
@@ -127,5 +128,18 @@ export function useModerateChallenge() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.all(),
       }),
+  });
+}
+
+// 현재 feedback 쪽이 submissionId만 받고 있습니다.
+// 이에 대해 챌린지 상태가 approved가 아니라면 입력 자체를 막기 위해 status 받는 부분을 추가했습니다.
+export function useChallengeStatus(challengeId) {
+  const { data: user } = useMe();
+  return useQuery({
+    queryKey: queryKeys.challenges.detail(challengeId, user?.id),
+    queryFn: ({ signal }) => getChallengeDetail(challengeId, { signal }),
+    select: (challenge) => challenge.status,
+    enabled: Boolean(challengeId),
+    retry,
   });
 }
