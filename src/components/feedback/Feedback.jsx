@@ -15,13 +15,15 @@ import ConfirmModal from '@/components/Editor/DraftPopUp/DraftConfirmModal';
 
 export default function Feedback({ feedback, submissionId, canWrite }) {
   const { data: user, isSuccess } = useMe();
+  const isWithDrawn = !feedback.author;
+  const authorName = isWithDrawn ? '탈퇴한 사용자' : feedback.author.nickname;
 
   // 수정 / 삭제 관련 작성자 혹은 운영자만 가능하게
   const canManage =
     canWrite &&
     isSuccess &&
     Boolean(user?.id) &&
-    (user.role === 'ADMIN' || user.id === feedback.author.id);
+    (user.role === 'ADMIN' || user.id === feedback.author?.id);
   const [editingUserId, setEditingUserId] = useState(null);
   const isEditing = canManage && editingUserId === user.id;
   const [deletingUserId, setDeletingUserId] = useState(null);
@@ -114,7 +116,7 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
             className={styles.avatar}
           />
           <div className={styles.authorInfo}>
-            <p className={styles.nickname}>{feedback.author.nickname}</p>
+            <p className={styles.nickname}>{authorName}</p>
             {dateLabel && (
               <time className={styles.date} dateTime={createdAt.toISOString()}>
                 {dateLabel}
