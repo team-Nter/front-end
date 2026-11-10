@@ -5,6 +5,8 @@ import clsx from 'clsx';
 import { useEffect, useId, useRef, useState } from 'react';
 import { SubmissionDetail } from '@/components/submission/SubmissionDetail/SubmissionDetail';
 import { formatDate } from '@/utils';
+import { getOptionLabel } from '@/constants/challenge';
+import { USER_GRADE_OPTIONS } from '@/constants/user';
 import medalIcon from '@/assets/icons/medal.svg';
 import profileIcon from '@/assets/icons/profile-user.svg';
 import heartIcon from '@/assets/icons/heart-white.svg';
@@ -12,8 +14,6 @@ import arrowDownIcon from '@/assets/icons/circle-arrow-down.svg';
 import arrowUpIcon from '@/assets/icons/circle-arrow-up.svg';
 import arrowRightIcon from '@/assets/icons/circle-arrow-right-filled.svg';
 import * as styles from './BestSubmissions.css';
-
-const GRADE_LABEL = { EXPERT: '전문가', NORMAL: '일반' };
 
 // '2024-01-18T07:38:00Z' → '24/01/18 16:38' (한국 시간)
 function formatSubmittedAt(value) {
@@ -59,7 +59,9 @@ function BestSubmissionCard({ submission }) {
               {author?.nickname ?? '탈퇴한 사용자'}
             </span>
             {author && (
-              <span className={styles.grade}>{GRADE_LABEL[author.grade]}</span>
+              <span className={styles.grade}>
+                {getOptionLabel(USER_GRADE_OPTIONS, author.grade)}
+              </span>
             )}
           </span>
           <span className={styles.likes}>

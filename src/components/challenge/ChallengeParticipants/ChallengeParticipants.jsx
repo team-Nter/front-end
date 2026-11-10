@@ -4,6 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useParticipants } from '@/hooks/useParticipation';
+import { getOptionLabel } from '@/constants/challenge';
+import { USER_GRADE_OPTIONS } from '@/constants/user';
 import crownIcon from '@/assets/icons/crown-gold.svg';
 import heartIcon from '@/assets/icons/heart-gold.svg';
 import profileIcon from '@/assets/icons/profile-user.svg';
@@ -13,7 +15,6 @@ import rightBlackIcon from '@/assets/icons/direction-right-black.svg';
 import rightGrayIcon from '@/assets/icons/direction-right-gray.svg';
 import * as styles from './ChallengeParticipants.css';
 
-const GRADE_LABEL = { EXPERT: '전문가', NORMAL: '일반' };
 const EMPTY_MESSAGE = '아직 참여한 도전자가 없어요,\n지금 바로 도전해보세요!';
 
 // 순위 배지: 미제출자(rank null)는 빈 자리, 1위 + 좋아요 1개 이상이면 왕관
@@ -120,7 +121,10 @@ export default function ChallengeParticipants({ challengeId }) {
                   </span>
                   {participant.user && (
                     <span className={styles.grade}>
-                      {GRADE_LABEL[participant.user.grade]}
+                      {getOptionLabel(
+                        USER_GRADE_OPTIONS,
+                        participant.user.grade,
+                      )}
                     </span>
                   )}
                 </div>
