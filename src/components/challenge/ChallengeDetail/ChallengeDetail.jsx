@@ -1,14 +1,19 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import { useChallengeDetail } from '@/hooks/useChallengeDetail';
 import { useMe } from '@/hooks/useMe';
+import { useChallengeDetail } from '@/hooks/useChallengeDetail';
 import { useJoinChallenge } from '@/hooks/useParticipation';
 import { getChallengeAction } from '@/utils';
 import { ChallengeParticipants } from '@/components/challenge/ChallengeParticipants';
 import { BestSubmissions } from '@/components/challenge/BestSubmissions';
 import { ChallengeAdminMenu } from '@/components/challenge/ChallengeAdminMenu';
+import { ChallengeStatusBadge } from '@/components/challenge/ChallengeStatusBadge';
+import { ChallengeSummary } from '@/components/challenge/ChallengeSummary';
+import profileIcon from '@/assets/icons/profile-user.svg';
+import * as styles from './ChallengeDetail.css';
 
 const ID_PATTERN = /^[1-9]\d*$/;
 const NOT_FOUND_STATUS = [400, 404];
@@ -100,22 +105,29 @@ function ChallengeDetailContent({ challengeId }) {
   }
 
   return (
-    <section>
-      <h1>{challenge.title}</h1>
-      {me?.role === 'ADMIN' && (
-        <ChallengeAdminMenu challengeId={challenge.id} />
-      )}
-      <p>
-        [{challenge.category} / {challenge.documentType}]
-      </p>
-      <p>{challenge.description}</p>
-      <p>신청자: {challenge.requestor?.nickname}</p>
-      <p>마감: {challenge.deadlineAt}</p>
-      <p>
-        인원: {challenge.participations}/{challenge.maxParticipants}
-      </p>
+    <section className={styles.page}>
+      <div className={styles.top}>
+        <div className={styles.info}>
+          <ChallengeStatusBadge challenge={challenge} />
+          <ChallengeSummary
+            challenge={challenge}
+            titleAction={
+              me?.role === 'ADMIN' && (
+                <ChallengeAdminMenu challengeId={challenge.id} />
+              )
+            }
+          />
+          <p className={styles.requestor}>
+            <Image src={profileIcon} alt="" width={24} height={24} />
+            {challenge.requestor?.nickname}
+          </p>
+        </div>
 
-      <ChallengeAction challenge={challenge} />
+        <ChallengeAction challenge={challenge} />
+      </div>
+
+      <hr className={styles.divider} />
+
       <BestSubmissions submissions={challenge.bestSubmissions} />
       <ChallengeParticipants key={challenge.id} challengeId={challenge.id} />
     </section>
