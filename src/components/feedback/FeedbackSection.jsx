@@ -46,7 +46,14 @@ export default function FeedbackSection({ submissionId, challengeStatus }) {
     !isLoadError &&
     canWrite;
 
-  const feedbacks = data?.pages.flatMap((page) => page.items) ?? [];
+  const feedbacks = [
+    ...new Map(
+      (data?.pages.flatMap((page) => page.items) ?? []).map((item) => [
+        item.id,
+        item,
+      ]),
+    ).values(),
+  ];
 
   function handleSubmit(event) {
     event.preventDefault();
