@@ -19,6 +19,8 @@ export function useSubmission(submissionId) {
   return useSuspenseQuery({
     queryKey: queryKeys.submissions.detail(submissionId),
     queryFn: () => getSubmission(submissionId),
+    retry: (failureCount, error) =>
+      ![400, 401, 403, 404].includes(error?.status) && failureCount < 3,
   });
 }
 
