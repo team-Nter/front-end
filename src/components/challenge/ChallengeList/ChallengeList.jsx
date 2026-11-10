@@ -107,13 +107,15 @@ export default function ChallengeList() {
         </p>
       )}
 
-      {data && data.items.length === 0 && (
-        <p className={styles.message}>
-          아직 챌린지가 없어요,
-          <br />
-          지금 바로 챌린지를 신청해보세요!
-        </p>
-      )}
+      <div role="status">
+        {data && data.items.length === 0 && (
+          <p className={styles.message}>
+            아직 챌린지가 없어요,
+            <br />
+            지금 바로 챌린지를 신청해보세요!
+          </p>
+        )}
+      </div>
 
       {data && data.items.length > 0 && (
         <>
