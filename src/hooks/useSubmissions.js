@@ -4,6 +4,7 @@ import {
   createSubmission,
   getSubmission,
   getSubmissions,
+  updateSubmission,
 } from '@/api/submissions';
 import { queryKeys } from '@/constants/query-keys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -43,5 +44,25 @@ export function useCreateSubmission(challengeId) {
         refetchType: 'all',
       });
     },
+  });
+}
+
+export function useUpdateSubmission(submissionId, challengeId) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => updateSubmission(submissionId, data),
+    onSuccess: () =>
+      Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.submissions.detail(submissionId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.submissions.lists(challengeId),
+        }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.challenges.detail(challengeId),
+        }),
+      ]),
   });
 }
