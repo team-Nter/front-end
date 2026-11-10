@@ -20,6 +20,7 @@ export function SubmissionView({ participation, submission = null }) {
   const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
   const isAuthor = Boolean(me?.id && author?.id === me.id);
+  const canEdit = isAuthor || me?.role === 'ADMIN';
   const likeCount = submission?.likeCount ?? 0;
   const isLiked = submission?.isLiked ?? false;
   const updatedAt = submission?.updatedAt;
@@ -30,7 +31,7 @@ export function SubmissionView({ participation, submission = null }) {
     author?.id,
   );
   const openDeleteModal = () => {
-    if (!submission || !isAuthor || isPending) return;
+    if (!submission || !canEdit || isPending) return;
     reset();
     setIsDeleteModalOpen(true);
   };
@@ -40,7 +41,7 @@ export function SubmissionView({ participation, submission = null }) {
     reset();
   };
   const handleDelete = () => {
-    if (!submission || !isAuthor || isPending) return;
+    if (!submission || !canEdit || isPending) return;
 
     mutate(undefined, {
       onSuccess: () => {
@@ -55,7 +56,7 @@ export function SubmissionView({ participation, submission = null }) {
       {submission && (
         <div className={styles.heading}>
           <h1 className={styles.title}>{submission.title}</h1>
-          {isAuthor && (
+          {canEdit && (
             <SubmissionMenu
               submissionId={submission.id}
               onDelete={openDeleteModal}
