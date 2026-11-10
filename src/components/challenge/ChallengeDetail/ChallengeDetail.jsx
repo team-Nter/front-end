@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useMe } from '@/hooks/useMe';
 import { useChallengeDetail } from '@/hooks/useChallengeDetail';
 import { useJoinChallenge } from '@/hooks/useParticipation';
-import { getChallengeAction } from '@/utils';
+import { formatDeadline, getChallengeAction } from '@/utils';
 import { ChallengeParticipants } from '@/components/challenge/ChallengeParticipants';
 import { BestSubmissions } from '@/components/challenge/BestSubmissions';
 import { ChallengeAdminMenu } from '@/components/challenge/ChallengeAdminMenu';
@@ -28,16 +28,6 @@ function NotFound() {
       <Link href="/challenges">챌린지 목록으로</Link>
     </div>
   );
-}
-
-// '2024-02-28T14:59:59.000Z' → '2024년 2월 28일' (한국 시간 기준)
-function formatDeadline(value) {
-  return new Date(value).toLocaleDateString('ko-KR', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'Asia/Seoul',
-  });
 }
 
 function ChallengeAction({ challenge }) {
