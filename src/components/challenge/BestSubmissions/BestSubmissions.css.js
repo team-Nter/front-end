@@ -178,7 +178,7 @@ export const itemPeek = style({
 
 export const arrow = style({
   position: 'absolute',
-  // top: '50%',
+  // 접힌 카드의 가운데에 고정 (50%면 더보기로 카드가 길어질 때 화살표가 같이 내려가요)
   top: 170,
   zIndex: 1,
   display: 'flex',
