@@ -15,6 +15,8 @@ import { common, createLowlight } from 'lowlight';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCreateSubmission } from '@/hooks/useSubmissions';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateSubmission } from '@/api/submissions';
 import { postSubmissionErrorMessage } from '@/utils/SubmissionError/submissionPostError';
 import { useSubmissionDraft } from '@/hooks/useSubmissionDraft';
 import { getSubmissionDraftError } from '@/utils/SubmissionDraftError/getSubmissionDraftError';
@@ -24,12 +26,22 @@ import { DraftPopUp } from '../DraftPopUp';
 
 const lowlight = createLowlight(common);
 
-export default function WorkEditor({ id, userId }) {
+export default function WorkEditor({ id, userId, submission }) {
   const router = useRouter();
-  const { mutate, isPending } = useCreateSubmission(id);
+  const queryClient = useQueryClient();
+  const create = useCreateSubmission(id);
+  const update = useMutation({
+    mutationFn: (data) => updateSubmission(submission.id, data),
+    onSuccess: () => Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['submissions'] }),
+      queryClient.invalidateQueries({ queryKey: ['participations'] }),
+      queryClient.invalidateQueries({ queryKey: ['challenges'] }),
+    ]),
+  });
+  const { mutate, isPending } = submission ? update : create;
   const { draftQuery, saveDraft, deleteDraft } = useSubmissionDraft(id, userId);
   const draft = draftQuery.data?.submissionDraft;
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState(submission?.title ?? '');
   const [draftPromptDismissed, setDraftPromptDismissed] = useState(false);
 
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
@@ -55,7 +67,7 @@ export default function WorkEditor({ id, userId }) {
         tabSize: 2,
       }),
     ],
-    content: '',
+    content: submission?.content ?? '',
     immediatelyRender: false,
   });
 
@@ -75,12 +87,11 @@ export default function WorkEditor({ id, userId }) {
       },
       {
         onError: (error) => {
-          alert(postSubmissionErrorMessage(error));
+          alert(submission ? error.message || '작업물을 수정하지 못했습니다.' : postSubmissionErrorMessage(error));
         },
-        onSuccess: (submission) => {
-          router.push(
-            `/challenges/${id}/participants/${submission.author.id}/submission`,
-          );
+        onSuccess: (result) => {
+          const authorId = submission ? submission.author?.id : result.author.id;
+          router.push(authorId ? `/challenges/${id}/participants/${authorId}/submission` : `/challenges/${id}`);
         },
       },
     );
@@ -153,6 +164,7 @@ export default function WorkEditor({ id, userId }) {
     <main className={styles.page}>
       <EditHeader
         challengeId={id}
+        isEditing={Boolean(submission)}
         handleSubmit={handleSubmit}
         handleSaveDraft={handleSaveDraft}
         isBusy={isBusy}

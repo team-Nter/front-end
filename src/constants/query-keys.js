@@ -50,20 +50,21 @@ export const queryKeys = {
     ],
   },
   submissions: {
+    lists: (challengeId) => ['submissions', 'list', String(challengeId)],
     list: (challengeId, page, pageSize) => [
       'submissions',
       'list',
-      challengeId,
+      String(challengeId),
       page,
       pageSize,
     ],
-    detail: (submissionId) => ['submissions', 'detail', submissionId],
+    detail: (submissionId) => ['submissions', 'detail', String(submissionId)],
   },
   submissionDraft: {
     detail: (challengeId, userId) => [
       'submissionDraft',
       'detail',
-      challengeId,
+      String(challengeId),
       userId,
     ],
   },

@@ -13,6 +13,7 @@ import * as styles from './EditHeader.css';
 
 export default function EditHeader({
   challengeId,
+  isEditing = false,
   handleSubmit,
   handleSaveDraft,
   isSubmitting,
@@ -72,7 +73,7 @@ export default function EditHeader({
             onClick={handleSubmit}
             disabled={isBusy}
           >
-            {isSubmitting ? '제출 중' : '제출하기'}
+            {isSubmitting ? (isEditing ? '수정 중' : '제출 중') : (isEditing ? '수정 완료' : '제출하기')}
           </Button>
         </div>
       </header>
