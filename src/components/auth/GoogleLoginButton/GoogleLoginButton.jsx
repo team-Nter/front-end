@@ -5,6 +5,19 @@ import { API_BASE_URL } from '@/constants';
 
 export default function GoogleLoginButton() {
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handlePageShow = () => {
+      setIsLoading(false);
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, []);
+
   const handleGoogleLogin = () => {
     setIsLoading(true);
 
