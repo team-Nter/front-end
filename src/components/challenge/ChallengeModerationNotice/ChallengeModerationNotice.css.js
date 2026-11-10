@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { style, styleVariants } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 
 export const notice = style({
@@ -10,15 +10,25 @@ export const notice = style({
   borderBottom: `1px solid ${vars.color.gray[200]}`,
 });
 
-export const banner = style({
+const bannerBase = style({
   margin: 0,
   padding: '10px 16px',
   borderRadius: 999,
-  backgroundColor: '#FFE7E7',
   textAlign: 'center',
   fontSize: 14,
   fontWeight: 500,
-  color: vars.color.error,
+});
+
+export const banner = styleVariants({
+  pending: [bannerBase, { backgroundColor: '#FFF6D6', color: '#C79A00' }],
+  rejected: [
+    bannerBase,
+    { backgroundColor: '#FFE7E7', color: vars.color.error },
+  ],
+  canceled: [
+    bannerBase,
+    { backgroundColor: vars.color.gray[700], color: vars.color.brand.white },
+  ],
 });
 
 export const reasonBox = style({
@@ -48,8 +58,16 @@ export const reason = style({
   wordBreak: 'break-word',
 });
 
-export const date = style({
+export const reasonMeta = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
   alignSelf: 'flex-end',
+  margin: 0,
   fontSize: 12,
   color: vars.color.gray[500],
+});
+
+export const divider = style({
+  color: vars.color.gray[300],
 });
