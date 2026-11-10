@@ -2,8 +2,16 @@
 
 import { useSubmissionLike } from '@/hooks/useSubmissionLike';
 
-export default function Like({ submissionId, likeCount = 0, isLiked = false }) {
-  const { putLikes, deleteLikes } = useSubmissionLike(submissionId);
+export default function Like({
+  submissionId,
+  challengeId,
+  likeCount = 0,
+  isLiked = false,
+}) {
+  const { putLikes, deleteLikes } = useSubmissionLike(
+    submissionId,
+    challengeId,
+  );
   const isPending = putLikes.isPending || deleteLikes.isPending;
   const error = putLikes.error || deleteLikes.error;
   const handleClick = () => {

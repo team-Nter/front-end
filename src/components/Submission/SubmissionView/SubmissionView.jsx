@@ -28,6 +28,7 @@ export function SubmissionView({ participation, submission = null }) {
         {submission && (
           <Like
             submissionId={submission.id}
+            challengeId={submission.challengeId}
             likeCount={likeCount}
             isLiked={isLiked}
           />
