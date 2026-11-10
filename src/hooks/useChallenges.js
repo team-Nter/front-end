@@ -77,11 +77,13 @@ export function useCancelMyChallenge() {
   return useMutation({
     mutationFn: cancelMyChallenge,
     onSuccess: (_data, challengeId) => {
-      queryClient.removeQueries({
+      queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
+        refetchType: 'none',
       });
       return queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.myLists(),
+        refetchType: 'all',
       });
     },
   });

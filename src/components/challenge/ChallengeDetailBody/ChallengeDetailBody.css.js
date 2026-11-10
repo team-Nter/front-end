@@ -95,3 +95,16 @@ export const sourceLink = style({
   color: vars.color.gray[800],
   textDecoration: 'none',
 });
+
+export const chipRow = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  gap: 12,
+});
+
+export const actions = style({
+  display: 'flex',
+  gap: 8,
+  flexShrink: 0,
+});
