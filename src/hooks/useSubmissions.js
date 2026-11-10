@@ -12,7 +12,7 @@ const NON_RETRYABLE_STATUS = [400, 401, 403, 404];
 
 export function useSubmission(submissionId) {
   return useQuery({
-    queryKey: queryKeys.submissions.detail(submissionId),
+    queryKey: queryKeys.challenges.detail(submissionId),
     queryFn: () => getSubmission(submissionId),
     throwOnError: true,
     retry: (failureCount, error) =>

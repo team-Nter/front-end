@@ -64,7 +64,6 @@ export const queryKeys = {
       page,
       pageSize,
     ],
-    detail: (submissionId) => ['submissions', 'detail', String(submissionId)],
   },
   submissionDraft: {
     detail: (challengeId, userId) => [

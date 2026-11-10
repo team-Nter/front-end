@@ -139,11 +139,3 @@ export function moderateChallenge({ challengeId, action, reason }) {
     errorMessage: '처리 중 문제가 발생했습니다.',
   });
 }
-
-export function getChallengeDetail(challengeId, { signal } = {}) {
-  return challengeRequest({
-    path: `/challenges/${challengeId}`,
-    signal,
-    errorMessage: '챌린지 정보를 불러오지 못했습니다.',
-  });
-}

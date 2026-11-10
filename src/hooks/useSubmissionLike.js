@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export function useSubmissionLike(submissionId, challengeId) {
   const queryClient = useQueryClient();
-  const queryKey = queryKeys.submissions.detail(submissionId);
+  const queryKey = queryKeys.challenges.detail(submissionId);
 
   const cancelDetailQuery = () =>
     queryClient.cancelQueries({ queryKey, exact: true });
