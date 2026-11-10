@@ -176,3 +176,23 @@ export const message = style({
     },
   },
 });
+
+// 필터 팝업 바깥 상자 (Popover 기본 패널 위에 덮어쓰기)
+export const filterPanel = style({
+  maxHeight: 'none',
+  padding: 16,
+
+  '@media': {
+    // 모바일: 화면 전체를 덮는 시트
+    [media.mobile]: {
+      position: 'fixed',
+      inset: 0,
+      zIndex: 1000,
+      display: 'flex',
+      maxWidth: 'none',
+      border: 'none',
+      borderRadius: 0,
+      boxShadow: 'none',
+    },
+  },
+});

@@ -52,6 +52,7 @@ export default function ChallengeList() {
 
       <div className={styles.toolbar}>
         <Popover
+          className={styles.filterPanel}
           trigger={
             <button
               type="button"
