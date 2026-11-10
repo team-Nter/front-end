@@ -32,6 +32,9 @@ export function useSubmissionLike(submissionId) {
     queryClient.invalidateQueries({
       queryKey: queryKeys.submissions.lists(challengeId),
     });
+    queryClient.invalidateQueries({
+      queryKey: queryKeys.challenges.detail(challengeId),
+    });
   };
 
   const putLikes = useMutation({
