@@ -7,9 +7,13 @@ import { formatDate } from '@/utils';
 import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
+import { useMe } from '@/hooks/useMe';
+import { SubmissionMenu } from '../SubmissionMenu/SubmissionMenu';
 
 export function SubmissionView({ participation, submission = null }) {
+  const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
+  const isAuthor = Boolean(me?.id && author?.id === me.id);
   const likeCount = submission?.likeCount ?? 0;
   const isLiked = submission?.isLiked ?? false;
   const updatedAt = submission?.updatedAt;
@@ -17,7 +21,12 @@ export function SubmissionView({ participation, submission = null }) {
 
   return (
     <article className={styles.article}>
-      {submission && <h1 className={styles.title}>{submission.title}</h1>}
+      {submission && (
+        <div className={styles.heading}>
+          <h1 className={styles.title}>{submission.title}</h1>
+          {isAuthor && <SubmissionMenu submissionId={submission.id} />}
+        </div>
+      )}
       <div className={styles.metadata}>
         <div className={styles.author}>
           <Image src={profileUser} alt="" width={24} height={24} />
