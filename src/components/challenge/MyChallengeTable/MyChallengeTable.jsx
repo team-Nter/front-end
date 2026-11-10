@@ -86,6 +86,17 @@ export default function MyChallengeTable() {
   const totalPages = data?.pagination?.totalPages ?? 0;
 
   const renderAction = (challenge) => {
+    if (challenge.mySubmissionId && me) {
+      return (
+        <Link
+          href={`/challenges/${challenge.id}/participants/${me.id}/submission`}
+          className={styles.mySubmissionButton}
+        >
+          내 작업물 보기
+          <Image src={documentIcon} alt="" />
+        </Link>
+      );
+    }
     if (type === 'participating') {
       return (
         <Link
@@ -94,17 +105,6 @@ export default function MyChallengeTable() {
         >
           도전 계속하기
           <Image src={arrowRightIcon} alt="" />
-        </Link>
-      );
-    }
-    if (type === 'completed' && me) {
-      return (
-        <Link
-          href={`/challenges/${challenge.id}/participants/${me.id}/submission`}
-          className={styles.mySubmissionButton}
-        >
-          내 작업물 보기
-          <Image src={documentIcon} alt="" />
         </Link>
       );
     }
