@@ -1,3 +1,5 @@
+'use client';
+
 import { useSubmissionLike } from '@/hooks/useSubmissionLike';
 
 export default function Like({ submissionId, likeCount = 0, isLiked = false }) {

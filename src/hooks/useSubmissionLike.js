@@ -30,8 +30,7 @@ export function useSubmissionLike(submissionId) {
     if (challengeId === undefined || challengeId === null) return;
 
     return queryClient.invalidateQueries({
-      queryKey: ['submissions', 'list'],
-      predicate: (query) => String(query.queryKey[2]) === String(challengeId),
+      queryKey: queryKeys.submissions.lists(challengeId),
     });
   };
 

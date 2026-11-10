@@ -42,6 +42,7 @@ export const queryKeys = {
     ],
   },
   submissions: {
+    lists: (challengeId) => ['submissions', 'list', String(challengeId)],
     list: (challengeId, page, pageSize) => [
       'submissions',
       'list',
