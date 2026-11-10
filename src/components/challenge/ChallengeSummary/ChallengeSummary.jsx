@@ -1,4 +1,4 @@
-import { ChallengeChip } from '../ChallengeChip';
+import { ChallengeChip } from '@/components/challenge/ChallengeChip';
 import * as styles from './ChallengeSummary.css';
 
 // 챌린지 제목 · 분야/문서 타입 칩 · 설명

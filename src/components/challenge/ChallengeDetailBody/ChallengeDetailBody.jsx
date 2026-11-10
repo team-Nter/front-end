@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ChallengeSummary } from '../ChallengeSummary';
+import { ChallengeSummary } from '@/components/challenge/ChallengeSummary';
 import deadlineIcon from '@/assets/icons/deadline-black.svg';
 import personIcon from '@/assets/icons/person-gold.svg';
 import linkIcon from '@/assets/icons/arrow-up-right.svg';
