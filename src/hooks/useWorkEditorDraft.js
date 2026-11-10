@@ -11,10 +11,12 @@ export function useWorkEditorDraft({
   setTitle,
   editor,
   isSubmitting = false,
+  enabled = true,
 }) {
   const { draftQuery, saveDraft, deleteDraft } = useSubmissionDraft(
     challengeId,
     userId,
+    { enabled },
   );
   const draft = draftQuery.data?.submissionDraft;
   const [draftPromptDismissed, setDraftPromptDismissed] = useState(false);
@@ -29,7 +31,7 @@ export function useWorkEditorDraft({
     isLoadingDraft;
 
   const handleSaveDraft = () => {
-    if (!editor || isBusy || loadingDraftRef.current) return;
+    if (!enabled || !editor || isBusy || loadingDraftRef.current) return;
 
     if (!title.trim() && !editor.getText().trim()) {
       alert('제목이나 내용을 입력해주세요.');
@@ -41,7 +43,7 @@ export function useWorkEditorDraft({
   };
 
   const confirmSaveDraft = () => {
-    if (!editor || isBusy || loadingDraftRef.current) return;
+    if (!enabled || !editor || isBusy || loadingDraftRef.current) return;
     saveDraft.mutate(
       { title, content: editor.getHTML() },
       {
@@ -55,7 +57,7 @@ export function useWorkEditorDraft({
   };
 
   const handleLoadDraft = async () => {
-    if (!editor || isBusy || loadingDraftRef.current) return;
+    if (!enabled || !editor || isBusy || loadingDraftRef.current) return;
 
     loadingDraftRef.current = true;
     setIsLoadingDraft(true);
@@ -86,7 +88,7 @@ export function useWorkEditorDraft({
   };
 
   const handleDeleteDraft = () => {
-    if (!draft || isBusy || loadingDraftRef.current) return;
+    if (!enabled || !draft || isBusy || loadingDraftRef.current) return;
 
     deleteDraft.mutate();
   };

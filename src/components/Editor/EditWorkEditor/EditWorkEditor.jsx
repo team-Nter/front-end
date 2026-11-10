@@ -14,6 +14,7 @@ import {
 import { submissionEditError } from '@/utils/SubmissionError/submissionEditError';
 
 export default function EditWorkEditor({ submission, userId }) {
+  const canUseDraft = submission.author?.id === userId;
   const { title, setTitle, editor } = useWorkEditor({
     initialTitle: submission.title,
     initialContent: submission.content,
@@ -31,6 +32,7 @@ export default function EditWorkEditor({ submission, userId }) {
     setTitle,
     editor,
     isSubmitting: isPending,
+    enabled: canUseDraft,
   });
 
   const handleEdit = () => {
@@ -52,7 +54,9 @@ export default function EditWorkEditor({ submission, userId }) {
         },
         onSuccess: () => {
           router.push(
-            `/challenges/${submission.challengeId}/participants/${submission.author.id}/submission`,
+            submission.author?.id
+              ? `/challenges/${submission.challengeId}/participants/${submission.author.id}/submission`
+              : `/challenges/${submission.challengeId}`,
           );
         },
       },
@@ -64,25 +68,31 @@ export default function EditWorkEditor({ submission, userId }) {
         challengeId={submission.challengeId}
         isEditing
         handleSubmit={handleEdit}
-        handleSaveDraft={draftController.handleSaveDraft}
+        handleSaveDraft={
+          canUseDraft ? draftController.handleSaveDraft : undefined
+        }
         isSubmitting={isPending}
         isSaving={draftController.saveDraft.isPending}
         isBusy={draftController.isBusy || !editor}
       />
-      <WorkEditorDraftStatus
-        challengeId={submission.challengeId}
-        controller={draftController}
-      />
+      {canUseDraft && (
+        <WorkEditorDraftStatus
+          challengeId={submission.challengeId}
+          controller={draftController}
+        />
+      )}
       <WorkEditor
         title={title}
         onTitleChange={setTitle}
         editor={editor}
         isLoading={draftController.isLoadingDraft}
       />
-      <WorkEditorDraftDialogs
-        challengeId={submission.challengeId}
-        controller={draftController}
-      />
+      {canUseDraft && (
+        <WorkEditorDraftDialogs
+          challengeId={submission.challengeId}
+          controller={draftController}
+        />
+      )}
     </main>
   );
 }
