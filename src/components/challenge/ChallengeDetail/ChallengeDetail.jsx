@@ -50,6 +50,8 @@ function ChallengeAction({ challenge }) {
     error: joinError,
   } = useJoinChallenge(challenge.id);
 
+  // 'loading'(내 정보 확인 중)과 'admin'은 도전 버튼을 일부러 그리지 않아요.
+  // 확인 전에 버튼을 그리면 어드민에게 "작업 도전하기"가 잠깐 보였다 사라지기 때문이에요.
   const action = getChallengeAction(challenge, me);
   const workHref = `/challenges/${challenge.id}/work`;
 
