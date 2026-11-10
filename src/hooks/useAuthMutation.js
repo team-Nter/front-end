@@ -9,6 +9,7 @@ export function useAuthMutation(mutationFn, { onError } = {}) {
     onSuccess: async () => {
       await queryClient.cancelQueries();
       queryClient.removeQueries();
+      queryClient.setQueryData(queryKeys.users.info(), user);
     },
     onError,
   });
