@@ -40,6 +40,14 @@ export const queryKeys = {
       String(challengeId),
       params,
     ],
+    detail: (challengeId) => ['challenges', 'detail', String(challengeId)],
+    participants: (challengeId, params) => [
+      'challenges',
+      'detail',
+      String(challengeId),
+      'participants',
+      params,
+    ],
   },
   submissions: {
     list: (challengeId, page, pageSize) => [
