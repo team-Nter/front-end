@@ -78,11 +78,13 @@ export function useCancelMyChallenge() {
   return useMutation({
     mutationFn: cancelMyChallenge,
     onSuccess: (_data, challengeId) => {
-      queryClient.removeQueries({
+      queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.myDetail(me?.id, challengeId),
+        refetchType: 'none',
       });
       return queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.myLists(),
+        refetchType: 'all',
       });
     },
   });
@@ -124,10 +126,22 @@ export function useModerateChallenge() {
 
   return useMutation({
     mutationFn: moderateChallenge,
-    onSuccess: () =>
+    onSuccess: (_data, { challengeId }) => {
+      // 이 챌린지의 공개 상세(참여 현황 포함)는 취소되면 404가 되므로,
+      // 화면에 열려 있어도 바로 다시 받지 않고 오래됨 표시만 합니다.
+      const detailKey = queryKeys.challenges.detail(challengeId);
       queryClient.invalidateQueries({
+        queryKey: detailKey,
+        refetchType: 'none',
+      });
+
+      // 나머지 챌린지 쿼리(목록 · 나의 챌린지 · 어드민 화면)는 평소처럼 무효화합니다.
+      return queryClient.invalidateQueries({
         queryKey: queryKeys.challenges.all(),
-      }),
+        predicate: (query) =>
+          !detailKey.every((part, index) => query.queryKey[index] === part),
+      });
+    },
   });
 }
 

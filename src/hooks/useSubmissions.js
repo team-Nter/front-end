@@ -6,19 +6,15 @@ import {
   getSubmissions,
 } from '@/api/submissions';
 import { queryKeys } from '@/constants/query-keys';
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const NON_RETRYABLE_STATUS = [400, 401, 403, 404];
 
 export function useSubmission(submissionId) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: queryKeys.submissions.detail(submissionId),
     queryFn: () => getSubmission(submissionId),
+    throwOnError: true,
     retry: (failureCount, error) =>
       !NON_RETRYABLE_STATUS.includes(error?.status) && failureCount < 3,
   });

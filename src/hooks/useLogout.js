@@ -13,6 +13,7 @@ export function useLogout() {
     mutationFn: logout,
     onSuccess: async () => {
       await queryClient.cancelQueries();
+      queryClient.removeQueries();
       queryClient.setQueryData(queryKeys.users.info(), null);
 
       router.replace('/');

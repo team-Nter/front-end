@@ -1,3 +1,7 @@
-export default function Page() {
-  return <h1>신청 상세 - 상태별 (재영님)</h1>;
+import { MyChallengeDetail } from '@/components/challenge/MyChallengeDetail';
+
+export default async function Page({ params }) {
+  const { id } = await params;
+
+  return <MyChallengeDetail challengeId={id} />;
 }
