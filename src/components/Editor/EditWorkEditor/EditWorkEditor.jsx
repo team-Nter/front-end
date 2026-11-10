@@ -85,7 +85,7 @@ export default function EditWorkEditor({ submission, userId }) {
         title={title}
         onTitleChange={setTitle}
         editor={editor}
-        isLoading={draftController.isLoadingDraft}
+        isLoading={draftController.isLoadingDraft || isPending}
       />
       {canUseDraft && (
         <WorkEditorDraftDialogs

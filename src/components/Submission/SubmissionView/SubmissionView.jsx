@@ -13,6 +13,7 @@ import { useDeleteSubmission } from '@/hooks/useSubmissions';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmissionDeleteModal } from '../SubmissionDeleteModal/SubmissionDeleteModal';
+import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
 
 export function SubmissionView({ participation, submission = null }) {
   const router = useRouter();
@@ -20,7 +21,8 @@ export function SubmissionView({ participation, submission = null }) {
   const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
   const isAuthor = Boolean(me?.id && author?.id === me.id);
-  const canEdit = isAuthor || me?.role === 'ADMIN';
+  const access = useSubmissionChangeAccess(submission, me);
+  const canEdit = access.canChange;
   const likeCount = submission?.likeCount ?? 0;
   const isLiked = submission?.isLiked ?? false;
   const updatedAt = submission?.updatedAt;
@@ -62,6 +64,16 @@ export function SubmissionView({ participation, submission = null }) {
               onDelete={openDeleteModal}
               isDeleting={isPending}
             />
+          )}
+        </div>
+      )}
+      {submission && isAuthor && !canEdit && (
+        <div role={access.isChecking ? 'status' : 'alert'}>
+          <p>{access.reason}</p>
+          {access.canRetry && (
+            <button type="button" onClick={() => access.retry()}>
+              다시 시도
+            </button>
           )}
         </div>
       )}

@@ -7,15 +7,21 @@ import { useMe } from '@/hooks/useMe';
 import Link from 'next/link';
 import { QueryBoundary } from '@/components/common/QueryBoundary';
 import { getSubmissionErrorMessage } from '@/utils/SubmissionError/submissionJoinError';
+import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
 
 function SubmissionEditor({ id, user }) {
   const { data: submission } = useSubmission(id);
-  const canEdit = submission.author?.id === user.id || user.role === 'ADMIN';
+  const access = useSubmissionChangeAccess(submission, user);
 
-  if (!canEdit) {
+  if (!access.canChange) {
     return (
-      <div role="alert">
-        <p>작성자 혹은 관리자만 수정이 가능합니다.</p>
+      <div role={access.isChecking ? 'status' : 'alert'}>
+        <p>{access.reason}</p>
+        {access.canRetry && (
+          <button type="button" onClick={() => access.retry()}>
+            다시 시도
+          </button>
+        )}
         <Link href={`/challenges/${submission.challengeId}`}>
           챌린지로 돌아가기
         </Link>
