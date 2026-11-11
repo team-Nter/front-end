@@ -85,6 +85,7 @@ export function useUpdateMyChallenge(challengeId) {
         }),
         queryClient.invalidateQueries({
           queryKey: queryKeys.challenges.all(),
+          refetchType: 'none',
         }),
       ]),
   });
