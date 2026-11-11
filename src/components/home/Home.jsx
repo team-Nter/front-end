@@ -13,10 +13,10 @@ import imoji2 from '@/assets/icons/imoji2.svg';
 import imoji3 from '@/assets/icons/imoji3.svg';
 
 import * as styles from './Home.css.js';
-import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn.js';
+import { useRedirectFromLanding } from '@/hooks/useRedirectFromLanding.js';
 
 export default function HomePage() {
-  const { isLoggedIn } = useRedirectIfLoggedIn();
+  const { isLoggedIn } = useRedirectFromLanding();
 
   if (isLoggedIn) return null;
 
