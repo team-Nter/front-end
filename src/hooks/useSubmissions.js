@@ -94,6 +94,7 @@ export function useDeleteSubmission(submissionId, challengeId, userId) {
             String(userId),
           ),
           exact: true,
+          refetchType: 'none',
         }),
       ]);
     },
