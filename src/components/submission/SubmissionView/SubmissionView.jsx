@@ -24,6 +24,8 @@ export default function SubmissionView({
   const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
   const isAuthor = Boolean(me?.id && author?.id === me.id);
+
+  const requireDeleteReason = me?.role === 'ADMIN' && !isAuthor; // ADMIN일 때만 삭제 사유 쓰는 창 나오기
   const access = useSubmissionChangeAccess(submission, me);
   const canEdit = access.canChange;
   const likeCount = submission?.likeCount ?? 0;
@@ -45,11 +47,12 @@ export default function SubmissionView({
     setIsDeleteModalOpen(false);
     reset();
   };
-  const handleDelete = () => {
+  const handleDelete = (reason) => {
     if (!submission || !canEdit || isPending) return;
+    if (requireDeleteReason && !reason) return;
 
     // 페이지 이동은 useDeleteSubmission에서 처리합니다.
-    mutate(undefined, {
+    mutate(requireDeleteReason ? reason : undefined, {
       onSuccess: () => setIsDeleteModalOpen(false),
     });
   };
@@ -127,6 +130,7 @@ export default function SubmissionView({
         <SubmissionDeleteModal
           isPending={isPending}
           error={error}
+          requireReason={requireDeleteReason}
           onCancel={closeDeleteModal}
           onConfirm={handleDelete}
         />

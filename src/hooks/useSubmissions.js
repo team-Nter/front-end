@@ -88,7 +88,7 @@ export function useDeleteSubmission(submissionId, challengeId, userId) {
   const router = useRouter();
 
   return useMutation({
-    mutationFn: () => deleteSubmission(submissionId),
+    mutationFn: (reason) => deleteSubmission(submissionId, reason),
     onSuccess: () => {
       router.replace(`/challenges/${challengeId}`);
 
