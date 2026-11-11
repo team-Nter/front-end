@@ -4,11 +4,11 @@ import Image from 'next/image';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
-import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
+import { SubmissionDetail } from '../SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 
-export function SubmissionView({ participation, submission = null }) {
+export default function SubmissionView({ participation, submission = null }) {
   const author = submission?.author ?? participation.user;
   const likeCount = submission?.likeCount ?? 0;
   const isLiked = submission?.isLiked ?? false;
