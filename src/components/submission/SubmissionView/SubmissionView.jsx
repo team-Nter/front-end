@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import FeedbackSection from '@/components/feedback/FeedbackSection';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
@@ -50,7 +51,18 @@ export default function SubmissionView({ participation, submission = null }) {
           <p>아직 작성하지 않았어요.</p>
         </div>
       ) : (
-        <SubmissionDetail key={submission.id} content={submission.content} />
+        <SubmissionDetail
+          key={`submission:${submission.id}`}
+          content={submission.content}
+        />
+      )}
+      {submission && <hr className={styles.feedbackDivider} />}
+      {submission && (
+        <FeedbackSection
+          key={`feedbacks:${submission.id}`}
+          submissionId={submission.id}
+          challengeStatus={challengeStatus}
+        />
       )}
     </article>
   );
