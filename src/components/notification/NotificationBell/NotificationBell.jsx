@@ -14,7 +14,7 @@ import { getNotificationHref } from '../getNotificationHref';
 import * as styles from './NotificationBell.css';
 
 export default function NotificationBell() {
-  const router = useRouter(); // ← 이 줄 추가
+  const router = useRouter();
   const { data, isPending, isError, refetch } = useNotifications();
   const { mutate: markAsRead } = useReadNotification();
 
@@ -39,7 +39,11 @@ export default function NotificationBell() {
           aria-label={
             hasUnread ? `알림, 읽지 않은 알림 ${unreadCount}개` : '알림'
           }
-          onClick={() => refetch()}
+          onClick={(event) => {
+            const isOpening =
+              event.currentTarget.getAttribute('aria-expanded') !== 'true';
+            if (isOpening) refetch();
+          }}
         >
           <Image src={hasUnread ? bellNotiIcon : bellEmptyIcon} alt="" />
         </button>
