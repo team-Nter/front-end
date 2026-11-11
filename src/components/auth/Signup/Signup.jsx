@@ -16,6 +16,7 @@ import {
 } from '@/components/auth/commonAuth/AuthCheckNotices';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
 import { GoogleLoginError } from '@/components/auth/GoogleLoginError';
+import * as styles from './Signup.css';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -105,9 +106,11 @@ export default function Signup() {
   return (
     <>
       {isError && <ConnectionWarning />}
-      <main>
-        <Link href="/">
+
+      <main className={styles.signupPage}>
+        <Link href="/" className={styles.logoLink}>
           <Image
+            className={styles.logo}
             src={logo}
             alt="독스루 홈"
             width={289}
@@ -115,8 +118,10 @@ export default function Signup() {
             loading="eager"
           />
         </Link>
-        <form onSubmit={handleSubmit} noValidate>
+
+        <form className={styles.signupForm} onSubmit={handleSubmit} noValidate>
           <Input
+            className={styles.input}
             type="email"
             id="email"
             label="이메일"
@@ -129,7 +134,9 @@ export default function Signup() {
             }}
             disabled={signupMutation.isPending}
           />
+
           <Input
+            className={styles.input}
             type="text"
             id="nickname"
             label="닉네임"
@@ -142,7 +149,9 @@ export default function Signup() {
             }}
             disabled={signupMutation.isPending}
           />
+
           <Input
+            className={styles.input}
             type="password"
             id="password"
             label="비밀번호"
@@ -159,7 +168,9 @@ export default function Signup() {
             }}
             disabled={signupMutation.isPending}
           />
+
           <Input
+            className={styles.input}
             type="password"
             id="passwordConfirmation"
             label="비밀번호 확인"
@@ -168,19 +179,33 @@ export default function Signup() {
             value={passwordConfirmation}
             onChange={(e) => {
               setPasswordConfirmation(e.target.value);
-              setErrors((prev) => ({ ...prev, passwordConfirmation: '' }));
+              setErrors((prev) => ({
+                ...prev,
+                passwordConfirmation: '',
+              }));
             }}
             disabled={signupMutation.isPending}
           />
-          <Button type="submit" disabled={signupMutation.isPending}>
+
+          <Button
+            className={styles.signupButton}
+            type="submit"
+            disabled={signupMutation.isPending}
+          >
             {signupMutation.isPending ? '가입 중...' : '회원가입'}
           </Button>
         </form>
-        <GoogleLoginError />
-        <GoogleLoginButton />
-        <div>
-          <p>회원이신가요?</p>
-          <Link href="/login">로그인하기</Link>
+
+        <div className={styles.googleLogin}>
+          <GoogleLoginError />
+          <GoogleLoginButton />
+        </div>
+
+        <div className={styles.footer}>
+          <p className={styles.footerText}>회원이신가요?</p>
+          <Link href="/login" className={styles.footerLink}>
+            로그인하기
+          </Link>
         </div>
       </main>
     </>
