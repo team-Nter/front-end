@@ -9,7 +9,11 @@ import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 
-export default function SubmissionView({ participation, submission = null }) {
+export default function SubmissionView({
+  participation,
+  submission = null,
+  challengeStatus,
+}) {
   const author = submission?.author ?? participation.user;
   const likeCount = submission?.likeCount ?? 0;
   const isLiked = submission?.isLiked ?? false;
