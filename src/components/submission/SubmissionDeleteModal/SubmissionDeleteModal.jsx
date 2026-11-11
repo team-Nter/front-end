@@ -40,9 +40,8 @@ export default function SubmissionDeleteModal({
         작성물을 삭제하시겠습니까?
       </h2>
       <p id={descriptionId} className={styles.description}>
-        {requireReason
-          ? '삭제 사유는 작성자에게 알림으로 전달돼요.'
-          : '삭제한 작성물은 복구할 수 없어요.'}
+        삭제한 작성물은 복구할 수 없어요 <br />
+        {requireReason ? '삭제 사유는 작성자에게 알림으로 전달돼요.' : ''}
       </p>
       {requireReason && (
         <div className={styles.reasonField}>
