@@ -219,6 +219,7 @@ export default function MyChallengeTable() {
           {items.map((challenge) => (
             <li key={challenge.id}>
               <ChallengeCard
+                clickable
                 challenge={challenge}
                 action={renderAction(challenge)}
               />
