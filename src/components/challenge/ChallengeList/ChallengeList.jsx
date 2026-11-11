@@ -26,6 +26,8 @@ const PAGE_SIZE = 5;
 export default function ChallengeList() {
   const { data: me } = useMe();
   const isAdmin = me?.role === 'ADMIN';
+  // 내 정보 확인이 끝났고(undefined 아님) 어드민이 아닐 때만 신청 버튼 표시
+  const canRequest = me !== undefined && !isAdmin;
   const { params, updateParams } = useChallengeListParams();
   const { data, isPending, isError, error } = useChallenges({
     ...params,
@@ -48,10 +50,12 @@ export default function ChallengeList() {
     <div className={styles.wrapper}>
       <div className={styles.titleRow}>
         <h1 className={styles.title}>챌린지 목록</h1>
-        <Button as={Link} href="/challenges/new" className={styles.newButton}>
-          신규 챌린지 신청
-          <Image src={plusIcon} alt="" />
-        </Button>
+        {canRequest && (
+          <Button as={Link} href="/challenges/new" className={styles.newButton}>
+            신규 챌린지 신청
+            <Image src={plusIcon} alt="" />
+          </Button>
+        )}
       </div>
 
       <div className={styles.toolbar}>
@@ -114,9 +118,14 @@ export default function ChallengeList() {
       <div role="status">
         {data && data.items.length === 0 && (
           <p className={styles.message}>
-            아직 챌린지가 없어요,
-            <br />
-            지금 바로 챌린지를 신청해보세요!
+            아직 챌린지가 없어요
+            {canRequest && (
+              <>
+                ,
+                <br />
+                지금 바로 챌린지를 신청해보세요!
+              </>
+            )}
           </p>
         )}
       </div>
