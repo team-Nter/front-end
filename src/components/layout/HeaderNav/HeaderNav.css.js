@@ -4,6 +4,11 @@ import { media } from '@/styles/media';
 
 export const nav = style({
   minWidth: 0,
+  overflowX: 'auto', // 아주 좁은 화면(320px 등)에서 메뉴가 넘치면 겹치지 않고 가로로 스크롤
+  scrollbarWidth: 'none', // 스크롤바는 숨김
+  selectors: {
+    '&::-webkit-scrollbar': { display: 'none' }, // Safari용 스크롤바 숨김
+  },
 });
 
 export const list = style({

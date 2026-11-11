@@ -31,7 +31,7 @@ export const left = style({
   minWidth: 0,
   gap: 24,
   '@media': {
-    [media.mobile]: { gap: 16 },
+    [media.mobile]: { gap: 4 },
   },
 });
 
@@ -50,7 +50,17 @@ export const logo = style({
   width: 120,
   height: 'auto',
   '@media': {
-    [media.mobile]: { width: 80 },
+    [media.mobile]: { display: 'none' }, // 모바일에서는 심볼 로고로 교체
+  },
+});
+
+// 모바일 전용 심볼 로고
+export const logoMobile = style({
+  display: 'none',
+  width: 28,
+  height: 28,
+  '@media': {
+    [media.mobile]: { display: 'block' },
   },
 });
 
