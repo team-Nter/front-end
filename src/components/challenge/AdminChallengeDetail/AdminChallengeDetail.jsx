@@ -137,19 +137,19 @@ export default function AdminChallengeDetail({ challengeId, filters }) {
         <div className={styles.actions}>
           <Button
             size="lg"
-            className={styles.rejectButton}
-            disabled={moderate.isPending}
-            onClick={() => setIsRejectOpen(true)}
-          >
-            거절하기
-          </Button>
-          <Button
-            size="lg"
             className={styles.actionButton}
             disabled={moderate.isPending}
             onClick={() => handleModerate('APPROVE')}
           >
             승인하기
+          </Button>
+          <Button
+            size="lg"
+            className={styles.rejectButton}
+            disabled={moderate.isPending}
+            onClick={() => setIsRejectOpen(true)}
+          >
+            거절하기
           </Button>
         </div>
       )}
