@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image.js';
 import Link from 'next/link.js';
 
@@ -11,8 +13,14 @@ import imoji2 from '@/assets/icons/imoji2.svg';
 import imoji3 from '@/assets/icons/imoji3.svg';
 
 import * as styles from './Home.css.js';
+import { useRedirectIfLoggedIn } from '@/hooks/useRedirectIfLoggedIn.js';
+import { OfflineNotice } from '@/components/auth/commonAuth/AuthCheckNotices.jsx';
 
 export default function HomePage() {
+  const { isLoggedIn, isPending, isPaused } = useRedirectIfLoggedIn();
+  if (isPending && isPaused) return <OfflineNotice />;
+  if (isPending || isLoggedIn) return null;
+
   return (
     <main className={styles.main}>
       <section className={styles.hero}>
