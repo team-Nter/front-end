@@ -1,10 +1,7 @@
 'use client';
 
 import { useWorkEditorDraft } from '@/hooks/useWorkEditorDraft';
-import {
-  WorkEditorDraftStatus,
-  WorkEditorDraftDialogs,
-} from '../WorkEditorDraft/WorkEditorDraft';
+import { WorkEditorDraft, WorkEditorDraftDialogs } from '../WorkEditorDraft';
 import { EditHeader } from '../EditHeader';
 import * as styles from './CreateWorkEditor.css';
 import { WorkEditor } from '../WorkEditor';
@@ -65,7 +62,7 @@ export default function CreateWorkEditor({ id, userId }) {
         isSubmitting={isPending}
         isSaving={saveDraft.isPending}
       />
-      <WorkEditorDraftStatus challengeId={id} controller={draftController} />
+      <WorkEditorDraft challengeId={id} controller={draftController} />
       <WorkEditor
         title={title}
         onTitleChange={setTitle}

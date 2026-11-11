@@ -6,7 +6,7 @@ import { Modal } from '@/components/common/Modal';
 import * as styles from './SubmissionDeleteModal.css';
 import { submissionDeleteError } from '@/utils/SubmissionError/submissionDeleteError';
 
-export function SubmissionDeleteModal({
+export default function SubmissionDeleteModal({
   isPending,
   error,
   onCancel,

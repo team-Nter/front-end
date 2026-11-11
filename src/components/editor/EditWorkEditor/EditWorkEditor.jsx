@@ -7,10 +7,7 @@ import { useRouter } from 'next/navigation';
 import { EditHeader } from '../EditHeader';
 import * as styles from './EditWorkEditor.css';
 import { useWorkEditorDraft } from '@/hooks/useWorkEditorDraft';
-import {
-  WorkEditorDraftStatus,
-  WorkEditorDraftDialogs,
-} from '../WorkEditorDraft/WorkEditorDraft';
+import { WorkEditorDraft, WorkEditorDraftDialogs } from '../WorkEditorDraft';
 import { submissionEditError } from '@/utils/SubmissionError/submissionEditError';
 
 export default function EditWorkEditor({ submission, userId }) {
@@ -76,7 +73,7 @@ export default function EditWorkEditor({ submission, userId }) {
         isBusy={draftController.isBusy || !editor}
       />
       {canUseDraft && (
-        <WorkEditorDraftStatus
+        <WorkEditorDraft
           challengeId={submission.challengeId}
           controller={draftController}
         />

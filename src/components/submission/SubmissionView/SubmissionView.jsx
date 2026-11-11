@@ -9,11 +9,11 @@ import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 import { useMe } from '@/hooks/useMe';
-import { SubmissionMenu } from '../SubmissionMenu/SubmissionMenu';
+import { SubmissionMenu } from '@/components/submission/SubmissionMenu';
 import { useDeleteSubmission } from '@/hooks/useSubmissions';
 import { useState } from 'react';
-import { SubmissionDeleteModal } from '../SubmissionDeleteModal/SubmissionDeleteModal';
 import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
+import { SubmissionDeleteModal } from '@/components/submission/SubmissionDeleteModal';
 
 export default function SubmissionView({
   participation,

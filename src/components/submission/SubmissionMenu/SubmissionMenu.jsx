@@ -6,7 +6,7 @@ import menuIcon from '@/assets/icons/menu.svg';
 import { Popover } from '@/components/common/Popover';
 import * as styles from './SubmissionMenu.css';
 
-export function SubmissionMenu({ submissionId, onDelete, isDeleting }) {
+export default function SubmissionMenu({ submissionId, onDelete, isDeleting }) {
   return (
     <Popover
       align="right"

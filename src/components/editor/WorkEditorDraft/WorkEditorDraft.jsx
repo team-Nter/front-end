@@ -7,7 +7,7 @@ import DraftConfirmModal from '../DraftPopUp/DraftConfirmModal';
 import { DraftPopUp } from '../DraftPopUp';
 import * as styles from './WorkEditorDraft.css';
 
-export function WorkEditorDraftStatus({ challengeId: id, controller }) {
+export default function WorkEditorDraft({ challengeId: id, controller }) {
   const { draftQuery, isBusy } = controller;
   return (
     <>
