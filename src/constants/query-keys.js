@@ -68,4 +68,9 @@ export const queryKeys = {
       userId,
     ],
   },
+
+  notifications: {
+    all: (userId) => ['notifications', userId],
+    list: (userId, params) => ['notifications', userId, 'list', params],
+  },
 };
