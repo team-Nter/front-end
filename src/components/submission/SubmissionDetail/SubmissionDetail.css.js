@@ -13,14 +13,23 @@ export const article = style({
   '@media': { [media.mobile]: { paddingTop: 24, paddingBottom: 40 } },
 });
 
+export const heading = style({
+  display: 'flex',
+  alignItems: 'flex-start',
+  justifyContent: 'space-between',
+  marginBottom: 24,
+  '@media': { [media.mobile]: { marginBottom: 20 } },
+});
+
 export const title = style({
+  flex: 1,
+  minWidth: 0,
   fontSize: 24,
   fontWeight: 600,
   lineHeight: 1.4,
   letterSpacing: '-0.02em',
-  marginBottom: 24,
   overflowWrap: 'anywhere',
-  '@media': { [media.mobile]: { fontSize: 20, marginBottom: 20 } },
+  '@media': { [media.mobile]: { fontSize: 20 } },
 });
 
 export const empty = style({

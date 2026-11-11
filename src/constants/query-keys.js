@@ -12,12 +12,6 @@ export const queryKeys = {
   },
   challenges: {
     all: () => ['challenges'],
-    detail: (challengeId, userId) => [
-      'challenges',
-      'detail',
-      String(challengeId),
-      userId ?? null,
-    ],
     my: () => ['challenges', 'my'],
     myLists: () => ['challenges', 'my', 'list'],
     myList: (userId, params) => ['challenges', 'my', 'list', userId, params],
@@ -74,6 +68,7 @@ export const queryKeys = {
       userId,
     ],
   },
+
   feedbacks: {
     lists: (submissionId) => ['feedbacks', 'list', String(submissionId)],
     list: (submissionId, pageSize) => [
@@ -82,5 +77,10 @@ export const queryKeys = {
       String(submissionId),
       pageSize,
     ],
+  },
+
+  notifications: {
+    all: (userId) => ['notifications', userId],
+    list: (userId, params) => ['notifications', userId, 'list', params],
   },
 };

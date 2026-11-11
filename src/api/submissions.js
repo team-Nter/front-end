@@ -9,7 +9,7 @@ export async function getSubmission(submissionId) {
     const body = await response.json().catch(() => null);
     const message =
       typeof body?.message === 'string' ? body.message.trim() : '';
-    const error = new Error(message);
+    const error = new Error(message || '작업물을 불러오지 못했습니다.');
     error.status = response.status;
     throw error;
   }
@@ -52,7 +52,7 @@ export async function createSubmission(challengeId, data) {
     const body = await response.json().catch(() => null);
     const message =
       typeof body?.message === 'string' ? body.message.trim() : '';
-    const error = new Error(message);
+    const error = new Error(message || '작업물을 제출하지 못했습니다.');
     error.status = response.status;
     throw error;
   }

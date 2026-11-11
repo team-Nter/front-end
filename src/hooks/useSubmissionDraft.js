@@ -6,13 +6,18 @@ import {
 import { queryKeys } from '@/constants/query-keys';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export function useSubmissionDraft(challengeId, userId) {
+export function useSubmissionDraft(
+  challengeId,
+  userId,
+  { enabled = true } = {},
+) {
   const queryClient = useQueryClient();
   const queryKey = queryKeys.submissionDraft.detail(challengeId, userId);
   const cancelDraftQuery = () =>
     queryClient.cancelQueries({ queryKey, exact: true });
 
   const draftQuery = useQuery({
+    enabled,
     queryKey,
     queryFn: () => getSubmissionDraft(challengeId),
     networkMode: 'always',
