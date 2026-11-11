@@ -1,6 +1,7 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 import { textField } from '@/components/common/TextField.css.js';
+import { media } from '@/styles/media';
 
 export const form = style({
   boxSizing: 'border-box',
@@ -10,7 +11,10 @@ export const form = style({
   width: '100%',
   maxWidth: 590,
   margin: '0 auto',
-  padding: '24px 0 40px',
+  padding: '40px 0',
+  '@media': {
+    [media.mobile]: { paddingTop: 24 },
+  },
 });
 
 export const title = style({

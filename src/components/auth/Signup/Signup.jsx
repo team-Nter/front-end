@@ -14,6 +14,8 @@ import {
   ConnectionWarning,
   OfflineNotice,
 } from '@/components/auth/commonAuth/AuthCheckNotices';
+import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
+import { GoogleLoginError } from '@/components/auth/GoogleLoginError';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -174,6 +176,8 @@ export default function Signup() {
             {signupMutation.isPending ? '가입 중...' : '회원가입'}
           </Button>
         </form>
+        <GoogleLoginError />
+        <GoogleLoginButton />
         <div>
           <p>회원이신가요?</p>
           <Link href="/login">로그인하기</Link>

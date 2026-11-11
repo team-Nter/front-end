@@ -9,7 +9,7 @@ export async function getSubmission(submissionId) {
     const body = await response.json().catch(() => null);
     const message =
       typeof body?.message === 'string' ? body.message.trim() : '';
-    const error = new Error(message);
+    const error = new Error(message || '작업물을 불러오지 못했습니다.');
     error.status = response.status;
     throw error;
   }
@@ -52,7 +52,7 @@ export async function createSubmission(challengeId, data) {
     const body = await response.json().catch(() => null);
     const message =
       typeof body?.message === 'string' ? body.message.trim() : '';
-    const error = new Error(message);
+    const error = new Error(message || '작업물을 제출하지 못했습니다.');
     error.status = response.status;
     throw error;
   }
@@ -80,10 +80,15 @@ export async function updateSubmission(submissionId, data) {
   return response.json();
 }
 
-export async function deleteSubmission(submissionId) {
+// reason은 관리자가 남의 작업물을 삭제할 때만 보냅니다. (본인 삭제는 body 없음)
+export async function deleteSubmission(submissionId, reason) {
   const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`, {
     method: 'DELETE',
     credentials: 'include',
+    ...(reason && {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason }),
+    }),
   });
 
   if (!response.ok) {

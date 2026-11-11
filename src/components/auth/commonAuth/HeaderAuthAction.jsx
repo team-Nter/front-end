@@ -1,6 +1,7 @@
 import { Button } from '@/components/common/Button';
 import { UserMenu } from '@/components/auth/commonAuth/UserMenu';
 import { useMe } from '@/hooks/useMe';
+import { NotificationBell } from '@/components/notification/NotificationBell';
 import Link from 'next/link';
 import * as styles from './HeaderAuthAction.css';
 
@@ -20,13 +21,23 @@ export function HeaderAuthAction({ loginHref }) {
         >
           다시 시도
         </Button>
-        {isLoggedIn && <UserMenu user={user} />}
+        {isLoggedIn && (
+          <div className={styles.loggedIn}>
+            <NotificationBell />
+            <UserMenu user={user} />
+          </div>
+        )}
       </>
     );
   }
 
   if (isLoggedIn) {
-    return <UserMenu user={user} />;
+    return (
+      <div className={styles.loggedIn}>
+        <NotificationBell />
+        <UserMenu user={user} />
+      </div>
+    );
   }
 
   return (

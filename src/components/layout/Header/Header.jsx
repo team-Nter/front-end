@@ -7,6 +7,7 @@ import logo from '@/assets/images/logo.svg';
 import { Container } from '@/components/layout/Container';
 import * as styles from './Header.css.js';
 import { HeaderAuthAction } from '@/components/auth/commonAuth/HeaderAuthAction.jsx';
+import logoMobile from '@/assets/images/logo-mobile.svg';
 
 export default function Header({ className, loginHref = '/login', children }) {
   return (
@@ -18,6 +19,13 @@ export default function Header({ className, loginHref = '/login', children }) {
               src={logo}
               alt="Docthru"
               className={styles.logo}
+              loading="eager"
+            />
+            {/* 모바일에서만 보이는 심볼 로고 (메뉴 공간 확보) */}
+            <Image
+              src={logoMobile}
+              alt=""
+              className={styles.logoMobile}
               loading="eager"
             />
           </Link>

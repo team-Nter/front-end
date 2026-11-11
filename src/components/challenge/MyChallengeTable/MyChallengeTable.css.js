@@ -6,7 +6,10 @@ import { media } from '@/styles/media';
 export const wrapper = style({
   display: 'flex',
   flexDirection: 'column',
-  paddingBlock: '24px 80px',
+  paddingBlock: '40px 80px',
+  '@media': {
+    [media.mobile]: { paddingTop: 24 },
+  },
 });
 
 // 제목 + 신규 챌린지 신청 버튼 줄

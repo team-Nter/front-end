@@ -1,6 +1,6 @@
 'use client';
 
-import WorkEditor from '@/components/Editor/WorkEditor/WorkEditor';
+import { CreateWorkEditor } from '@/components/editor/CreateWorkEditor';
 import { useMe } from '@/hooks/useMe';
 import { useParams } from 'next/navigation';
 
@@ -13,5 +13,5 @@ export default function Page() {
     return <p role="alert">사용자 정보를 불러오지 못했어요.</p>;
   if (!user) return <p>로그인이 필요해요.</p>;
 
-  return <WorkEditor key={`${id}:${user.id}`} id={id} userId={user.id} />;
+  return <CreateWorkEditor key={`${id}:${user.id}`} id={id} userId={user.id} />;
 }

@@ -28,3 +28,9 @@ export const login = style({
     },
   },
 });
+
+export const loggedIn = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 16,
+});
