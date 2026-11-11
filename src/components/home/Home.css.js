@@ -200,6 +200,7 @@ export const featureText = style({
     },
     [media.mobile]: {
       marginLeft: 5,
+      maxWidth: 'calc(100% - 5px)',
     },
   },
 });
