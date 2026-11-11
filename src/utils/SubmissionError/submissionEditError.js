@@ -7,8 +7,8 @@ const ERROR_MESSAGES = {
 };
 
 export function submissionEditError(error) {
-  if (error?.status && error.message) return error.message;
   if (error?.status >= 500)
     return '서버에 문제가 발생했습니다. 잠시 후 다시 시도해주세요.';
+  if (error?.status && error.message) return error.message;
   return ERROR_MESSAGES[error?.status] ?? '작업물을 수정하지 못했습니다.';
 }

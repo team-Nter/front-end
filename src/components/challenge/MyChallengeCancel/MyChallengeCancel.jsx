@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/common/Button';
-import DraftConfirmModal from '@/components/Editor/DraftPopUp/DraftConfirmModal';
+import DraftConfirmModal from '@/components/editor/DraftPopUp/DraftConfirmModal';
 import { useCancelMyChallenge } from '@/hooks/useChallenges';
 
 export default function MyChallengeCancel({ challengeId }) {

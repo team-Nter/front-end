@@ -42,6 +42,8 @@ export default function MyChallengeDetail({ challengeId }) {
     );
   }
 
+  const isRejected = challenge.status === 'REJECTED';
+
   return (
     <div className={styles.wrapper}>
       <ChallengeModerationNotice
@@ -60,7 +62,7 @@ export default function MyChallengeDetail({ challengeId }) {
                   href={`/my-challenges/${challenge.id}/edit`}
                   variant="secondary"
                 >
-                  수정하기
+                  {isRejected ? '수정 후 재신청' : '수정하기'}
                 </Button>
               )}
               {challenge.canCancel && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { SubmissionDetail } from '@/components/submission/SubmissionDetail/SubmissionDetail';
+import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 
 export default function BestSubmissions({ submissions }) {
   if (submissions.length === 0) return null;

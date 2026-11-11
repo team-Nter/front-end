@@ -1,6 +1,6 @@
 'use client';
 
-import { EditWorkEditor } from '@/components/Editor/EditWorkEditor';
+import { EditWorkEditor } from '@/components/editor/EditWorkEditor';
 import { useSubmission } from '@/hooks/useSubmissions';
 import { useParams } from 'next/navigation';
 import { useMe } from '@/hooks/useMe';

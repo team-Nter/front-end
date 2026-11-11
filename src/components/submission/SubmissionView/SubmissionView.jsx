@@ -1,10 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import FeedbackSection from '@/components/feedback/FeedbackSection';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
-import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
+import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 import { useMe } from '@/hooks/useMe';
@@ -15,7 +16,11 @@ import { useState } from 'react';
 import { SubmissionDeleteModal } from '../SubmissionDeleteModal/SubmissionDeleteModal';
 import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
 
-export function SubmissionView({ participation, submission = null }) {
+export default function SubmissionView({
+  participation,
+  submission = null,
+  challengeStatus,
+}) {
   const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { data: me } = useMe();
@@ -109,7 +114,18 @@ export function SubmissionView({ participation, submission = null }) {
           <p>아직 작성하지 않았어요.</p>
         </div>
       ) : (
-        <SubmissionDetail key={submission.id} content={submission.content} />
+        <SubmissionDetail
+          key={`submission:${submission.id}`}
+          content={submission.content}
+        />
+      )}
+      {submission && <hr className={styles.feedbackDivider} />}
+      {submission && (
+        <FeedbackSection
+          key={`feedbacks:${submission.id}`}
+          submissionId={submission.id}
+          challengeStatus={challengeStatus}
+        />
       )}
       {isDeleteModalOpen && (
         <SubmissionDeleteModal

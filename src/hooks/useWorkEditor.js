@@ -7,7 +7,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import { BackgroundColor, TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { common, createLowlight } from 'lowlight';
-import { CodeBlock } from '@/components/Editor/CodeBlockComponent';
+import { CodeBlock } from '@/components/editor/CodeBlockComponent';
 
 const lowlight = createLowlight(common);
 

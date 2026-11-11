@@ -68,4 +68,13 @@ export const queryKeys = {
       userId,
     ],
   },
+  feedbacks: {
+    lists: (submissionId) => ['feedbacks', 'list', String(submissionId)],
+    list: (submissionId, pageSize) => [
+      'feedbacks',
+      'list',
+      String(submissionId),
+      pageSize,
+    ],
+  },
 };

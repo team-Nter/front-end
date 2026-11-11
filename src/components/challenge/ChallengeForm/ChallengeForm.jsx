@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Input } from '@/components/common/Input';
 import { Textarea } from '@/components/common/Textarea';
 import { Button } from '@/components/common/Button';
@@ -9,7 +8,6 @@ import {
   CHALLENGE_CATEGORY_OPTIONS,
   DOCUMENT_TYPE_OPTIONS,
 } from '@/constants/challenge';
-import { useCreateChallenge } from '@/hooks/useChallenges';
 import {
   validateChallenge,
   toDeadlineAt,
@@ -27,11 +25,18 @@ const INITIAL_VALUES = {
   description: '',
 };
 
-export default function ChallengeForm() {
-  const router = useRouter();
-  const [values, setValues] = useState(INITIAL_VALUES);
+export default function ChallengeForm({
+  heading = '신규 챌린지 신청',
+  submitLabel = '신청하기',
+  pendingLabel = '신청 중...',
+  initialValues = INITIAL_VALUES,
+  onSubmit,
+  isPending = false,
+  error = null,
+  onErrorReset,
+}) {
+  const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const { mutate, isPending, error, reset } = useCreateChallenge();
 
   const today = new Date().toLocaleDateString('sv-SE', {
     timeZone: 'Asia/Seoul',
@@ -41,7 +46,7 @@ export default function ChallengeForm() {
     const { name, value } = event.target;
     setValues((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => (prev[name] ? { ...prev, [name]: undefined } : prev));
-    if (error) reset();
+    if (error) onErrorReset?.();
   };
 
   const handleSubmit = (event) => {
@@ -51,25 +56,20 @@ export default function ChallengeForm() {
     setErrors(validationError);
     if (Object.keys(validationError).length > 0) return;
 
-    mutate(
-      {
-        title: values.title.trim(),
-        sourceUrl: values.sourceUrl.trim(),
-        category: values.category,
-        documentType: values.documentType,
-        deadlineAt: toDeadlineAt(values.deadline),
-        maxParticipants: Number(values.maxParticipants),
-        description: values.description.trim(),
-      },
-      {
-        onSuccess: () => router.push('/my-challenges'),
-      },
-    );
+    onSubmit({
+      title: values.title.trim(),
+      sourceUrl: values.sourceUrl.trim(),
+      category: values.category,
+      documentType: values.documentType,
+      deadlineAt: toDeadlineAt(values.deadline),
+      maxParticipants: Number(values.maxParticipants),
+      description: values.description.trim(),
+    });
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
-      <h1 className={styles.title}>신규 챌린지 신청</h1>
+      <h1 className={styles.title}>{heading}</h1>
 
       <Input
         label="제목"
@@ -194,7 +194,7 @@ export default function ChallengeForm() {
       )}
 
       <Button type="submit" size="lg" fullWidth disabled={isPending}>
-        {isPending ? '신청 중...' : '신청하기'}
+        {isPending ? pendingLabel : submitLabel}
       </Button>
     </form>
   );
