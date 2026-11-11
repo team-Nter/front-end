@@ -1,7 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css';
 import { media } from '@/styles/media';
-import { body as editorBody } from '@/components/Editor/Tiptap/Tiptap.css';
+import { body as editorBody } from '@/components/editor/Tiptap/Tiptap.css';
 
 export const article = style({
   width: '100%',
@@ -78,6 +78,11 @@ export const date = style({
 
 // 작성용 에디터의 목록·코드블록·문법 강조 스타일을 공유한다.
 export const content = style([editorBody, { paddingTop: 24 }]);
+export const feedbackDivider = style({
+  border: 0,
+  borderTop: `1px solid ${vars.color.gray[200]}`,
+  marginBlock: 24,
+});
 globalStyle(`${content}.${content} .tiptap`, {
   minHeight: 0,
   paddingBottom: 0,

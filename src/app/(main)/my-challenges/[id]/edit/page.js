@@ -1,3 +1,7 @@
-export default function Page() {
-  return <h1>13 챌린지 수정 (재영님)</h1>;
+import { MyChallengeEdit } from '@/components/challenge/MyChallengeEdit';
+
+export default async function Page({ params }) {
+  const { id } = await params;
+
+  return <MyChallengeEdit challengeId={id} />;
 }

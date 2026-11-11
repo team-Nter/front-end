@@ -89,6 +89,15 @@ export function getMyChallengeDetail(challengeId) {
   });
 }
 
+export function updateMyChallenge(challengeId, body) {
+  return challengeRequest({
+    path: `/challenges/${challengeId}`,
+    method: 'PATCH',
+    body,
+    errorMessage: '챌린지 수정 중 문제가 발생했습니다.',
+  });
+}
+
 export function cancelMyChallenge(challengeId) {
   return challengeRequest({
     path: `/challenges/${challengeId}`,

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import clsx from 'clsx';
 import { useEffect, useId, useRef, useState } from 'react';
-import { SubmissionDetail } from '@/components/submission/SubmissionDetail/SubmissionDetail';
+import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 import { formatDate } from '@/utils';
 import { getOptionLabel } from '@/constants/challenge';
 import { USER_GRADE_OPTIONS } from '@/constants/user';
