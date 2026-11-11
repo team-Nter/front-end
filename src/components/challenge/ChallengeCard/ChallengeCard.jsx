@@ -16,7 +16,8 @@ function formatDeadline(value) {
     timeZone: 'Asia/Seoul',
   });
 }
-export default function ChallengeCard({ challenge, action, className }) {
+
+export default function ChallengeCard({ challenge, action, menu, className }) {
   const {
     id,
     title,
@@ -31,9 +32,10 @@ export default function ChallengeCard({ challenge, action, className }) {
 
   return (
     <article className={clsx(styles.card, className)}>
+      {menu && <div className={styles.menu}>{menu}</div>}
       <ChallengeStatusBadge challenge={challenge} />
 
-      <h2 className={styles.title}>
+      <h2 className={clsx(styles.title, menu && styles.titleWithMenu)}>
         <Link href={`/challenges/${id}`} className={styles.titleLink}>
           {title}
         </Link>

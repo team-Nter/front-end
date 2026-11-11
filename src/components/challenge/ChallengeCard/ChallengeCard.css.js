@@ -4,6 +4,7 @@ import { media } from '@/styles/media';
 
 // 카드 (피그마: 흰 바탕, 테두리 2px #262626, 모서리 12, 안쪽 여백 24)
 export const card = style({
+  position: 'relative', // 메뉴(⋮)를 오른쪽 위에 놓기 위한 기준
   display: 'flex',
   flexDirection: 'column',
   gap: 16,
@@ -82,4 +83,19 @@ export const metaItem = style({
 export const action = style({
   flexShrink: 0,
   marginLeft: 'auto',
+});
+
+// 오른쪽 위 메뉴(⋮) 자리 (어드민 목록에서만 사용)
+export const menu = style({
+  position: 'absolute',
+  top: 24,
+  right: 24,
+  '@media': {
+    [media.mobile]: { top: 16, right: 16 },
+  },
+});
+
+// 메뉴가 있을 때 긴 제목이 ⋮ 밑으로 들어가지 않게
+export const titleWithMenu = style({
+  paddingRight: 32,
 });

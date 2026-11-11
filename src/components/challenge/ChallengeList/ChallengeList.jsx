@@ -9,6 +9,8 @@ import { useChallenges } from '@/hooks/useChallenges';
 import { Pagination } from '@/components/common/Pagination';
 import { Popover } from '@/components/common/Popover';
 import { Button } from '@/components/common/Button';
+import { useMe } from '@/hooks/useMe';
+import { ChallengeAdminMenu } from '@/components/challenge/ChallengeAdminMenu';
 import { ChallengeFilter } from '@/components/challenge/ChallengeFilter';
 import { ChallengeSort } from '@/components/challenge/ChallengeSort';
 import { ChallengeCard } from '@/components/challenge/ChallengeCard';
@@ -22,6 +24,8 @@ import * as styles from './ChallengeList.css';
 const PAGE_SIZE = 5;
 
 export default function ChallengeList() {
+  const { data: me } = useMe();
+  const isAdmin = me?.role === 'ADMIN';
   const { params, updateParams } = useChallengeListParams();
   const { data, isPending, isError, error } = useChallenges({
     ...params,
@@ -122,7 +126,12 @@ export default function ChallengeList() {
           <ul className={styles.cardList}>
             {data.items.map((challenge) => (
               <li key={challenge.id}>
-                <ChallengeCard challenge={challenge} />
+                <ChallengeCard
+                  challenge={challenge}
+                  menu={
+                    isAdmin && <ChallengeAdminMenu challengeId={challenge.id} />
+                  }
+                />
               </li>
             ))}
           </ul>
