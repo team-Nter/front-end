@@ -80,10 +80,15 @@ export async function updateSubmission(submissionId, data) {
   return response.json();
 }
 
-export async function deleteSubmission(submissionId) {
+// reason은 관리자가 남의 작업물을 삭제할 때만 보냅니다. (본인 삭제는 body 없음)
+export async function deleteSubmission(submissionId, reason) {
   const response = await fetch(`${API_BASE_URL}/submission/${submissionId}`, {
     method: 'DELETE',
     credentials: 'include',
+    ...(reason && {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason }),
+    }),
   });
 
   if (!response.ok) {

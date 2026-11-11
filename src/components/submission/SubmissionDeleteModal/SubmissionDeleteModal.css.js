@@ -20,6 +20,8 @@ export const error = style({
   color: vars.color.error,
   overflowWrap: 'anywhere',
 });
+// dialog가 가운데 정렬이라 입력칸만 왼쪽 정렬합니다.
+export const reasonField = style({ textAlign: 'left' });
 export const actions = style({
   display: 'flex',
   justifyContent: 'center',
