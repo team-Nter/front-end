@@ -14,27 +14,6 @@ export const info = style({
   borderBottom: `1px solid ${vars.color.gray[200]}`,
 });
 
-export const title = style({
-  margin: 0,
-  fontSize: 24,
-  fontWeight: 600,
-  color: vars.color.gray[800],
-});
-
-export const chips = style({
-  display: 'flex',
-  gap: 8,
-});
-
-export const description = style({
-  margin: 0,
-  fontSize: 16,
-  lineHeight: 1.6,
-  color: vars.color.gray[700],
-  whiteSpace: 'pre-wrap',
-  wordBreak: 'break-word',
-});
-
 export const meta = style({
   display: 'flex',
   gap: 12,
@@ -94,17 +73,4 @@ export const sourceLink = style({
   fontWeight: 500,
   color: vars.color.gray[800],
   textDecoration: 'none',
-});
-
-export const chipRow = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 12,
-});
-
-export const actions = style({
-  display: 'flex',
-  gap: 8,
-  flexShrink: 0,
 });
