@@ -56,7 +56,7 @@ export function useDeleteFeedback(feedbackId, submissionId) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: () => deleteFeedback(feedbackId),
+    mutationFn: (reason) => deleteFeedback(feedbackId, reason),
     onSuccess: () => {
       return queryClient.invalidateQueries({
         queryKey: queryKeys.feedbacks.lists(submissionId),

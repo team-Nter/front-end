@@ -4,16 +4,17 @@ import { useId, useState } from 'react';
 import { Button } from '@/components/common/Button';
 import { Modal } from '@/components/common/Modal';
 import { Textarea } from '@/components/common/Textarea';
-import * as styles from './SubmissionDeleteModal.css';
-import { submissionDeleteError } from '@/utils/SubmissionError/submissionDeleteError';
+import * as styles from './DeleteConfirmModal.css';
 
-// 백엔드 deleteSubmissionSchema와 동일하게 유지
 const REASON_MAX_LENGTH = 255;
 
-export default function SubmissionDeleteModal({
+export default function DeleteConfirmModal({
+  title,
+  description,
   isPending,
   error,
-  requireReason = false, // userRole 을 통해 모달 내의 삭제 내용이 필요한지 아닌지.
+  getErrorMessage,
+  requireReason = false,
   onCancel,
   onConfirm,
 }) {
@@ -37,11 +38,16 @@ export default function SubmissionDeleteModal({
       onClose={isPending ? undefined : onCancel}
     >
       <h2 id={titleId} className={styles.title}>
-        작성물을 삭제하시겠습니까?
+        {title}
       </h2>
       <p id={descriptionId} className={styles.description}>
-        삭제한 작성물은 복구할 수 없어요 <br />
-        {requireReason ? '삭제 사유는 작성자에게 알림으로 전달돼요.' : ''}
+        {description}
+        {requireReason && (
+          <>
+            <br />
+            삭제 사유는 작성자에게 알림으로 전달돼요.
+          </>
+        )}
       </p>
       {requireReason && (
         <div className={styles.reasonField}>
@@ -58,7 +64,7 @@ export default function SubmissionDeleteModal({
       )}
       {error && (
         <p role="alert" className={styles.error}>
-          {submissionDeleteError(error)}
+          {getErrorMessage(error)}
         </p>
       )}
       <div className={styles.actions}>

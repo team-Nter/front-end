@@ -9,10 +9,10 @@ export const page = style({
   gap: 24,
   maxWidth: 890,
   margin: '0 auto',
-  padding: '24px 0',
+  padding: '40px 0 24px',
   '@media': {
-    [media.tablet]: { padding: 24 },
-    [media.mobile]: { gap: 16, padding: 16 },
+    [media.tablet]: { padding: '40px 24px 24px' },
+    [media.mobile]: { gap: 16, padding: '24px 16px 16px' },
   },
 });
 

@@ -13,7 +13,9 @@ export const inner = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: 24,
-  maxWidth: 1248,
+  // 네비 첫 글자(로고 120 + 간격 24 + 링크 여백 17 = 161px)가
+  // 페이지 콘텐츠(996px) 시작선과 맞도록: 996 + 161 * 2 + 좌우 여백 24 * 2
+  maxWidth: 1366,
   height: 59,
   '@media': {
     [media.mobile]: {
@@ -29,7 +31,7 @@ export const left = style({
   minWidth: 0,
   gap: 24,
   '@media': {
-    [media.mobile]: { gap: 16 },
+    [media.mobile]: { gap: 4 },
   },
 });
 
@@ -48,7 +50,17 @@ export const logo = style({
   width: 120,
   height: 'auto',
   '@media': {
-    [media.mobile]: { width: 80 },
+    [media.mobile]: { display: 'none' }, // 모바일에서는 심볼 로고로 교체
+  },
+});
+
+// 모바일 전용 심볼 로고
+export const logoMobile = style({
+  display: 'none',
+  width: 28,
+  height: 28,
+  '@media': {
+    [media.mobile]: { display: 'block' },
   },
 });
 

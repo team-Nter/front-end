@@ -15,7 +15,6 @@ import {
   CHALLENGE_CATEGORY_OPTIONS,
   DOCUMENT_TYPE_OPTIONS,
 } from '@/constants/challenge';
-import { useMe } from '@/hooks/useMe';
 import searchIcon from '@/assets/icons/search.svg';
 import filterActiveIcon from '@/assets/icons/filter-active.svg';
 import filterInactiveIcon from '@/assets/icons/filter-inactive.svg';
@@ -38,7 +37,6 @@ export default function AdminChallengeList() {
   const trimmedKeyword = keyword || undefined;
   const isSortChanged = sort !== ADMIN_DEFAULT_SORT;
   const hasFilter = status.length > 0 || isSortChanged;
-  const { data: me, isPending: isMePending } = useMe();
 
   const { data, isPending, isError, error } = useAdminChallenges({
     status,
@@ -111,15 +109,7 @@ export default function AdminChallengeList() {
         </form>
       </div>
 
-      {isMePending ? (
-        <p className={styles.message}>불러오는 중...</p>
-      ) : !me ? (
-        <p className={styles.message}>
-          로그인이 필요해요. <Link href="/login">로그인하기</Link>
-        </p>
-      ) : me.role !== 'ADMIN' ? (
-        <p className={styles.message}>관리자만 볼 수 있는 페이지예요.</p>
-      ) : isPending ? (
+      {isPending ? (
         <p className={styles.message}>불러오는 중...</p>
       ) : isError ? (
         <p role="alert" className={styles.message}>

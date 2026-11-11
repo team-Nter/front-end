@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/common/Button';
-import DraftConfirmModal from '@/components/editor/DraftPopUp/DraftConfirmModal';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { useCancelMyChallenge } from '@/hooks/useChallenges';
 
 export default function MyChallengeCancel({ challengeId }) {
@@ -30,7 +30,7 @@ export default function MyChallengeCancel({ challengeId }) {
       </Button>
 
       {isConfirmOpen && (
-        <DraftConfirmModal
+        <ConfirmModal
           question="정말 취소하시겠어요?"
           cancelLabel="아니오"
           confirmLabel={isPending ? '취소 중…' : '네'}

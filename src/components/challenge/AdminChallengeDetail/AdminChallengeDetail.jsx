@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/common/Button';
-import { useMe } from '@/hooks/useMe';
 import {
   useAdminChallengeDetail,
   useModerateChallenge,
@@ -48,7 +47,6 @@ function NavArrow({ targetId, queryString, label, activeIcon, inactiveIcon }) {
 }
 
 export default function AdminChallengeDetail({ challengeId, filters }) {
-  const { data: me, isPending: isMePending } = useMe();
   const {
     data: challenge,
     isPending,
@@ -59,22 +57,6 @@ export default function AdminChallengeDetail({ challengeId, filters }) {
   const moderate = useModerateChallenge();
   const [savedAdjacent, setSavedAdjacent] = useState(null);
   const [isRejectOpen, setIsRejectOpen] = useState(false);
-
-  if (isMePending) {
-    return <p className={styles.message}>불러오는 중...</p>;
-  }
-
-  if (!me) {
-    return (
-      <p className={styles.message}>
-        로그인이 필요해요. <Link href="/login">로그인하기</Link>
-      </p>
-    );
-  }
-
-  if (me.role !== 'ADMIN') {
-    return <p className={styles.message}>관리자만 볼 수 있는 페이지예요.</p>;
-  }
 
   if (isPending) {
     return <p className={styles.message}>불러오는 중...</p>;
