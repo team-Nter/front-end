@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button } from '@/components/common/Button';
 import { deleteSubmissionDraftError } from '@/utils/SubmissionDraftError/deleteSubmissionDraftError';
 import { getSubmissionDraftError } from '@/utils/SubmissionDraftError/getSubmissionDraftError';
-import DraftConfirmModal from './DraftConfirmModal';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
 import closeIcon from '@/assets/icons/draft-close.svg';
 import * as styles from './DraftPopUp.css';
 
@@ -66,7 +66,7 @@ export default function DraftPopUp({
         </div>
       </aside>
       {confirmation && (
-        <DraftConfirmModal
+        <ConfirmModal
           question={
             isDelete
               ? '임시저장한 글을 삭제할까요?'
@@ -95,6 +95,7 @@ export default function DraftPopUp({
               ? `/challenges/${challengeId}`
               : undefined
           }
+          recoveryLabel="챌린지로 돌아가기"
           onCancel={cancel}
           onConfirm={isDelete ? handleDeleteDraft : handleLoadDraft}
         />

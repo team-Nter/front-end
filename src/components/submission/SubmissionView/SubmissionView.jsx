@@ -13,7 +13,8 @@ import { SubmissionMenu } from '@/components/submission/SubmissionMenu';
 import { useDeleteSubmission } from '@/hooks/useSubmissions';
 import { useState } from 'react';
 import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
-import { SubmissionDeleteModal } from '@/components/submission/SubmissionDeleteModal';
+import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
+import { submissionDeleteError } from '@/utils/SubmissionError/submissionDeleteError';
 
 export default function SubmissionView({
   participation,
@@ -127,9 +128,12 @@ export default function SubmissionView({
         />
       )}
       {isDeleteModalOpen && (
-        <SubmissionDeleteModal
+        <DeleteConfirmModal
+          title="작성물을 삭제하시겠습니까?"
+          description="삭제한 작성물은 복구할 수 없어요"
           isPending={isPending}
           error={error}
+          getErrorMessage={submissionDeleteError}
           requireReason={requireDeleteReason}
           onCancel={closeDeleteModal}
           onConfirm={handleDelete}
