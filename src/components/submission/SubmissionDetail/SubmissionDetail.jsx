@@ -12,7 +12,7 @@ import * as styles from './SubmissionDetail.css';
 
 const lowlight = createLowlight(common);
 
-export function SubmissionDetail({ content }) {
+export default function SubmissionDetail({ content }) {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
