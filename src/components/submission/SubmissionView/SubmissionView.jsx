@@ -11,7 +11,6 @@ import { Like } from '@/components/like';
 import { useMe } from '@/hooks/useMe';
 import { SubmissionMenu } from '../SubmissionMenu/SubmissionMenu';
 import { useDeleteSubmission } from '@/hooks/useSubmissions';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SubmissionDeleteModal } from '../SubmissionDeleteModal/SubmissionDeleteModal';
 import { useSubmissionChangeAccess } from '@/hooks/useSubmissionChangeAccess';
@@ -21,7 +20,6 @@ export default function SubmissionView({
   submission = null,
   challengeStatus,
 }) {
-  const router = useRouter();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { data: me } = useMe();
   const author = submission?.author ?? participation.user;
@@ -50,11 +48,9 @@ export default function SubmissionView({
   const handleDelete = () => {
     if (!submission || !canEdit || isPending) return;
 
+    // 페이지 이동은 useDeleteSubmission에서 처리합니다.
     mutate(undefined, {
-      onSuccess: () => {
-        setIsDeleteModalOpen(false);
-        router.replace(`/challenges/${submission.challengeId}`);
-      },
+      onSuccess: () => setIsDeleteModalOpen(false),
     });
   };
 
