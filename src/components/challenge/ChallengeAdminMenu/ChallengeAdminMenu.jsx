@@ -29,22 +29,38 @@ export default function ChallengeAdminMenu({ challengeId, onDeleted }) {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
-    if (isPending) return;
-
+  // 모달을 닫고 입력값 · 삭제 요청 상태를 비웁니다.
+  const resetModal = () => {
     setIsModalOpen(false);
     setReason('');
     reset();
+  };
+
+  // 삭제 중에는 닫지 않습니다.
+  const closeModal = () => {
+    if (isPending) return;
+
+    resetModal();
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     moderate(
       { challengeId, action: 'CANCEL', reason: reason.trim() },
-      { onSuccess: onDeleted },
+      {
+        onSuccess: () => {
+          // 상세 화면: 다른 페이지로 이동할 때까지 모달을 유지합니다.
+          if (onDeleted) {
+            onDeleted();
+            return;
+          }
+
+          // 목록 화면: 재조회가 실패해 카드가 남아도 모달은 닫습니다.
+          resetModal();
+        },
+      },
     );
   };
-
   return (
     <>
       <Popover
