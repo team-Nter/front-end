@@ -12,12 +12,6 @@ export const queryKeys = {
   },
   challenges: {
     all: () => ['challenges'],
-    detail: (challengeId, userId) => [
-      'challenges',
-      'detail',
-      String(challengeId),
-      userId ?? null,
-    ],
     my: () => ['challenges', 'my'],
     myLists: () => ['challenges', 'my', 'list'],
     myList: (userId, params) => ['challenges', 'my', 'list', userId, params],
