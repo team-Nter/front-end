@@ -1,7 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css';
 import { media } from '@/styles/media';
-import { body as editorBody } from '@/components/Editor/Tiptap/Tiptap.css';
+import { body as editorBody } from '@/components/editor/Tiptap/Tiptap.css';
 
 export const article = style({
   width: '100%',

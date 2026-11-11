@@ -6,7 +6,7 @@ import TextAlign from '@tiptap/extension-text-align';
 import { BackgroundColor, TextStyle } from '@tiptap/extension-text-style';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { EditorContent } from '@tiptap/react';
-import CodeBlockComponent from '@/components/Editor/CodeBlockComponent/CodeblockComponent';
+import CodeBlockComponent from '@/components/editor/CodeBlockComponent/CodeblockComponent';
 import { common, createLowlight } from 'lowlight';
 import * as styles from './SubmissionDetail.css';
 

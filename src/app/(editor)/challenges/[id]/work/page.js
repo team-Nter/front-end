@@ -1,6 +1,6 @@
 'use client';
 
-import WorkEditor from '@/components/Editor/WorkEditor/WorkEditor';
+import WorkEditor from '@/components/editor/WorkEditor/WorkEditor';
 import { useMe } from '@/hooks/useMe';
 import { useParams } from 'next/navigation';
 
