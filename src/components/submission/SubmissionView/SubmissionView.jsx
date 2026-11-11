@@ -82,7 +82,7 @@ export default function SubmissionView({
         <div className={styles.author}>
           <Image src={profileUser} alt="" width={24} height={24} />
           <span className={styles.nickname}>
-            {author?.nickname ?? '알 수 없는 사용자'}
+            {author?.nickname ?? '탈퇴한 사용자'}
           </span>
         </div>
         {submission && (
