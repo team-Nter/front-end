@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Popover } from '@/components/common/Popover';
 import {
   useNotifications,
+  useReadAllNotifications,
   useReadNotification,
 } from '@/hooks/useNotifications';
 import bellEmptyIcon from '@/assets/icons/bell-empty.svg';
@@ -17,6 +18,8 @@ export default function NotificationBell() {
   const router = useRouter();
   const { data, isPending, isError, refetch } = useNotifications();
   const { mutate: markAsRead } = useReadNotification();
+  const { mutate: readAll, isPending: isReadingAll } =
+    useReadAllNotifications();
 
   const notifications = data?.items ?? [];
   const unreadCount = data?.unreadCount ?? 0;
@@ -55,6 +58,8 @@ export default function NotificationBell() {
           isPending={isPending}
           isError={isError}
           onItemClick={(notification) => handleItemClick(notification, close)}
+          onReadAll={() => readAll()}
+          isReadingAll={isReadingAll}
         />
       )}
     </Popover>

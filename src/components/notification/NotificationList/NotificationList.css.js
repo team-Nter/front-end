@@ -1,6 +1,13 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 
+export const header = style({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '0 16px 8px',
+});
+
 export const panel = style({
   display: 'flex',
   flexDirection: 'column',
@@ -15,7 +22,6 @@ export const panel = style({
 
 export const title = style({
   margin: 0,
-  padding: '0 16px 8px',
   fontSize: 16,
   fontWeight: 600,
   color: vars.color.gray[800],
@@ -41,7 +47,6 @@ export const item = style({
   cursor: 'pointer',
   selectors: {
     '&:hover': { backgroundColor: vars.color.gray[50] },
-    '&[data-read="true"]': { opacity: 0.6 },
   },
 });
 
@@ -63,4 +68,16 @@ export const message = style({
   textAlign: 'center',
   fontSize: 14,
   color: vars.color.gray[500],
+});
+
+export const readAll = style({
+  padding: 0,
+  border: 'none',
+  background: 'none',
+  fontSize: 14,
+  color: vars.color.gray[500],
+  cursor: 'pointer',
+  selectors: {
+    '&:hover:not(:disabled)': { color: vars.color.gray[800] },
+  },
 });

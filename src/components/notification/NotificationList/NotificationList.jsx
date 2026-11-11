@@ -8,10 +8,26 @@ export default function NotificationList({
   isPending,
   isError,
   onItemClick,
+  onReadAll,
+  isReadingAll,
 }) {
+  const hasItems = notifications.length > 0;
+
   return (
     <div className={styles.panel}>
-      <h2 className={styles.title}>알림</h2>
+      <div className={styles.header}>
+        <h2 className={styles.title}>알림</h2>
+        {hasItems && (
+          <button
+            type="button"
+            className={styles.readAll}
+            onClick={onReadAll}
+            disabled={isReadingAll}
+          >
+            {isReadingAll ? '처리 중...' : '모두 읽음'}
+          </button>
+        )}
+      </div>
 
       {isPending ? (
         <p className={styles.message}>불러오는 중...</p>
@@ -28,7 +44,6 @@ export default function NotificationList({
               <button
                 type="button"
                 className={styles.item}
-                data-read={notification.readAt ? 'true' : 'false'}
                 onClick={() => onItemClick?.(notification)}
               >
                 <span className={styles.text}>{notification.message}</span>
