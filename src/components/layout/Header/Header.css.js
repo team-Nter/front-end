@@ -13,7 +13,9 @@ export const inner = style({
   alignItems: 'center',
   justifyContent: 'space-between',
   gap: 24,
-  maxWidth: 1248,
+  // 네비 첫 글자(로고 120 + 간격 24 + 링크 여백 17 = 161px)가
+  // 페이지 콘텐츠(996px) 시작선과 맞도록: 996 + 161 * 2 + 좌우 여백 24 * 2
+  maxWidth: 1366,
   height: 59,
   '@media': {
     [media.mobile]: {
