@@ -17,7 +17,13 @@ function formatDeadline(value) {
   });
 }
 
-export default function ChallengeCard({ challenge, action, menu, className }) {
+export default function ChallengeCard({
+  challenge,
+  action,
+  menu,
+  clickable = false,
+  className,
+}) {
   const {
     id,
     title,
@@ -31,12 +37,24 @@ export default function ChallengeCard({ challenge, action, menu, className }) {
   const isFull = participations >= maxParticipants;
 
   return (
-    <article className={clsx(styles.card, className)}>
+    <article
+      className={clsx(
+        styles.card,
+        clickable && styles.cardClickable,
+        className,
+      )}
+    >
       {menu && <div className={styles.menu}>{menu}</div>}
       <ChallengeStatusBadge challenge={challenge} />
 
       <h2 className={clsx(styles.title, menu && styles.titleWithMenu)}>
-        <Link href={`/challenges/${id}`} className={styles.titleLink}>
+        <Link
+          href={`/challenges/${id}`}
+          className={clsx(
+            styles.titleLink,
+            clickable && styles.titleLinkStretched,
+          )}
+        >
           {title}
         </Link>
       </h2>

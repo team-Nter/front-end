@@ -136,6 +136,7 @@ export default function ChallengeList() {
             {data.items.map((challenge) => (
               <li key={challenge.id}>
                 <ChallengeCard
+                  clickable
                   challenge={challenge}
                   menu={
                     isAdmin && <ChallengeAdminMenu challengeId={challenge.id} />
