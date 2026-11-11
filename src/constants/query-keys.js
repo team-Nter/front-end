@@ -68,6 +68,7 @@ export const queryKeys = {
       userId,
     ],
   },
+
   feedbacks: {
     lists: (submissionId) => ['feedbacks', 'list', String(submissionId)],
     list: (submissionId, pageSize) => [
@@ -76,5 +77,10 @@ export const queryKeys = {
       String(submissionId),
       pageSize,
     ],
+  },
+
+  notifications: {
+    all: (userId) => ['notifications', userId],
+    list: (userId, params) => ['notifications', userId, 'list', params],
   },
 };
