@@ -53,7 +53,7 @@ export default function EditWorkEditor({ submission, userId }) {
           alert(submissionEditError(error));
         },
         onSuccess: () => {
-          router.push(
+          router.replace(
             submission.author?.id
               ? `/challenges/${submission.challengeId}/participants/${submission.author.id}/submission`
               : `/challenges/${submission.challengeId}`,
