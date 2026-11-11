@@ -6,8 +6,8 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useParticipation } from '@/hooks/useParticipation';
 import { useSubmission } from '@/hooks/useSubmissions';
-import { SubmissionView } from '@/components/submission/SubmissionView/SubmissionView';
 import { useChallengeDetail } from '@/hooks/useChallengeDetail';
+import { SubmissionView } from '@/components/submission/SubmissionView';
 
 function SubmittedWork({ participation, challengeId }) {
   const { id } = participation.submission;

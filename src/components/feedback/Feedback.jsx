@@ -11,7 +11,7 @@ import { useDeleteFeedback, useUpdateFeedback } from '@/hooks/useFeedback';
 import FeedbackActions from './FeedbackActions';
 import { useMe } from '@/hooks/useMe';
 import { getFeedbackErrorMessage } from '@/utils/feedbackError';
-import ConfirmModal from '@/components/Editor/DraftPopUp/DraftConfirmModal';
+import ConfirmModal from '@/components/editor/DraftPopUp/DraftConfirmModal';
 
 export default function Feedback({ feedback, submissionId, canWrite }) {
   const { data: user, isSuccess } = useMe();

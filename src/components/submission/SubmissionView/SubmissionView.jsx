@@ -5,11 +5,11 @@ import FeedbackSection from '@/components/feedback/FeedbackSection';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
 import { formatDate } from '@/utils';
-import { SubmissionDetail } from '../SubmissionDetail/SubmissionDetail';
+import { SubmissionDetail } from '@/components/submission/SubmissionDetail';
 import * as styles from '../SubmissionDetail/SubmissionDetail.css';
 import { Like } from '@/components/like';
 
-export function SubmissionView({
+export default function SubmissionView({
   participation,
   submission = null,
   challengeStatus,
