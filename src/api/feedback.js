@@ -53,10 +53,14 @@ export async function updateFeedback(feedbackId, content) {
   return response.json();
 }
 
-export async function deleteFeedback(feedbackId) {
+export async function deleteFeedback(feedbackId, reason) {
   const response = await fetch(`${API_BASE_URL}/feedback/${feedbackId}`, {
     method: 'DELETE',
     credentials: 'include',
+    ...(reason && {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason }),
+    }),
   });
 
   if (!response.ok) {

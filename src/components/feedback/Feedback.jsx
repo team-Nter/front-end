@@ -11,7 +11,8 @@ import { useDeleteFeedback, useUpdateFeedback } from '@/hooks/useFeedback';
 import FeedbackActions from './FeedbackActions';
 import { useMe } from '@/hooks/useMe';
 import { getFeedbackErrorMessage } from '@/utils/feedbackError';
-import ConfirmModal from '@/components/editor/DraftPopUp/DraftConfirmModal';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
+import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
 
 export default function Feedback({ feedback, submissionId, canWrite }) {
   const { data: user, isSuccess } = useMe();
@@ -24,6 +25,9 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
     isSuccess &&
     Boolean(user?.id) &&
     (user.role === 'ADMIN' || user.id === feedback.author?.id);
+  // 관리자가 남의 피드백(탈퇴한 작성자 포함)을 삭제할 때만 사유를 입력받게 하기
+  const requireDeleteReason =
+    user?.role === 'ADMIN' && user.id !== feedback.author?.id;
   const [editingUserId, setEditingUserId] = useState(null);
   const isEditing = canManage && editingUserId === user.id;
   const [deletingUserId, setDeletingUserId] = useState(null);
@@ -71,9 +75,9 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
     setDeletingUserId(user.id);
   }
 
-  function handleConfirmDelete() {
+  function handleConfirmDelete(reason) {
     if (!isDeleteConfirmOpen || isUpdating || isDeleting) return;
-    deleteFeedback(undefined, {
+    deleteFeedback(reason, {
       onSuccess: () => setDeletingUserId(null),
     });
   }
@@ -185,7 +189,19 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
           {getFeedbackErrorMessage(deleteError, '삭제')}
         </p>
       )}
-      {isDeleteConfirmOpen && (
+      {isDeleteConfirmOpen && requireDeleteReason && (
+        <DeleteConfirmModal
+          title="피드백을 삭제하시겠습니까?"
+          description="삭제한 피드백은 복구할 수 없어요"
+          isPending={isDeleting}
+          error={isDeleteError ? deleteError : null}
+          requireReason
+          getErrorMessage={(error) => getFeedbackErrorMessage(error, '삭제')}
+          onCancel={handleCancelDelete}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
+      {isDeleteConfirmOpen && !requireDeleteReason && (
         <ConfirmModal
           question="피드백을 삭제할까요?"
           confirmLabel={isDeleting ? '삭제 중…' : '삭제하기'}
@@ -196,7 +212,7 @@ export default function Feedback({ feedback, submissionId, canWrite }) {
               : undefined
           }
           onCancel={handleCancelDelete}
-          onConfirm={handleConfirmDelete}
+          onConfirm={() => handleConfirmDelete()}
         />
       )}
     </Container>

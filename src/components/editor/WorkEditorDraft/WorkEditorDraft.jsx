@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { getSubmissionDraftError } from '@/utils/SubmissionDraftError/getSubmissionDraftError';
 import { saveSubmissionDraftError } from '@/utils/SubmissionDraftError/saveSubmissionDraftError';
-import DraftConfirmModal from '../DraftPopUp/DraftConfirmModal';
+import { ConfirmModal } from '@/components/common/ConfirmModal';
 import { DraftPopUp } from '../DraftPopUp';
 import * as styles from './WorkEditorDraft.css';
 
@@ -59,7 +59,7 @@ export function WorkEditorDraftDialogs({ challengeId: id, controller }) {
   return (
     <>
       {showSaveConfirm && (
-        <DraftConfirmModal
+        <ConfirmModal
           question={
             <>
               <p>
@@ -82,6 +82,7 @@ export function WorkEditorDraftDialogs({ challengeId: id, controller }) {
           recoveryHref={
             saveDraft.error?.status === 404 ? `/challenges/${id}` : undefined
           }
+          recoveryLabel="챌린지로 돌아가기"
           onCancel={closeSaveConfirm}
           onConfirm={confirmSaveDraft}
         />
