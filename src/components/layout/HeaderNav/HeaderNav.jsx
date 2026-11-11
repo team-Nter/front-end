@@ -30,16 +30,19 @@ function isCurrentPath(pathname, href) {
 }
 
 export default function HeaderNav() {
-  const { data: me } = useMe();
+  const { data: me, isError } = useMe();
   const pathname = usePathname();
 
   // 내 정보를 확인하는 중에는 그리지 않아요 (역할이 정해지면서 메뉴가 바뀌어 깜빡이지 않게)
-  if (me === undefined) return null;
+  if (me === undefined && !isError) return null;
+
+  // 확인에 실패하면 누구에게나 안전한 공개 메뉴(챌린지 목록)만 보여줘요
+  const menu = getMenu(me ?? null);
 
   return (
     <nav aria-label="주요 메뉴" className={styles.nav}>
       <ul className={styles.list}>
-        {getMenu(me).map(({ href, label }) => (
+        {menu.map(({ href, label }) => (
           <li key={href}>
             <Link
               href={href}
