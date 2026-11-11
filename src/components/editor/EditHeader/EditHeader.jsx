@@ -59,21 +59,28 @@ export default function EditHeader({
             <span className={styles.exitText}>나가기</span>
             <Image className={styles.exitIcon} src={outIcon} alt="" />
           </Button>
-          {/* 임시저장 부분은 2차 MVP로 이후 기능 구현 */}
-          <Button
-            className={clsx(styles.action, styles.save)}
-            variant="secondary"
-            onClick={handleSaveDraft}
-            disabled={isBusy}
-          >
-            {isSaving ? '저장 중' : '임시저장'}
-          </Button>
+          {handleSaveDraft && (
+            <Button
+              className={clsx(styles.action, styles.save)}
+              variant="secondary"
+              onClick={handleSaveDraft}
+              disabled={isBusy}
+            >
+              {isSaving ? '저장 중' : '임시저장'}
+            </Button>
+          )}
           <Button
             className={styles.action}
             onClick={handleSubmit}
             disabled={isBusy}
           >
-            {isSubmitting ? (isEditing ? '수정 중' : '제출 중') : (isEditing ? '수정 완료' : '제출하기')}
+            {isSubmitting
+              ? isEditing
+                ? '수정 중'
+                : '제출 중'
+              : isEditing
+                ? '수정 완료'
+                : '제출하기'}
           </Button>
         </div>
       </header>
