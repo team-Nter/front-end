@@ -39,7 +39,7 @@ export default function HomePage() {
             개발자의 새로운 영어 습관
           </p>
 
-          <Link href="/login" className={styles.heroButton}>
+          <Link href="/challenges" className={styles.heroButton}>
             번역 시작하기
           </Link>
         </div>
@@ -115,7 +115,7 @@ export default function HomePage() {
 
       <section className={styles.cta}>
         <h2 className={styles.ctaTitle}>함께 번역하고 성장하세요!</h2>
-        <Link href="/login" className={styles.ctaButton}>
+        <Link href="/challenges" className={styles.ctaButton}>
           번역 시작하기
         </Link>
       </section>
