@@ -7,6 +7,7 @@ export default function Like({
   challengeId,
   likeCount = 0,
   isLiked = false,
+  disabled = false,
 }) {
   const { putLikes, deleteLikes } = useSubmissionLike(
     submissionId,
@@ -15,7 +16,7 @@ export default function Like({
   const isPending = putLikes.isPending || deleteLikes.isPending;
   const error = putLikes.error || deleteLikes.error;
   const handleClick = () => {
-    if (isPending) return;
+    if (disabled || isPending) return;
 
     putLikes.reset();
     deleteLikes.reset();
@@ -32,7 +33,8 @@ export default function Like({
       <button
         type="button"
         onClick={handleClick}
-        disabled={isPending}
+        disabled={disabled || isPending}
+        title={disabled ? '로그인 후 좋아요를 누를 수 있어요' : undefined}
         aria-pressed={isLiked}
         aria-label={isLiked ? '좋아요 취소' : '좋아요'}
       >
