@@ -25,7 +25,7 @@ export default function GoogleLoginButton() {
     setIsLoading(true);
 
     const next = encodeURIComponent('/challenges');
-    window.location.assign(`${API_BASE_URL}/api/auth/google?next=${next}`);
+    window.location.assign(`${API_BASE_URL}/auth/google?next=${next}`);
   };
 
   return (
