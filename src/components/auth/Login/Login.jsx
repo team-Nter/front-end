@@ -16,6 +16,7 @@ import {
 } from '@/components/auth/commonAuth/AuthCheckNotices';
 import { GoogleLoginButton } from '@/components/auth/GoogleLoginButton';
 import { GoogleLoginError } from '@/components/auth/GoogleLoginError';
+import * as styles from './Login.css';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -70,19 +71,23 @@ export default function Login() {
 
   return (
     <>
-      {isError && <ConnectionWarning />}
-      <main>
-        <Link href="/">
+      {isError && <ConnectionWarning className={styles.connectionWarning} />}
+
+      <main className={styles.loginPage}>
+        <Link href="/" className={styles.logoLink}>
           <Image
             src={logo}
             alt="독스루 홈"
             width={289}
             height={72}
             loading="eager"
+            className={styles.logo}
           />
         </Link>
-        <form onSubmit={handleSubmit} noValidate>
+
+        <form className={styles.loginForm} onSubmit={handleSubmit} noValidate>
           <Input
+            className={styles.input}
             type="email"
             id="email"
             label="이메일"
@@ -95,7 +100,9 @@ export default function Login() {
             }}
             disabled={loginMutation.isPending}
           />
+
           <Input
+            className={styles.input}
             type="password"
             id="password"
             label="비밀번호"
@@ -108,15 +115,25 @@ export default function Login() {
             }}
             disabled={loginMutation.isPending}
           />
-          <Button type="submit" disabled={loginMutation.isPending}>
+
+          <Button
+            className={styles.submitButton}
+            type="submit"
+            disabled={loginMutation.isPending}
+          >
             {loginMutation.isPending ? '로그인 중...' : '로그인'}
           </Button>
         </form>
-        <GoogleLoginError />
-        <GoogleLoginButton />
-        <div>
-          <p>회원이 아니신가요?</p>
-          <Link href="/signup">회원가입하기</Link>
+
+        <GoogleLoginError className={styles.googleLoginError} />
+
+        <GoogleLoginButton className={styles.googleLoginButton} />
+
+        <div className={styles.signupGuide}>
+          <p className={styles.signupText}>회원이 아니신가요?</p>
+          <Link href="/signup" className={styles.signupLink}>
+            회원가입하기
+          </Link>
         </div>
       </main>
     </>

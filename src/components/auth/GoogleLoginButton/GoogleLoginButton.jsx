@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '@/constants';
+import * as styles from './GoogleLoginButton.css';
+import googleIcon from '@/assets/icons/google_icon.svg';
+import Image from 'next/image';
 
 export default function GoogleLoginButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,8 +29,14 @@ export default function GoogleLoginButton() {
   };
 
   return (
-    <button type="button" onClick={handleGoogleLogin} disabled={isLoading}>
-      {isLoading ? '이동 중...' : '구글로 시작하기'}
+    <button
+      className={styles.googleLoginButton}
+      type="button"
+      onClick={handleGoogleLogin}
+      disabled={isLoading}
+    >
+      <Image src={googleIcon} alt="" width={19} height={19} />
+      {isLoading ? '이동 중...' : 'Google로 시작하기'}
     </button>
   );
 }
