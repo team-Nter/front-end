@@ -5,10 +5,16 @@ import { useMe } from './useMe';
 import { useEffect } from 'react';
 
 function getSafeNext(next) {
-  if (!next || !next.startsWith('/') || next.startsWith('//')) return null;
+  if (
+    !next ||
+    !next.startsWith('/') ||
+    next.startsWith('//') ||
+    next.includes('\\')
+  ) {
+    return null;
+  }
   return next;
 }
-
 export function useRedirectIfLoggedIn() {
   const router = useRouter();
   const searchParams = useSearchParams();
