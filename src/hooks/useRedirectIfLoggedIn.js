@@ -1,11 +1,18 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useMe } from './useMe';
 import { useEffect } from 'react';
 
+function getSafeNext(next) {
+  if (!next || !next.startsWith('/') || next.startsWith('//')) return null;
+  return next;
+}
+
 export function useRedirectIfLoggedIn() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = getSafeNext(searchParams.get('next'));
 
   const {
     data: user,
@@ -27,10 +34,10 @@ export function useRedirectIfLoggedIn() {
       if (role === 'ADMIN') {
         router.replace('/admin/challenges');
       } else {
-        router.replace('/challenges');
+        router.replace(next ?? '/challenges');
       }
     }
-  }, [router, isFetching, isLoggedIn, role, isError]);
+  }, [router, isFetching, isLoggedIn, role, isError, next]);
 
   return {
     user,

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '@/constants';
+import { useSearchParams } from 'next/navigation';
 import * as styles from './GoogleLoginButton.css';
 import googleIcon from '@/assets/icons/google_icon.svg';
 import Image from 'next/image';
@@ -21,10 +22,12 @@ export default function GoogleLoginButton() {
     };
   }, []);
 
+  const searchParams = useSearchParams();
+
   const handleGoogleLogin = () => {
     setIsLoading(true);
 
-    const next = encodeURIComponent('/challenges');
+    const next = encodeURIComponent(searchParams.get('next') ?? '/challenges');
     window.location.assign(`${API_BASE_URL}/auth/google?next=${next}`);
   };
 
