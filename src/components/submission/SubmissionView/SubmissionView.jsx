@@ -95,6 +95,7 @@ export default function SubmissionView({
             challengeId={submission.challengeId}
             likeCount={likeCount}
             isLiked={isLiked}
+            disabled={!me?.id}
           />
         )}
         {date && (

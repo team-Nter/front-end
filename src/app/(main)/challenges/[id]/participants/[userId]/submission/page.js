@@ -45,7 +45,6 @@ export default function Page() {
 
   if (isPending) return <p>작업물을 불러오는 중...</p>;
 
-  // 비로그인도 작업물은 볼 수 있습니다. 좋아요·피드백 작성만 막습니다.
   return (
     <QueryBoundary
       resetKeys={[challengeId, userId, user?.id ?? null]}
