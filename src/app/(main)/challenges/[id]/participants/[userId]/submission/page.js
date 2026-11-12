@@ -41,22 +41,13 @@ function ParticipantSubmission({ challengeId, userId }) {
 
 export default function Page() {
   const { id: challengeId, userId } = useParams();
-  const { data: user, isPending, isError } = useMe();
+  const { data: user, isPending } = useMe();
 
   if (isPending) return <p>작업물을 불러오는 중...</p>;
-  if (isError && !user)
-    return <p role="alert">사용자 정보를 불러오지 못했어요.</p>;
-  if (!user) {
-    return (
-      <p>
-        작업물을 보려면 <Link href="/login">로그인</Link>해 주세요.
-      </p>
-    );
-  }
 
   return (
     <QueryBoundary
-      resetKeys={[challengeId, userId, user.id]}
+      resetKeys={[challengeId, userId, user?.id ?? null]}
       loadingFallback={<p>작업물을 불러오는 중...</p>}
       errorFallback={({ error, retry }) => (
         <div role="alert">
