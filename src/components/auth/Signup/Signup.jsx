@@ -106,108 +106,113 @@ export default function Signup() {
   return (
     <>
       {isError && <ConnectionWarning />}
-
-      <main className={styles.signupPage}>
-        <Link href="/" className={styles.logoLink}>
-          <Image
-            className={styles.logo}
-            src={logo}
-            alt="독스루 홈"
-            width={289}
-            height={72}
-            loading="eager"
-          />
-        </Link>
-
-        <form className={styles.signupForm} onSubmit={handleSubmit} noValidate>
-          <Input
-            className={styles.input}
-            type="email"
-            id="email"
-            label="이메일"
-            error={errors.email}
-            placeholder="이메일을 입력해주세요"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setErrors((prev) => ({ ...prev, email: '' }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-
-          <Input
-            className={styles.input}
-            type="text"
-            id="nickname"
-            label="닉네임"
-            error={errors.nickname}
-            placeholder="닉네임을 입력해주세요"
-            value={nickname}
-            onChange={(e) => {
-              setNickname(e.target.value);
-              setErrors((prev) => ({ ...prev, nickname: '' }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-
-          <Input
-            className={styles.input}
-            type="password"
-            id="password"
-            label="비밀번호"
-            error={errors.password}
-            placeholder="비밀번호를 입력해주세요"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrors((prev) => ({
-                ...prev,
-                password: '',
-                passwordConfirmation: '',
-              }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-
-          <Input
-            className={styles.input}
-            type="password"
-            id="passwordConfirmation"
-            label="비밀번호 확인"
-            error={errors.passwordConfirmation}
-            placeholder="비밀번호를 한번 더 입력해주세요"
-            value={passwordConfirmation}
-            onChange={(e) => {
-              setPasswordConfirmation(e.target.value);
-              setErrors((prev) => ({
-                ...prev,
-                passwordConfirmation: '',
-              }));
-            }}
-            disabled={signupMutation.isPending}
-          />
-
-          <Button
-            className={styles.signupButton}
-            type="submit"
-            disabled={signupMutation.isPending}
-          >
-            {signupMutation.isPending ? '가입 중...' : '회원가입'}
-          </Button>
-        </form>
-
-        <div className={styles.googleLogin}>
-          <GoogleLoginError />
-          <GoogleLoginButton />
-        </div>
-
-        <div className={styles.footer}>
-          <p className={styles.footerText}>회원이신가요?</p>
-          <Link href="/login" className={styles.footerLink}>
-            로그인하기
+      <div className={styles.signupLayout}>
+        <main className={styles.signupPage}>
+          <Link href="/" className={styles.logoLink}>
+            <Image
+              className={styles.logo}
+              src={logo}
+              alt="독스루 홈"
+              width={289}
+              height={72}
+              loading="eager"
+            />
           </Link>
-        </div>
-      </main>
+
+          <form
+            className={styles.signupForm}
+            onSubmit={handleSubmit}
+            noValidate
+          >
+            <Input
+              className={styles.input}
+              type="email"
+              id="email"
+              label="이메일"
+              error={errors.email}
+              placeholder="이메일을 입력해주세요"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrors((prev) => ({ ...prev, email: '' }));
+              }}
+              disabled={signupMutation.isPending}
+            />
+
+            <Input
+              className={styles.input}
+              type="text"
+              id="nickname"
+              label="닉네임"
+              error={errors.nickname}
+              placeholder="닉네임을 입력해주세요"
+              value={nickname}
+              onChange={(e) => {
+                setNickname(e.target.value);
+                setErrors((prev) => ({ ...prev, nickname: '' }));
+              }}
+              disabled={signupMutation.isPending}
+            />
+
+            <Input
+              className={styles.input}
+              type="password"
+              id="password"
+              label="비밀번호"
+              error={errors.password}
+              placeholder="비밀번호를 입력해주세요"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setErrors((prev) => ({
+                  ...prev,
+                  password: '',
+                  passwordConfirmation: '',
+                }));
+              }}
+              disabled={signupMutation.isPending}
+            />
+
+            <Input
+              className={styles.input}
+              type="password"
+              id="passwordConfirmation"
+              label="비밀번호 확인"
+              error={errors.passwordConfirmation}
+              placeholder="비밀번호를 한번 더 입력해주세요"
+              value={passwordConfirmation}
+              onChange={(e) => {
+                setPasswordConfirmation(e.target.value);
+                setErrors((prev) => ({
+                  ...prev,
+                  passwordConfirmation: '',
+                }));
+              }}
+              disabled={signupMutation.isPending}
+            />
+
+            <Button
+              className={styles.signupButton}
+              type="submit"
+              disabled={signupMutation.isPending}
+            >
+              {signupMutation.isPending ? '가입 중...' : '회원가입'}
+            </Button>
+          </form>
+
+          <div className={styles.googleLogin}>
+            <GoogleLoginError />
+            <GoogleLoginButton />
+          </div>
+
+          <div className={styles.footer}>
+            <p className={styles.footerText}>회원이신가요?</p>
+            <Link href="/login" className={styles.footerLink}>
+              로그인하기
+            </Link>
+          </div>
+        </main>
+      </div>
     </>
   );
 }

@@ -1,6 +1,12 @@
 import { style } from '@vanilla-extract/css';
 import { vars } from '@/styles/global.css.js';
 
+export const signupLayout = style({
+  width: '100%',
+  minHeight: '100vh',
+  backgroundColor: vars.color.gray[50],
+});
+
 export const signupPage = style({
   display: 'flex',
   flexDirection: 'column',
