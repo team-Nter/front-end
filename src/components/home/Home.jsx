@@ -25,7 +25,12 @@ export default function HomePage() {
       <section className={styles.hero}>
         <div className={styles.heroInner}>
           <h1 className={styles.heroTitle}>
-            <Image src={logo} alt="Docthru" className={styles.logo} />
+            <Image
+              src={logo}
+              alt="Docthru"
+              className={styles.logo}
+              loading="eager"
+            />
           </h1>
 
           <p className={styles.heroText}>
@@ -43,7 +48,12 @@ export default function HomePage() {
       <section aria-labelledby="feature-title-1">
         <div className={styles.featureRow1}>
           <div className={styles.featureText}>
-            <Image src={imoji1} alt="" className={styles.featureIcon} />
+            <Image
+              src={imoji1}
+              alt=""
+              className={styles.featureIcon}
+              loading="eager"
+            />
             <h2 id="feature-title-1" className={styles.featureTitle}>
               혼자서는 막막했던 번역,
               <br />
@@ -56,7 +66,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          <Image src={homeImg1} alt="" className={styles.image1} />
+          <Image
+            src={homeImg1}
+            alt=""
+            className={styles.image1}
+            loading="eager"
+          />
         </div>
       </section>
 
