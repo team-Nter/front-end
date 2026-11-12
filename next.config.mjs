@@ -13,6 +13,10 @@ const nextConfig = {
         source: '/api/:path*',
         destination: `${process.env.BACKEND_URL}/:path*`,
       },
+      {
+        source: '/docs/:path*',
+        destination: `${process.env.BACKEND_URL}/docs/:path*`,
+      },
     ];
   },
 };
