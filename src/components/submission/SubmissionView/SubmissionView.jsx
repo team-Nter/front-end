@@ -1,6 +1,8 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
+import arrowIcon from '@/assets/icons/arrow-right.svg';
 import FeedbackSection from '@/components/feedback/FeedbackSection';
 import emptyImage from '@/assets/images/empty.svg';
 import profileUser from '@/assets/icons/profile-user.svg';
@@ -17,6 +19,7 @@ import { DeleteConfirmModal } from '@/components/common/DeleteConfirmModal';
 import { submissionDeleteError } from '@/utils/SubmissionError/submissionDeleteError';
 
 export default function SubmissionView({
+  challengeId,
   participation,
   submission = null,
   challengeStatus,
@@ -60,6 +63,16 @@ export default function SubmissionView({
 
   return (
     <article className={styles.article}>
+      <Link href={`/challenges/${challengeId}`} className={styles.backLink}>
+        <Image
+          src={arrowIcon}
+          alt=""
+          width={20}
+          height={20}
+          className={styles.backIcon}
+        />
+        챌린지로 돌아가기
+      </Link>
       {submission && (
         <div className={styles.heading}>
           <h1 className={styles.title}>{submission.title}</h1>

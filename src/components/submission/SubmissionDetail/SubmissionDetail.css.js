@@ -13,6 +13,20 @@ export const article = style({
   '@media': { [media.mobile]: { paddingTop: 24, paddingBottom: 40 } },
 });
 
+export const backLink = style({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 4,
+  marginBottom: 16,
+  fontSize: 14,
+  fontWeight: 500,
+  color: vars.color.gray[600],
+});
+
+export const backIcon = style({
+  transform: 'rotate(180deg)',
+});
+
 export const heading = style({
   display: 'flex',
   alignItems: 'flex-start',
