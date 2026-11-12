@@ -19,6 +19,7 @@ function SubmittedWork({ participation, challengeId }) {
   if (isPending) return <p>챌린지 정보를 불러오는 중...</p>;
   return (
     <SubmissionView
+      challengeId={challengeId}
       participation={participation}
       submission={submission}
       challengeStatus={challenge.status}
@@ -30,7 +31,9 @@ function ParticipantSubmission({ challengeId, userId }) {
   const { data: participation } = useParticipation(challengeId, userId);
   // 작업물이 없음
   if (participation.submission === null) {
-    return <SubmissionView participation={participation} />;
+    return (
+      <SubmissionView challengeId={challengeId} participation={participation} />
+    );
   }
 
   //작업물 있음
